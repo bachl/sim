@@ -6,7 +6,7 @@ website:
   title: "Workshop Data Simulation with Monte Carlo Methods"
   navbar:
     left:
-      - href: qmd/index.qmd
+      - href: index.qmd
         text: Home
       - qmd/01_intro.qmd
       - qmd/02_monte_carlo.qmd

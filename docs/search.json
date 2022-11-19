@@ -60,7 +60,7 @@
     "href": "qmd/03_prove.html#rnorm---draw-random-numbers-from-a-normal-distribution",
     "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
     "section": "rnorm() - draw random numbers from a normal distribution",
-    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -1.32287263  2.06594102  0.07676348  0.68393312  0.02652702  0.28854749\n [7] -0.90039940  0.62566245  0.56733099 -1.17172760\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -1.52471376  0.41831467  0.16230320 -1.17904052 -0.75199992  0.33992606\n [7] -0.16152364 -0.83896088  0.20088805  0.08571625"
+    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1]  0.1710664  0.1812545  0.1136835  0.6856284  0.9988999  0.7027847\n [7]  2.7807609 -1.2629548  2.2729204 -0.3559584\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -0.4791429 -1.3941860 -0.3464791 -2.4091121  1.0242678  1.0279821\n [7] -1.7843695 -0.4966747  0.1740720 -2.4315047"
   },
   {
     "objectID": "qmd/03_prove.html#always-use-set.seed-to-make-simulation-results-reproducible",
@@ -333,7 +333,7 @@
     "href": "qmd/04_2_errors_power.html#adapt-the-simulation-function",
     "title": "4b) Errors and power — torturing the t-test",
     "section": "Adapt the simulation function",
-    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.0003177625\n\n$Student\n[1] 0.0003164496"
+    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.0003973274\n\n$Student\n[1] 0.0003931142"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#adapt-the-experimental-conditions",
@@ -655,7 +655,7 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.022 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.502 0.309 0.114 0.075"
+    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.021 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.502 0.309 0.114 0.075"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
@@ -816,7 +816,7 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-2",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nSame as before\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.004 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.491 0.280 0.134 0.095"
+    "text": "One simulation: Misclassification\nSame as before\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.005 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.491 0.280 0.134 0.095"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-measure-quantities-of-interest",
@@ -880,13 +880,6 @@
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "Group exercise 3",
     "text": "Group exercise 3\n\nTODO"
-  },
-  {
-    "objectID": "qmd/index.html",
-    "href": "qmd/index.html",
-    "title": "Workshop Data Simulation with Monte Carlo Methods",
-    "section": "",
-    "text": "Dr. Marko Bachl, University of Hohenheim\nOrganized by the Computational Methods Working Group (CMWG) at the University of Zurich & ETH Zurich, Switzerland"
   },
   {
     "objectID": "qmd/02_monte_carlo.html#traktandenliste",
@@ -1153,5 +1146,12 @@
     "title": "4a) Errors and power — torturing the t-test",
     "section": "Solution 2a",
     "text": "Solution 2a\n\nTODO"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Workshop Data Simulation with Monte Carlo Methods",
+    "section": "",
+    "text": "Dr. Marko Bachl, University of Hohenheim\nOrganized by the Computational Methods Working Group (CMWG) at the University of Zurich & ETH Zurich, Switzerland"
   }
 ]
