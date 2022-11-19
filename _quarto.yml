@@ -6,15 +6,15 @@ website:
   title: "Workshop Data Simulation with Monte Carlo Methods"
   navbar:
     left:
-      - href: index.qmd
+      - href: qmd/index.qmd
         text: Home
-      - 01_intro.qmd
-      - 02_monte_carlo.qmd
-      - 03_prove.qmd
-      - 04_1_errors_power
-      - 04_2_errors_power
-      - 05_misclass_bias.qmd
-      - 06_outlook.qmd
+      - qmd/01_intro.qmd
+      - qmd/02_monte_carlo.qmd
+      - qmd/03_prove.qmd
+      - qmd/04_1_errors_power
+      - qmd/04_2_errors_power
+      - qmd/05_misclass_bias.qmd
+      - qmd/06_outlook.qmd
 
 format:
   html:
