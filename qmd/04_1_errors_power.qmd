@@ -1,5 +1,5 @@
 ---
-title: "4a) Errors and power --- torturing the *t*-test"
+title: "4a) Errors and power --- Torturing the *t*-test"
 subtitle: "Data Simulation with Monte Carlo Methods"
 author: "Marko Bachl"
 institute: "University of Hohenheim"
@@ -30,7 +30,7 @@ theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
                                      strip_text_size = 20))
 ```
 
-# Errors and power --- torturing the *t*-test
+# Errors and power --- Torturing the *t*-test
 
 ## Traktandenliste
 
@@ -38,16 +38,16 @@ theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
 
 2)  Monte Carlo Simulation?
 
-3)  Proof by simulation --- the Central Limit Theorem (CLT)
+3)  Proof by simulation --- The Central Limit Theorem (CLT)
 
-4)  Errors and power --- torturing the *t*-test
+4)  Errors and power --- Torturing the *t*-test
 
 5)  Misclassification and bias --- Messages mismeasured
 
 6)  Outlook: What's next?
 
 
-## 4. Errors and power --- torturing the *t*-test
+## 4. Errors and power --- Torturing the *t*-test
 
 a)  Comparison of Student's and Welch's *t*-tests
 
@@ -288,7 +288,3 @@ sims %>%
     -   Change or expand the levels of the GR and SDR factors.
 
     -   Consider changing the experimental design to make the simulation more efficient.
-
-## Solution 2a
-
-- TODO

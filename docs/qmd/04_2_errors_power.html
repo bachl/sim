@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.1.251">
 
   <meta name="author" content="Marko Bachl">
-  <title>Workshop Data Simulation with Monte Carlo Methods - 4b) Errors and power — torturing the t-test</title>
+  <title>Workshop Data Simulation with Monte Carlo Methods - 4b) Errors and power — Torturing the t-test</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -389,7 +389,7 @@
     <div class="slides">
 
 <section id="title-slide" data-background-image="https://upload.wikimedia.org/wikipedia/commons/6/64/Uni_Hohenheim-Logo.svg" data-background-position="top right" data-background-size="auto" class="center">
-  <h1 class="title">4b) Errors and power — torturing the <em>t</em>-test</h1>
+  <h1 class="title">4b) Errors and power — Torturing the <em>t</em>-test</h1>
   <p class="subtitle">Data Simulation with Monte Carlo Methods</p>
   <p class="author">Marko Bachl</p>
   <p class="institute">University of Hohenheim</p>
@@ -397,7 +397,7 @@
 
 <section>
 <section id="errors-and-power-torturing-the-t-test-part-ii" class="title-slide slide level1 center">
-<h1>Errors and power — torturing the <em>t</em>-test, part II</h1>
+<h1>Errors and power — Torturing the <em>t</em>-test, part II</h1>
 
 </section>
 <section id="traktandenliste" class="slide level2">
@@ -405,14 +405,14 @@
 <ol type="1">
 <li><p>Introduction &amp; overview</p></li>
 <li><p>Some types and examples of simulation studies</p></li>
-<li><p>Proof by simulation — the Central Limit Theorem (CLT)</p></li>
-<li><p>Errors and power — torturing the <em>t</em>-test</p></li>
+<li><p>Proof by simulation — The Central Limit Theorem (CLT)</p></li>
+<li><p>Errors and power — Torturing the <em>t</em>-test</p></li>
 <li><p>Misclassification and bias — Messages mismeasured</p></li>
 <li><p>Outlook: What’s next?</p></li>
 </ol>
 </section>
 <section id="errors-and-power-torturing-the-t-test" class="slide level2">
-<h2>4. Errors and power — torturing the <em>t</em>-test</h2>
+<h2>4. Errors and power — Torturing the <em>t</em>-test</h2>
 <ol type="a">
 <li><p>Comparison of Student’s and Welch’s <em>t</em>-tests</p></li>
 <li><p><em>A priori</em> power calculation for Welch’s <em>t</em>-test</p></li>
@@ -497,10 +497,10 @@
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ttest</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">M_diff =</span> <span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Welch
-[1] 0.0003973274
+[1] 0.8033321
 
 $Student
-[1] 0.0003931142</code></pre>
+[1] 0.8033238</code></pre>
 </div>
 </div>
 </div>
@@ -627,12 +627,6 @@ NOTE: n is number in *each* group</code></pre>
 <li><p>Welch’s <em>t</em>-test has similar statistical power as Student’s <em>t</em>-test if the assumption of equal group variances holds (simulation study 2).</p></li>
 <li><p>We should always use Welch’s <em>t</em>-test as a default.</p></li>
 <li><p>For those who don’t use <em>t</em>-tests: We probably should also use heteroskedasticity-consistent standard errors as default in OLS linear models.</p></li>
-</ul>
-</section>
-<section id="lessons-learnt-for-simulation-experiments" class="slide level2">
-<h2>Lessons learnt for simulation experiments</h2>
-<ul>
-<li>TODO</li>
 </ul>
 </section></section>
 <section id="questions" class="title-slide slide level1 center">

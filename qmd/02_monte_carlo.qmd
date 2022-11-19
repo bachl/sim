@@ -1,5 +1,5 @@
 ---
-title: "3) Monte Carlo Simulation?"
+title: "2) Monte Carlo Simulation?"
 subtitle: "Data Simulation with Monte Carlo Methods"
 author: "Marko Bachl"
 institute: "University of Hohenheim"
@@ -36,9 +36,9 @@ theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25, axis_title_size = 25))
 
 2)  Monte Carlo Simulation?
 
-3)  Proof by simulation --- the Central Limit Theorem (CLT)
+3)  Proof by simulation --- The Central Limit Theorem (CLT)
 
-4)  Errors and power --- torturing the *t*-test
+4)  Errors and power --- Torturing the *t*-test
 
 5)  Misclassification and bias --- Messages mismeasured
 

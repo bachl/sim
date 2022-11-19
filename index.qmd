@@ -2,8 +2,6 @@
 title: "Workshop Data Simulation with Monte Carlo Methods"
 ---
 
-Workshop Data Simulation with Monte Carlo Methods
-
 Dr. Marko Bachl, University of Hohenheim
 
 Organized by the Computational Methods Working Group (CMWG)
@@ -17,10 +15,10 @@ at the University of Zurich & ETH Zurich, Switzerland
 2)  Monte Carlo Simulation?
     - [Slides](qmd/02_monte_carlo.html )
 
-3)  Proof by simulation --- the Central Limit Theorem (CLT) 
+3)  Proof by simulation --- The Central Limit Theorem (CLT) 
     - [Slides](qmd/03_prove.html)
 
-4)  Errors and power --- torturing the *t*-test
+4)  Errors and power --- Torturing the *t*-test
     - [Slides 1](qmd/04_1_errors_power.html), [Slides 2](qmd/04_2_errors_power.html)
 
 5)  Misclassification and bias --- Messages mismeasured

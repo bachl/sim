@@ -1,5 +1,5 @@
 ---
-title: "3) Proof by simulation --- the Central Limit Theorem (CLT)"
+title: "3) Proof by simulation --- The Central Limit Theorem (CLT)"
 subtitle: "Data Simulation with Monte Carlo Methods"
 author: "Marko Bachl"
 institute: "University of Hohenheim"
@@ -28,7 +28,7 @@ pacman::p_load(knitr, tidyverse)
 theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25, axis_title_size = 25))
 ```
 
-# Proof by simulation --- the Central Limit Theorem (CLT)
+# Proof by simulation --- The Central Limit Theorem (CLT)
 
 ## Traktandenliste
 
@@ -36,16 +36,16 @@ theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25, axis_title_size = 25))
 
 2)  Monte Carlo Simulation?
 
-3)  Proof by simulation --- the Central Limit Theorem (CLT)
+3)  Proof by simulation --- The Central Limit Theorem (CLT)
 
-4)  Errors and power --- torturing the *t*-test
+4)  Errors and power --- Torturing the *t*-test
 
 5)  Misclassification and bias --- Messages mismeasured
 
 6)  Outlook: What's next?
 
 
-## 3. Proof by simulation --- the CLT
+## 3. Proof by simulation --- The CLT
 
 a)  Short intro (refresher): Getting Started with Randomness (in *R*)
 

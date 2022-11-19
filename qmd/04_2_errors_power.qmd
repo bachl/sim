@@ -1,5 +1,5 @@
 ---
-title: "4b) Errors and power --- torturing the *t*-test"
+title: "4b) Errors and power --- Torturing the *t*-test"
 subtitle: "Data Simulation with Monte Carlo Methods"
 author: "Marko Bachl"
 institute: "University of Hohenheim"
@@ -30,7 +30,7 @@ theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
                                      strip_text_size = 20))
 ```
 
-# Errors and power --- torturing the *t*-test, part II
+# Errors and power --- Torturing the *t*-test, part II
 
 ## Traktandenliste
 
@@ -38,16 +38,16 @@ theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
 
 2)  Some types and examples of simulation studies
 
-3)  Proof by simulation --- the Central Limit Theorem (CLT)
+3)  Proof by simulation --- The Central Limit Theorem (CLT)
 
-4)  Errors and power --- torturing the *t*-test
+4)  Errors and power --- Torturing the *t*-test
 
 5)  Misclassification and bias --- Messages mismeasured
 
 6)  Outlook: What's next?
 
 
-## 4. Errors and power --- torturing the *t*-test
+## 4. Errors and power --- Torturing the *t*-test
 
 a)  Comparison of Student's and Welch's *t*-tests
 
@@ -228,9 +228,6 @@ sims %>%
 
 - For those who don't use *t*-tests: We probably should also use heteroskedasticity-consistent standard errors as default in OLS linear models.
 
-## Lessons learnt for simulation experiments
-
-- TODO
 
 # Questions?
 

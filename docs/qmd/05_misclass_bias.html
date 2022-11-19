@@ -405,8 +405,8 @@
 <ol type="1">
 <li><p>Introduction &amp; overview</p></li>
 <li><p>Monte Carlo Simulation?</p></li>
-<li><p>Proof by simulation — the Central Limit Theorem (CLT)</p></li>
-<li><p>Errors and power — torturing the <em>t</em>-test</p></li>
+<li><p>Proof by simulation — The Central Limit Theorem (CLT)</p></li>
+<li><p>Errors and power — Torturing the <em>t</em>-test</p></li>
 <li><p>Misclassification and bias — Messages mismeasured</p></li>
 <li><p>Outlook: What’s next?</p></li>
 </ol>
@@ -563,7 +563,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prop.table</span>()</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.021 sec elapsed</code></pre>
+<pre><code>0.018 sec elapsed</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>freq_obs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -726,7 +726,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">n =</span> n, <span class="at">accuracy =</span> accuracy)))</span>
 <span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>5.322 sec elapsed</code></pre>
+<pre><code>5.386 sec elapsed</code></pre>
 </div>
 </div>
 </section>
@@ -855,7 +855,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">res =</span> <span class="fu">list</span>(<span class="fu">sim_misclass</span>(<span class="at">pop_dist =</span> pop_dist, <span class="at">n =</span> n, <span class="at">accuracy =</span> accuracy)))</span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>16.975 sec elapsed</code></pre>
+<pre><code>14.836 sec elapsed</code></pre>
 </div>
 </div>
 </section>
@@ -1155,7 +1155,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prop.table</span>()</span>
 <span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.005 sec elapsed</code></pre>
+<pre><code>0.003 sec elapsed</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>freq_obs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1168,7 +1168,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <section id="one-simulation-measure-quantities-of-interest" class="slide level2">
 <h2>One simulation: Measure quantities of interest</h2>
 <ul>
-<li>Test means of outcome in categories B, C, and D agains A (the default)</li>
+<li>Test means of outcome in categories B, C, and D against A (the default)</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>t_res <span class="ot">=</span> categories[<span class="dv">2</span><span class="sc">:</span>k] <span class="sc">%&gt;%</span> </span>
@@ -1274,7 +1274,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
-<li><p><code>lambdas</code> is a <em>named</em> list with two sets of values The group differences are the same in both conditions, but the variances differ strongly.</p></li>
+<li><p><code>lambdas</code> is a <em>named</em> list with two sets of values. The group differences are the same in both conditions, but the variances differ strongly.</p></li>
 <li><p>Between-simulation factor: <code>accuracy</code> varies with 4 values.</p></li>
 <li><p><code>pop_dist</code> and <code>n</code> (sample size) are fixed.</p></li>
 </ul>
@@ -1321,7 +1321,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> n, <span class="at">accuracy =</span> accuracy)))</span>
 <span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>17.146 sec elapsed</code></pre>
+<pre><code>13.941 sec elapsed</code></pre>
 </div>
 </div>
 </section>
@@ -1403,8 +1403,9 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <section id="summary-1" class="slide level2">
 <h2>Summary</h2>
 <ul>
-<li><p>X</p></li>
-<li><p>X</p></li>
+<li><p>Misclassification of the grouping variable attenuates the group differences and reduces statistical power.</p></li>
+<li><p>Even a seemingly ok-ish accuracy of .8 can lead to a reduction of the observed differences to 50% of the true difference in some instances.</p></li>
+<li><p>The level of within-group variances obviously reduces statistical power, but does not seem to be related to the average bias of the observed differences.</p></li>
 </ul>
 </section></section>
 <section id="questions-1" class="title-slide slide level1 center">
@@ -1419,9 +1420,12 @@ D 0.05 0.05 0.05 0.80</code></pre>
 </section>
 <section id="group-exercise-3-1" class="slide level2">
 <h2>Group exercise 3</h2>
-<ul>
-<li>TODO</li>
-</ul>
+<h3 id="try-one-or-more-of-the-following-adaptions-of-the-monte-carlo-studies-on-misclassification">Try one (or more) of the following adaptions of the Monte Carlo studies on misclassification:</h3>
+<ol type="a">
+<li><p>Change the misclassification probabilities to allow for different patterns accuracies and errors: varying difficulties of the categories, systematic confusion of some categories.</p></li>
+<li><p>Change the analysis to a cross-table of two categorical variables which were both measured with misclassification error.</p></li>
+<li><p>Based on the second simulation study, design an experiment to systematically investigate the role of group size, group means and variances, and accuracy. Also take their interactions into account.</p></li>
+</ol>
 
 <div class="footer footer-default">
 

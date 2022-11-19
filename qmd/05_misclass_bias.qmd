@@ -38,9 +38,9 @@ theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
 
 2)  Monte Carlo Simulation?
 
-3)  Proof by simulation --- the Central Limit Theorem (CLT)
+3)  Proof by simulation --- The Central Limit Theorem (CLT)
 
-4)  Errors and power --- torturing the *t*-test
+4)  Errors and power --- Torturing the *t*-test
 
 5)  Misclassification and bias --- Messages mismeasured
 
@@ -633,7 +633,7 @@ freq_obs
 
 ## One simulation: Measure quantities of interest
 
-- Test means of outcome in categories B, C, and D agains A (the default)
+- Test means of outcome in categories B, C, and D against A (the default)
 
 ```{r}
 t_res = categories[2:k] %>% 
@@ -728,7 +728,7 @@ sim_misclass_test = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),
 :::: {.columns}
 
 ::: {.column width="50%"}
--   `lambdas` is a *named* list with two sets of values The group differences are the same in both conditions, but the variances differ strongly.
+-   `lambdas` is a *named* list with two sets of values. The group differences are the same in both conditions, but the variances differ strongly.
 
 -   Between-simulation factor: `accuracy` varies with 4 values.
 
@@ -850,9 +850,11 @@ sims %>%
 
 ## Summary
 
-- X
+- Misclassification of the grouping variable attenuates the group differences and reduces statistical power.
 
-- X
+- Even a seemingly ok-ish accuracy of .8 can lead to a reduction of the observed differences to 50% of the true difference in some instances.
+
+- The level of within-group variances obviously reduces statistical power, but does not seem to be related to the average bias of the observed differences.
 
 # Questions?
 
@@ -860,6 +862,12 @@ sims %>%
 
 ## Group exercise 3
 
-- TODO
+### Try one (or more) of the following adaptions of the Monte Carlo studies on misclassification:
+
+a) Change the misclassification probabilities to allow for different patterns accuracies and errors: varying difficulties of the categories, systematic confusion of some categories.
+
+b) Change the analysis to a cross-table of two categorical variables which were both measured with misclassification error.
+
+c) Based on the second simulation study, design an experiment to systematically investigate the role of group size, group means and variances, and accuracy. Also take their interactions into account.
 
 

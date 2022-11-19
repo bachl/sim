@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.1.251">
 
   <meta name="author" content="Marko Bachl">
-  <title>Workshop Data Simulation with Monte Carlo Methods - 3) Proof by simulation — the Central Limit Theorem (CLT)</title>
+  <title>Workshop Data Simulation with Monte Carlo Methods - 3) Proof by simulation — The Central Limit Theorem (CLT)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -389,7 +389,7 @@
     <div class="slides">
 
 <section id="title-slide" data-background-image="https://upload.wikimedia.org/wikipedia/commons/6/64/Uni_Hohenheim-Logo.svg" data-background-position="top right" data-background-size="auto" class="center">
-  <h1 class="title">3) Proof by simulation — the Central Limit Theorem (CLT)</h1>
+  <h1 class="title">3) Proof by simulation — The Central Limit Theorem (CLT)</h1>
   <p class="subtitle">Data Simulation with Monte Carlo Methods</p>
   <p class="author">Marko Bachl</p>
   <p class="institute">University of Hohenheim</p>
@@ -397,7 +397,7 @@
 
 <section>
 <section id="proof-by-simulation-the-central-limit-theorem-clt" class="title-slide slide level1 center">
-<h1>Proof by simulation — the Central Limit Theorem (CLT)</h1>
+<h1>Proof by simulation — The Central Limit Theorem (CLT)</h1>
 
 </section>
 <section id="traktandenliste" class="slide level2">
@@ -405,14 +405,14 @@
 <ol type="1">
 <li><p>Introduction &amp; overview</p></li>
 <li><p>Monte Carlo Simulation?</p></li>
-<li><p>Proof by simulation — the Central Limit Theorem (CLT)</p></li>
-<li><p>Errors and power — torturing the <em>t</em>-test</p></li>
+<li><p>Proof by simulation — The Central Limit Theorem (CLT)</p></li>
+<li><p>Errors and power — Torturing the <em>t</em>-test</p></li>
 <li><p>Misclassification and bias — Messages mismeasured</p></li>
 <li><p>Outlook: What’s next?</p></li>
 </ol>
 </section>
 <section id="proof-by-simulation-the-clt" class="slide level2">
-<h2>3. Proof by simulation — the CLT</h2>
+<h2>3. Proof by simulation — The CLT</h2>
 <ol type="a">
 <li><p>Short intro (refresher): Getting Started with Randomness (in <em>R</em>)</p></li>
 <li><p>“Proving” the Central Limit Theorem by simulation</p></li>
@@ -503,13 +503,13 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1]  0.1710664  0.1812545  0.1136835  0.6856284  0.9988999  0.7027847
- [7]  2.7807609 -1.2629548  2.2729204 -0.3559584</code></pre>
+<pre><code> [1]  0.5635303 -0.5270469  0.6450506 -0.8953199  0.4147126 -0.6923678
+ [7]  1.1860845 -0.4777642  1.6647278 -1.3654155</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] -0.4791429 -1.3941860 -0.3464791 -2.4091121  1.0242678  1.0279821
- [7] -1.7843695 -0.4966747  0.1740720 -2.4315047</code></pre>
+<pre><code> [1]  0.3809607 -0.3346453  0.8483932  0.6698372  0.2086167  2.3787629
+ [7] -0.7846542  1.5180979  1.7669066  1.2908393</code></pre>
 </div>
 </div>
 </section>

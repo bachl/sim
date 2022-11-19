@@ -67,9 +67,9 @@ sample(x = 30, size = 4)
 
 2)  Monte Carlo Simulation?
 
-3)  Proof by simulation --- the Central Limit Theorem (CLT)
+3)  Proof by simulation --- The Central Limit Theorem (CLT)
 
-4)  Errors and power --- torturing the *t*-test
+4)  Errors and power --- Torturing the *t*-test
 
 5)  Misclassification and bias --- Messages mismeasured
 
@@ -78,22 +78,21 @@ sample(x = 30, size = 4)
 
 ## Overview (I)
 
--   Introduction to Monte Carlo Simulation Methods
-    -   How to think about simulation experiments
-    -   How to get started in *R*
+### Introduction to Monte Carlo Simulation Methods
+-   How to think about simulation experiments
+-   How to get started in *R*
 
-&nbsp;
 
--   How we will cover applied examples
-    -   Simple, readable code, mostly `{tidyverse}`
-    -   Data simulation "from scratch"
+### How we will cover applied examples
+-   Simple, readable code, mostly `{tidyverse}`
+-   Data simulation "from scratch"
 
 
 ## Overview (II)
 
--   What we will *not* cover
-    -   Packages for simulation experiments and data simulation (easier to use, but harder to understand)
-    -   Advanced computing and programming stuff (not that hard to understand until its very hard to understand, very different skill set)
+### What we will *not* cover
+-   Packages for simulation experiments and data simulation (easier to use, but harder to understand)
+-   Advanced computing and programming stuff (not that hard to understand until its very hard to understand, very different skill set)
 -   Some resources in the end
 
 ## Workshop concept
@@ -102,15 +101,23 @@ sample(x = 30, size = 4)
 
 - You talking: Questions
 
-- All talking: Group exercices in breakout rooms
+- All talking: Group exercises in breakout rooms
+
+## Main Workshop content
+
+- We will work through three examples of increasing complexity (proving the CLT, testing *t*-tests, and misclassification in content analysis).
+
+- While doing so, we will address many general issues on how to get started with Monte Carlo simulation, both conceptually and in practice with *R*.
 
 ## Resources
 
-Slides, scripts, and exercises:
+### Slides, scripts, and exercises:
 
--   [https://github.com/bachl/sim](https://github.com/bachl/sim)
+-   <https://github.com/bachl/sim> (Source)
 
-R & packages:
+-   <https://bachl.github.io/sim/> (Rendered)
+
+### R & packages:
 ```{r}
 #| label: packages
 #| output: "asis"
