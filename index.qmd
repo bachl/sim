@@ -13,7 +13,7 @@ at the University of Zurich & ETH Zurich, Switzerland
     - [Slides](qmd/01_intro.html)
 
 2)  Monte Carlo Simulation?
-    - [Slides](qmd/02_monte_carlo.html )
+    - [Slides](qmd/02_monte_carlo.html)
 
 3)  Proof by simulation --- The Central Limit Theorem (CLT) 
     - [Slides](qmd/03_prove.html)
