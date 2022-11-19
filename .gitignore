@@ -37,5 +37,7 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
-CfP_Simulation.pdf
-plan.txt
+
+# MB
+.DS_Store
+/private/

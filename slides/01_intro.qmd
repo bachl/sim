@@ -1,0 +1,124 @@
+---
+title: "Data Simulation with Monte Carlo Methods"
+author: "Marko Bachl"
+institute: "University of Hohenheim"
+format:
+  revealjs:
+      height: 900
+      width: 1600
+      theme: [theme.scss]
+      highlight-style: github-dark
+      slide-number: c
+      code-line-numbers: false
+      history: false
+      smaller: false
+      title-slide-attributes:
+        data-background-image: https://upload.wikimedia.org/wikipedia/commons/6/64/Uni_Hohenheim-Logo.svg
+        data-background-position: "top right"
+        data-background-size: auto
+css: colors.css
+---
+
+```{r setup, include=FALSE}
+pacman::p_load(knitr, extraDistr, tictoc, tidyverse)
+set.seed(376)
+```
+
+
+# Hello there :)
+
+## Introduction (I)
+
+::: {.incremental}
+
+- Hi, I'm Marko.
+
+&nbsp;
+
+-   I am not a statistician, econometrician, psychometrician, or any kind of \*ician.
+
+-   Most importantly, I am also not a mathematician --- this is why I often need simulation methods.
+
+-   I am also not a computer scientist or trained programmer.
+
+:::
+
+## Introduction (II)
+
+-   I am a trained social scientist / communication researcher with an interest in quantitative methods.
+
+-   I use data simulation methods for teaching myself and others as well as in my applied and methods research.
+
+## Introduction (III)
+
+### Random sample in *R*
+
+```{r, echo=TRUE}
+sample(x = 30, size = 4)
+```
+
+-   Who are you --- and why are you here?
+
+
+## Traktandenliste
+
+1)  Introduction & overview
+
+2)  Monte Carlo Simulation?
+
+3)  Proof by simulation --- the Central Limit Theorem (CLT)
+
+4)  Errors and power --- torturing the *t*-test
+
+5)  Misclassification and bias --- Messages mismeasured
+
+6)  Outlook: What's next?
+
+
+## Overview (I)
+
+-   Introduction to Monte Carlo Simulation Methods
+    -   How to think about simulation experiments
+    -   How to get started in *R*
+
+&nbsp;
+
+-   How we will cover applied examples
+    -   Simple, readable code, mostly `{tidyverse}`
+    -   Data simulation "from scratch"
+
+
+## Overview (II)
+
+-   What we will *not* cover
+    -   Packages for simulation experiments and data simulation (easier to use, but harder to understand)
+    -   Advanced computing and programming stuff (not that hard to understand until its very hard to understand, very different skill set)
+-   Some resources in the end
+
+## Workshop concept
+
+- Me talking: Lecture with code illustrations
+
+- You talking: Questions
+
+- All talking: Group exercices in breakout rooms
+
+## Resources
+
+Slides, scripts, and exercises:
+
+-   [https://github.com/bachl/sim](https://github.com/bachl/sim)
+
+R & packages:
+```{r}
+#| label: packages
+#| output: "asis"
+tibble(Package = c("R", sort(c(pacman::p_loaded())))) %>% 
+  mutate(Version = map(Package, ~ as.character(pacman::p_ver(.x)))) %>% 
+  str_glue_data("{Package} (Vers. {Version})") %>% 
+  str_c(collapse = ", ") %>% 
+  cat()
+```
+
+
+# Questions?
