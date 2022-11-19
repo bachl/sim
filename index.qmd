@@ -8,3 +8,24 @@ Dr. Marko Bachl, University of Hohenheim
 
 Organized by the Computational Methods Working Group (CMWG)
 at the University of Zurich & ETH Zurich, Switzerland
+
+## Traktandenliste
+
+1)  Introduction & overview
+    - [Slides](qmd/01_intro.html)
+
+2)  Monte Carlo Simulation?
+    - [Slides](qmd/02_monte_carlo.html )
+
+3)  Proof by simulation --- the Central Limit Theorem (CLT) 
+    - [Slides](qmd/03_prove.html)
+
+4)  Errors and power --- torturing the *t*-test
+    - [Slides 1](qmd/04_1_errors_power.html), [Slides 2](qmd/04_2_errors_power.html)
+
+5)  Misclassification and bias --- Messages mismeasured
+    - [Slides](qmd/05_misclass_bias.html)
+
+6)  Outlook: What's next?
+    - [Slides](qmd/06_outlook.html)
+

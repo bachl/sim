@@ -1152,6 +1152,13 @@
     "href": "index.html",
     "title": "Workshop Data Simulation with Monte Carlo Methods",
     "section": "",
-    "text": "Dr. Marko Bachl, University of Hohenheim\nOrganized by the Computational Methods Working Group (CMWG) at the University of Zurich & ETH Zurich, Switzerland"
+    "text": "Workshop Data Simulation with Monte Carlo Methods\nDr. Marko Bachl, University of Hohenheim\nOrganized by the Computational Methods Working Group (CMWG) at the University of Zurich & ETH Zurich, Switzerland"
+  },
+  {
+    "objectID": "index.html#traktandenliste",
+    "href": "index.html#traktandenliste",
+    "title": "Workshop Data Simulation with Monte Carlo Methods",
+    "section": "Traktandenliste",
+    "text": "Traktandenliste\n\nIntroduction & overview\n\nSlides\n\nMonte Carlo Simulation?\n\nSlides\n\nProof by simulation — the Central Limit Theorem (CLT)\n\nSlides\n\nErrors and power — torturing the t-test\n\nSlides 1, Slides 2\n\nMisclassification and bias — Messages mismeasured\n\nSlides\n\nOutlook: What’s next?\n\nSlides"
   }
 ]

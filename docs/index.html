@@ -36,11 +36,11 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -83,25 +83,6 @@ ul.task-list li input[type="checkbox"] {
   <li class="nav-item">
     <a class="nav-link active" href="./index.html" aria-current="page">Home</a>
   </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./qmd/01_intro.html">Data Simulation with Monte Carlo Methods</a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./qmd/02_monte_carlo.html">3) Monte Carlo Simulation?</a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./qmd/03_prove.html">3) Proof by simulation — the Central Limit Theorem (CLT)</a>
-  </li>  
-  <li class="dropdown-header">
- qmd/04_1_errors_power</li>
-  <li class="dropdown-header">
- qmd/04_2_errors_power</li>
-  <li class="nav-item">
-    <a class="nav-link" href="./qmd/05_misclass_bias.html">5) Misclassification and bias — Messages mismeasured</a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="./qmd/06_outlook.html">6) Outlook: What’s next?</a>
-  </li>  
 </ul>
               <div class="quarto-toggle-container">
                   <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
@@ -116,7 +97,13 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#traktandenliste" id="toc-traktandenliste" class="nav-link active" data-scroll-target="#traktandenliste">Traktandenliste</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -140,8 +127,37 @@ ul.task-list li input[type="checkbox"] {
 <p>Workshop Data Simulation with Monte Carlo Methods</p>
 <p>Dr.&nbsp;Marko Bachl, University of Hohenheim</p>
 <p>Organized by the Computational Methods Working Group (CMWG) at the University of Zurich &amp; ETH Zurich, Switzerland</p>
+<section id="traktandenliste" class="level2">
+<h2 class="anchored" data-anchor-id="traktandenliste">Traktandenliste</h2>
+<ol type="1">
+<li>Introduction &amp; overview
+<ul>
+<li><a href="qmd/01_intro.html">Slides</a></li>
+</ul></li>
+<li>Monte Carlo Simulation?
+<ul>
+<li><a href="qmd/02_monte_carlo.html">Slides</a></li>
+</ul></li>
+<li>Proof by simulation — the Central Limit Theorem (CLT)
+<ul>
+<li><a href="qmd/03_prove.html">Slides</a></li>
+</ul></li>
+<li>Errors and power — torturing the <em>t</em>-test
+<ul>
+<li><a href="qmd/04_1_errors_power.html">Slides 1</a>, <a href="qmd/04_2_errors_power.html">Slides 2</a></li>
+</ul></li>
+<li>Misclassification and bias — Messages mismeasured
+<ul>
+<li><a href="qmd/05_misclass_bias.html">Slides</a></li>
+</ul></li>
+<li>Outlook: What’s next?
+<ul>
+<li><a href="qmd/06_outlook.html">Slides</a></li>
+</ul></li>
+</ol>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -253,7 +269,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return localAlternateSentinel;
     }
   }
-  let localAlternateSentinel = 'default';
+  let localAlternateSentinel = 'alternate';
   // Dark / light mode switch
   window.quartoToggleColorScheme = () => {
     // Read the current dark / light value 
