@@ -165,7 +165,7 @@
     "href": "qmd/03_prove.html#rnorm---draw-random-numbers-from-a-normal-distribution",
     "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
     "section": "rnorm() - draw random numbers from a normal distribution",
-    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -1.0050135  0.5690875  0.4079943  0.1398395 -0.4061030 -1.7880061\n [7]  0.3127770  0.4212234 -0.2973330 -0.2184005\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1]  0.93550171 -0.21364042 -0.08695584  0.35341366 -1.18930552  0.11942879\n [7]  0.18070105  0.41549145  0.86547715 -0.46315828"
+    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -0.34442869  2.79324184 -1.13169659 -0.57434754  0.07417383 -0.31038775\n [7] -0.73508001  0.51573219 -0.01054591 -0.74917249\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -0.2846379 -0.5153346 -1.0638755 -0.1107124 -1.1760176  2.0498245\n [7] -0.7183279  0.7523745 -1.0864506 -0.1936364"
   },
   {
     "objectID": "qmd/03_prove.html#always-use-set.seed-to-make-simulation-results-reproducible",
