@@ -4,7 +4,7 @@ author: "Marko Bachl"
 institute: "University of Hohenheim"
 format:
   revealjs:
-      embed-resources: true
+      embed-resources: false
       height: 900
       width: 1600
       theme: [theme.scss]
