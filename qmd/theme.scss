@@ -1,0 +1,78 @@
+/*-- scss:defaults --*/
+// fonts
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;700');
+
+$font-family-sans-serif: "Roboto Condensed", serif !default;
+$font-family-monospace: "Monaco" !default;
+$presentation-font-size-root: 48px;
+
+// colors
+$main-color: #2c2c2c;
+$alternate-color: #003f75;
+
+$body-bg: #ffffff !default;
+$body-color: $main-color !default;
+$link-color: $alternate-color !default;
+$selection-bg: $main-color !default;
+
+// headings
+$presentation-heading-font: "Roboto Condensed", sans-serif !default;
+$presentation-heading-font-weight: 300 !default;
+
+$presentation-h1-font-size: 2em !default;
+$presentation-h2-font-size: 1.5em !default;
+$presentation-h3-font-size: 1em !default;
+//$presentation-heading-color: $main-color !default;
+//$presentation-heading-text-transform: uppercase !default;
+
+// code
+
+$code-block-font-size: .5em;
+$code-block-bg: $main-color;
+$code-bg: $main-color;
+
+.reveal div.sourceCode, .reveal pre code {
+  background-color: $main-color !important;
+}
+
+.reveal div.sourceCode {
+  border: none !important;
+  margin-bottom: 10px !important;
+}
+
+.reveal pre code {
+  color: white !important;
+  border-radius: 10px !important;}
+
+/*-- scss:rules --*/
+
+.reveal h1.title {
+  margin-bottom:1em;
+  margin-top:1em;
+  color: $main-color;
+  text-align:left;
+  padding:0;
+  margin-left:0;}
+
+.reveal h2 {
+  margin-bottom:1em;
+  text-transform: uppercase;
+  color: $alternate-color;
+}
+
+p.subtitle {
+  font-size: var(--r-heading3-size);
+}
+
+p.author, p.institute, p.date, p.subtitle {
+  margin-bottom:.75em;
+  text-align: left; }
+
+.reveal table {
+  margin:0;
+}
+
+.reveal .slide-number {
+  font-family: var(--r-heading-font);
+  color: $main-color;
+}

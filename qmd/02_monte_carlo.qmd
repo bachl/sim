@@ -1,0 +1,109 @@
+---
+title: "3) Monte Carlo Simulation?"
+subtitle: "Data Simulation with Monte Carlo Methods"
+author: "Marko Bachl"
+institute: "University of Hohenheim"
+format:
+  revealjs:
+      embed-resources: true
+      height: 900
+      width: 1600
+      theme: [theme.scss]
+      highlight-style: arrow-dark
+      slide-number: c
+      code-line-numbers: false
+      history: false
+      smaller: false
+      title-slide-attributes:
+        data-background-image: https://upload.wikimedia.org/wikipedia/commons/6/64/Uni_Hohenheim-Logo.svg
+        data-background-position: "top right"
+        data-background-size: auto
+css: colors.css
+execute:
+  echo: true
+---
+
+```{r setup, include=FALSE}
+pacman::p_load(knitr, tidyverse)
+theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25, axis_title_size = 25))
+```
+
+# Monte Carlo Simulation?
+
+## Traktandenliste
+
+1)  Introduction & overview
+
+2)  Monte Carlo Simulation?
+
+3)  Proof by simulation --- the Central Limit Theorem (CLT)
+
+4)  Errors and power --- torturing the *t*-test
+
+5)  Misclassification and bias --- Messages mismeasured
+
+6)  Outlook: What's next?
+
+## Monte Carlo Simulation?
+
+[Wikipedia](https://en.wikipedia.org/wiki/Monte_Carlo_method#Definitions)
+
+:   There is no consensus on how Monte Carlo should be defined.
+
+-   Monte Carlo methods as part of data analysis (e.g., Sampling from a posterior distribution in Bayesian data analysis, cross tables with small cell counts)
+
+-   Monte Carlo methods for the solution of general numerical problems (e.g., [Monte Carlo integration](https://en.wikipedia.org/wiki/Monte_Carlo_integration))
+
+-   Monte Carlo methods for quantitative (social) science methods research
+
+## Monte Carlo Simulation?
+
+Monte Carlo Simulation Methods in quantitative (social) science methods research
+
+:   "In a typical application, data are simulated to be consistent with the model structure and/or assumptions underlying the quantitative method under study; models are then fitted to those simulated data and predefined outcome measures of interest are evaluated to gauge the method's performance."
+
+::: aside
+McNeish, D., Lane, S., & Curran, P. (2018). Monte Carlo Simulation Methods. In G. R. Hancock, L. M. Stapleton, & R. O. Mueller (Eds.), The Reviewer's Guide to Quantitative Methods in the Social Sciences (2nd ed.). Routledge.
+:::
+
+## Monte Carlo Simulation Workflow
+
+1)  Randomly generate data set with known properties
+
+2)  Analyse data with a statistical method
+
+3)  Repeat 1. and 2. many times
+
+4)  Collect and aggregate results
+
+5)  Compare results to expectation under the known data-generating process
+
+### Make it an experiment
+
+-   Systematically vary parameters in Step 1 (between factor) and compare different ways to do Step 2 (within factor).
+
+## Example: Simple demonstrations
+
+![](images/paste-58D65962.png){fig-align="center"}
+
+::: aside
+Delacre, M., Lakens, D., & Leys, C. (2017). Why Psychologists Should by Default Use Welch's t-test Instead of Student's t-test. *International Review of Social Psychology, 30(1)*. <https://doi.org/10.5334/irsp.82>
+:::
+
+## Example: Typical applied statistics research
+
+![](images/paste-45043472.png){style="position: center" fig-align="center" width="1215"}
+
+::: aside
+Nylund, K. L., Asparouhov, T., & Muthén, B. O. (2007). Deciding on the number of classes in latent class analysis and growth mixture modeling: A Monte Carlo simulation study. *Structural Equation Modeling: A Multidisciplinary Journal, 14(*4), 535--569. <https://doi.org/10/fhg28s>
+:::
+
+## Example: Content analysis
+
+![](images/paste-7D34DA4D.png){fig-align="center" width="960"}
+
+::: aside
+Bachl, M., & Scharkow, M. (2017). Correcting measurement error in content analysis. *Communication Methods and Measures, 11*(2), 87--104. <https://doi.org/10/ghhzbn>
+:::
+
+# Questions?

@@ -1,0 +1,613 @@
+---
+title: "3) Proof by simulation --- the Central Limit Theorem (CLT)"
+subtitle: "Data Simulation with Monte Carlo Methods"
+author: "Marko Bachl"
+institute: "University of Hohenheim"
+format:
+  revealjs:
+      embed-resources: true
+      height: 900
+      width: 1600
+      theme: [theme.scss]
+      highlight-style: arrow-dark
+      slide-number: c
+      code-line-numbers: false
+      history: false
+      smaller: false
+      title-slide-attributes:
+        data-background-image: https://upload.wikimedia.org/wikipedia/commons/6/64/Uni_Hohenheim-Logo.svg
+        data-background-position: "top right"
+        data-background-size: auto
+css: colors.css
+execute:
+  echo: true
+---
+
+```{r setup, include=FALSE}
+pacman::p_load(knitr, tidyverse)
+theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25, axis_title_size = 25))
+```
+
+# Proof by simulation --- the Central Limit Theorem (CLT)
+
+## Traktandenliste
+
+1)  Introduction & overview
+
+2)  Monte Carlo Simulation?
+
+3)  Proof by simulation --- the Central Limit Theorem (CLT)
+
+4)  Errors and power --- torturing the *t*-test
+
+5)  Misclassification and bias --- Messages mismeasured
+
+6)  Outlook: What's next?
+
+
+## 3. Proof by simulation --- the CLT
+
+a)  Short intro (refresher): Getting Started with Randomness (in *R*)
+
+b)  "Proving" the Central Limit Theorem by simulation
+
+# Getting Started with Randomness (in *R*)
+
+## How to generate pseudo-random numbers
+
+-   Computers are deterministic machines and, by themselves alone, cannot create *true* random numbers.
+
+-   *Pseudo-random number generators* are used to create numbers which appear random according to a set of criteria.
+
+-   Long tradition of research in Computer Science, including work by [John von Neumann](https://en.wikipedia.org/wiki/John_von_Neumann).
+
+-   Pseudo-randomness is mostly considered a problem. But there is one advantage for simulation studies: Pseudo-random numbers are reproducible (*R*: `set.seed()`).
+
+-   For details in *R*, see [`?RNG`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Random.html).
+
+## How to generate random numbers in *R*
+
+-   The `{stats}` package (comes with *R*) includes functions for working with many standard probability distributions, see [`?Distributions`](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Distributions.html) for an overview.
+
+-   Functions are provided for density function, cumulative distribution function, quantile function and random number generation.
+
+-   They are named `dxxx`, `pxxx`, `qxxx`, and `rxxx`.
+
+    -   e.g., `dnorm`, `pnorm`, `qnorm`, and `rnorm` for the [`?Normal`](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Normal.html) distribution.
+
+## `dnorm()` - density of a normal distribution
+
+```{r}
+dnorm(x = 0, mean = 0, sd = 1, log = FALSE)
+dnorm(x = seq(-2.5, 2.5, by = 0.5), mean = 0, sd = 1, log = FALSE)
+```
+
+## `dnorm()` - density of a normal distribution
+
+```{r}
+tibble(x = seq(-2.5, 2.5, by = 0.5), y = dnorm(x)) %>% 
+  ggplot(aes(x, y)) + geom_point() + stat_function(fun = dnorm)
+```
+
+## `pnorm()` - distribution function of a normal distribution
+
+```{r}
+pnorm(q = 0, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)
+```
+
+Common use case: normal test statistics to *p* values
+
+```{r}
+2 * (1 - pnorm(q = 1.96))
+```
+
+## `qnorm()` - quantile function of a normal distribution
+
+```{r}
+qnorm(p = 0.5, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)
+```
+
+Common use case: critical values for normal test statistics (e.g., for confidence interval construction)
+
+```{r}
+qnorm(p = c(0.025, 0.975), mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)
+```
+
+## `rnorm()` - draw random numbers from a normal distribution
+
+```{r}
+rnorm(n = 10, mean = 0, sd = 1)
+rnorm(n = 10, mean = 0, sd = 1)
+```
+
+## Always use `set.seed()` to make simulation results reproducible
+
+```{r}
+set.seed(12)
+(sim1 = rnorm(n = 10, mean = 0, sd = 1))
+set.seed(12)
+(sim2 = rnorm(n = 10, mean = 0, sd = 1))
+sim1 == sim2
+```
+
+-   Be aware that seeds do not necessarily lead to the same results across different machines.
+
+## `sample()` draws a random sample from a vector
+
+Vector with 6 elements
+
+```{r}
+LETTERS[1:6]
+```
+
+Sample 3 elements without replacement, equal sampling probabilities
+
+```{r}
+sample(x = LETTERS[1:6], size = 3, replace = FALSE, prob = NULL)
+```
+
+Sample 3 elements with replacement, different sampling probabilities
+
+```{r}
+sample(x = LETTERS[1:6], size = 3, replace = TRUE, prob = 1:6)
+```
+
+## `sample()` can do many useful things
+
+-   The default for `size` is `length(x)`.
+
+Random permutation: Sample 6 out 6 elements without replacement
+
+```{r}
+sample(x = LETTERS[1:6])
+```
+
+Bootstrapping: Sample 6 elements with replacement
+
+```{r}
+sample(x = LETTERS[1:6], replace = TRUE)
+```
+
+<!-- ## `dplyr::slice_sample()` is a convenient wrapper for sampling rows from data -->
+
+<!-- ```{r} -->
+<!-- LET_data = tibble(LETTERS = LETTERS[1:6]) -->
+<!-- slice_sample(.data = LET_data, n = 3, replace = FALSE) -->
+<!-- ``` -->
+
+# Questions?
+
+# "Proving" the Central Limit Theorem by simulation
+
+# Pop quiz: What's the difference between a sample distribution and a sampling distribution?
+
+## The Central Limit Theorem (CLT)
+
+[![Central Limit Theorem according to Wikipedia](https://upload.wikimedia.org/wikipedia/commons/7/7b/IllustrationCentralTheorem.png)](https://en.wikipedia.org/wiki/Central_limit_theorem)
+
+## CLT step-by-step
+
+-   There is a quantity with population mean $\mu$ and population standard deviation $\sigma$.
+
+-   We repeatedly draw samples of size $n$ from the population.
+
+-   We compute the sample mean $\hat{\mu}$ of the quantity for each sample.
+
+-   The means will have a normal distribution, $\sf{Normal}(\mu, \frac{\sigma}{\sqrt{n}})$.
+
+-   This holds regardless of the distribution of the quantity in the population (if the distribution has finite variance).
+
+-   But is this really true?
+
+## Analytical proof of the CLT
+
+[![Analytical proof according to Wikipedia](images/paste-BB6BA9FE.png)](https://en.wikipedia.org/wiki/Central_limit_theorem#Proof_of_classical_CLT)
+
+## Proof by simulation
+
+-   There is a quantity with population mean $\mu$ and population standard deviation $\sigma$.
+
+-   Most simple example: The quantity is normally distributed in the population.
+
+```{r}
+#| output-location: column
+set.seed(436) # make results reproducible 
+mu = 5
+sigma = 3
+ggplot() + 
+  stat_function(fun = dnorm,
+                args = list(mean = mu, sd = sigma),
+                xlim = c(mu-3*sigma, mu+3*sigma))
+```
+
+## Proof by simulation
+
+-   We repeatedly draw samples of size $n$ from the population.
+```{r}
+n = 100
+(one_sim = rnorm(n = n, mean = mu, sd = sigma)) %>% round(2)
+```
+
+## Proof by simulation
+
+-   We compute the sample mean $\hat{\mu}$ of the quantity for each sample.
+```{r}
+mean(one_sim)
+```
+
+## Proof by simulation
+
+-   If we want to do stuff repeatedly in *R*, we should use a function.
+```{r}
+sim_CLT_normal = function(n, mu, sigma) {
+  sims = rnorm(n = n, mean = mu, sd = sigma) # Draw sample
+  mean(sims) # Compute mean
+}
+sim_CLT_normal(n = n, mu = mu, sigma = sigma)
+```
+
+## Proof by simulation
+
+-   And we call the function repeatedly with `purrr::map()`.
+
+```{r}
+i = 10000 # number of simulations
+many_means = map_dbl(1:i, .f = ~ sim_CLT_normal(n = n, mu = mu, sigma = sigma))
+many_means[1:20] %>% round(2)
+```
+
+## Proof by simulation
+
+-   The means will have a normal distribution, $\sf{Normal}(\mu, \frac{\sigma}{\sqrt{n}})$.
+```{r}
+mu; mean(many_means)
+sigma / sqrt(n); sd(many_means)
+```
+
+## Proof by simulation
+
+-   The means will have a normal distribution, $\sf{Normal}(\mu, \frac{\sigma}{\sqrt{n}})$.
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Histogram of sample means"
+#|   - "Q-Q-Plot"
+
+d_many_means = tibble(sim = 1:i, mu_hat = many_means)
+d_many_means %>% 
+  ggplot(aes(mu_hat)) + geom_histogram() + 
+  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +
+  geom_vline(xintercept = c(mean(many_means)-sd(many_means),
+                            mean(many_means),
+                            mean(many_means)+sd(many_means)), 
+             color = "red", linetype = 2)
+
+d_many_means %>% 
+  ggplot(aes(sample = many_means)) +
+  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + 
+  geom_abline(slope = 1)
+```
+
+## Proof by simulation
+
+-   This holds regardless of the distribution of the quantity in the population (if the distribution has finite variance).
+
+-   Let's check for a uniform distribution.
+
+```{r}
+#| output-location: column
+set.seed(89) # make results reproducible 
+lower = 2 # lower bound of the uniform distribution
+upper = 12 # upper bound of the uniform distribution
+n = 100
+mu = (lower + upper) / 2 # mean of a uniform distribution
+sigma = sqrt(1/12 * (upper - lower)^2) # standard deviation of a uniform distribution
+ggplot() + 
+  stat_function(fun = dunif,
+                args = list(min = lower, max = upper),
+                xlim = c(mu-3*sigma, mu+3*sigma)) + 
+  geom_vline(xintercept = mu) + labs(x = NULL)
+```
+
+## Proof by simulation
+
+-   Simulation for a uniform distribution.
+
+```{r}
+# new function
+sim_CLT_uniform = function(n, lower, upper) {
+  sims = runif(n = n, min = lower, max = upper)
+  mean(sims)
+}
+i = 10000
+many_means = map_dbl(1:i, .f = ~ sim_CLT_uniform(n = n, lower = lower, upper = upper))
+```
+
+## Proof by simulation
+
+-   The CLT also holds for a uniform distribution.
+
+```{r}
+mu; mean(many_means)
+sigma / sqrt(n); sd(many_means)
+```
+
+## Proof by simulation
+
+-   The CLT also holds for a uniform distribution.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Histogram of sample means"
+#|   - "Q-Q-Plot"
+
+d_many_means = tibble(sim = 1:i, mu_hat = many_means)
+d_many_means %>% 
+  ggplot(aes(mu_hat)) + geom_histogram() + 
+  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +
+  geom_vline(xintercept = c(mean(many_means)-sd(many_means),
+                            mean(many_means),
+                            mean(many_means)+sd(many_means)), 
+             color = "red", linetype = 2)
+
+d_many_means %>% 
+  ggplot(aes(sample = many_means)) +
+  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + 
+  geom_abline(slope = 1)
+```
+
+## Proof by simulation
+
+-   This holds regardless of the distribution of the quantity in the population (if the distribution has finite variance).
+
+-   And for a discrete distribution? Let's check for a binomial.
+
+```{r}
+#| output-location: column
+set.seed(357) # make results reproducible 
+prob_one = 0.4 # Probability of a success (1, not 0)
+n = 100
+mu = prob_one # Because of CLT ;)
+sigma = sqrt(prob_one * (1 - prob_one)) # Standard deviation of a binomial distribution
+ggplot() + 
+  stat_function(fun = dbinom,
+                args = list(size = 1, prob = prob_one),
+                xlim = c(0, 1),
+                n = 2,
+                geom = "bar") + 
+  geom_vline(xintercept = mu) + labs(x = NULL)
+```
+
+## Proof by simulation
+
+-   Simulation for a uniform distribution.
+
+```{r}
+# new function
+sim_CLT_binom = function(n, prob_one) {
+  sims = rbinom(n = n, size = 1, prob = prob_one)
+  mean(sims) # mean = prop(1)
+}
+i = 10000
+many_means = map_dbl(1:i, .f = ~ sim_CLT_binom(n = n, prob_one = prob_one))
+```
+
+## Proof by simulation
+
+-   The CLT holds again.
+
+```{r}
+mu; mean(many_means)
+sigma / sqrt(n); sd(many_means)
+```
+
+## Proof by simulation
+
+-   The CLT holds again.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Histogram of sample means"
+#|   - "Q-Q-Plot"
+
+d_many_means = tibble(sim = 1:i, mu_hat = many_means)
+d_many_means %>% 
+  ggplot(aes(mu_hat)) + geom_histogram() + 
+  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +
+  geom_vline(xintercept = c(mean(many_means)-sd(many_means),
+                            mean(many_means),
+                            mean(many_means)+sd(many_means)), 
+             color = "red", linetype = 2)
+
+d_many_means %>% 
+  ggplot(aes(sample = many_means)) +
+  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + 
+  geom_abline(slope = 1)
+```
+
+## General lessons for simulation studies {.smaller}
+
+### Conceptual points: 5 questions for Monte Carlo simulation studies
+
+1. Question: What is the goal of the simulation?
+
+    - Will the CLT hold for different population distributions?
+    
+2. Quantities of interest: What is measured in the simulation?    
+
+    - Mean and standard deviation of the sampling distribution
+
+3. Evaluation strategy: How are the quantities assessed?    
+
+    - Comparison with population mean and analytical sampling distribution
+
+4. Conditions: Which characteristics of the data generating model will be varied?
+
+    - Different (types of) population distributions.
+
+5. Data generating model: How are the data simulated?
+
+    - Random draws from different distribtions with fixed sample sizes and moments.
+
+## General lessons for simulation studies
+
+### Practical points (in *R*)
+
+-   How to generate pseudo-random data
+
+-   How to use functions for things we want to do repeatedly. 
+
+-   How to use `purrr:map()` to do things repeatedly.
+
+-   How to summarize data from simulation experiments.
+
+# Group exercise 1
+
+## Exercise 1a. Proving the CLT for a Poisson distribution
+
+-   Adapt the code from the examples to check whether the CLT also holds for a Poisson distribution.
+
+    - Random numbers are sampled with `rpois(n, lambda)`, where `n` is the sample size and `lambda` is the mean (and also the variance) of the distribution.
+    
+    - The population standard deviation is $\sqrt{\lambda}$.
+
+## Exercise 1b. Proving the CLT for any other suitable distribution
+
+-   Select another suitable distribution from [`?Distributions`](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Distributions.html)
+
+    - Read the documentation to understand which arguments must be provided.
+    
+    - Find the definition of the population distribution's standard deviation to calculate the analytical standard deviation of the sampling distribution.
+    
+    - Adapt the simulation and analysis code accordingly.
+
+## Solution 1a: Proving the CLT for a Poisson distribution
+
+```{r}
+#| output-location: column
+# Population distribution: Poisson
+set.seed(825) # make results reproducible 
+lambda = 5
+n = 100
+mu = lambda
+sigma = sqrt(lambda)
+ggplot() + 
+  stat_function(fun = dpois,
+                n = 16,
+                xlim = c(0,15),
+                args = list(lambda = lambda),
+                geom = "bar") + 
+  geom_vline(xintercept = mu) + labs(x = NULL)
+```
+
+## Solution 1a: Proving the CLT for a Poisson distribution
+
+```{r}
+# new function
+sim_CLT_pois = function(n, lambda) {
+  sims = rpois(n = n, lambda = lambda)
+  mean(sims)
+}
+i = 10000
+many_means = map_dbl(1:i, .f = ~ sim_CLT_pois(n = n, lambda = lambda))
+```
+
+## Solution 1a: Proving the CLT for a Poisson distribution
+
+```{r}
+mu; mean(many_means)
+sigma / sqrt(n); sd(many_means)
+```
+
+## Solution 1a: Proving the CLT for a Poisson distribution
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Histogram of sample means"
+#|   - "Q-Q-Plot"
+
+d_many_means = tibble(sim = 1:i, mu_hat = many_means)
+d_many_means %>% 
+  ggplot(aes(mu_hat)) + geom_histogram() + 
+  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +
+  geom_vline(xintercept = c(mean(many_means)-sd(many_means),
+                            mean(many_means),
+                            mean(many_means)+sd(many_means)), 
+             color = "red", linetype = 2)
+
+d_many_means %>% 
+  ggplot(aes(sample = many_means)) +
+  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + 
+  geom_abline(slope = 1)
+```
+
+## One possible solution for 1b. Proving the CLT for a Student T distribution
+
+```{r}
+#| output-location: column
+set.seed(951) # make results reproducible 
+df = 5 # degrees of freedom
+n = 100
+mu = 0 # Central T
+sigma = sqrt(df/(df - 2)) # Standard deviation of a T distribution
+ggplot() + 
+  stat_function(fun = dt,
+                args = list(df = df),
+                xlim = c(-3,3)) + 
+  geom_vline(xintercept = mu) + labs(x = NULL)
+```
+
+## Solution 1b. Proving the CLT for a Student T distribution
+
+```{r}
+# new function
+sim_CLT_t = function(n, df) {
+  sims = rt(n = n, df = df)
+  mean(sims)
+}
+i = 10000
+many_means = map_dbl(1:i, .f = ~ sim_CLT_t(n = n, df = df))
+```
+
+## Solution 1b. Proving the CLT for a Student T distribution
+
+```{r}
+mu; mean(many_means)
+sigma / sqrt(n); sd(many_means)
+```
+
+## Solution 1b. Proving the CLT for a Student T distribution
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "Histogram of sample means"
+#|   - "Q-Q-Plot"
+
+d_many_means = tibble(sim = 1:i, mu_hat = many_means)
+d_many_means %>% 
+  ggplot(aes(mu_hat)) + geom_histogram() + 
+  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +
+  geom_vline(xintercept = c(mean(many_means)-sd(many_means),
+                            mean(many_means),
+                            mean(many_means)+sd(many_means)), 
+             color = "red", linetype = 2)
+
+d_many_means %>% 
+  ggplot(aes(sample = many_means)) +
+  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + 
+  geom_abline(slope = 1)
+```

@@ -41,3 +41,5 @@ vignettes/*.pdf
 # MB
 .DS_Store
 /private/
+
+/.quarto/
