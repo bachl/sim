@@ -1,0 +1,10 @@
+---
+title: "Workshop Data Simulation with Monte Carlo Methods"
+---
+
+Workshop Data Simulation with Monte Carlo Methods
+
+Dr. Marko Bachl, University of Hohenheim
+
+Organized by the Computational Methods Working Group (CMWG)
+at the University of Zurich & ETH Zurich, Switzerland

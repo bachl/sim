@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="03_prove_files/libs/clipboard/clipboard.min.js"></script>
-<script src="03_prove_files/libs/quarto-html/tabby.min.js"></script>
-<script src="03_prove_files/libs/quarto-html/popper.min.js"></script>
-<script src="03_prove_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="03_prove_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="03_prove_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="03_prove_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.1.251">
 
   <meta name="author" content="Marko Bachl">
-  <title>3) Proof by simulation — the Central Limit Theorem (CLT)</title>
+  <title>Workshop Data Simulation with Monte Carlo Methods - 3) Proof by simulation — the Central Limit Theorem (CLT)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="03_prove_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="03_prove_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -93,12 +93,12 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="03_prove_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css" id="theme">
   <link rel="stylesheet" href="colors.css">
-  <link href="03_prove_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="03_prove_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="03_prove_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="03_prove_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -503,13 +503,13 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] -0.421821105 -0.020552144  0.816922230  0.001228582 -0.710009992
- [6]  1.189625584 -0.935285715 -0.539951493  1.403321102 -1.255877067</code></pre>
+<pre><code> [1]  1.11824709 -0.57252507 -0.91265756 -1.98922808 -0.05445263 -0.61891274
+ [7]  0.31648840 -1.40441814 -0.23117183  0.06622617</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] -1.6968799  0.3222346 -1.2262450  1.8262365 -1.7411715 -1.3171382
- [7] -0.1323762  0.5659164 -1.4437724  1.3974349</code></pre>
+<pre><code> [1] -2.77829987 -0.74830268 -0.60694919  0.93621954  2.21288613  1.21863617
+ [7] -0.03010129 -0.07835352  1.04771629 -0.79768267</code></pre>
 </div>
 </div>
 </section>
@@ -1232,6 +1232,7 @@
 </div>
 </div>
 </div>
+
 <div class="footer footer-default">
 
 </div>
@@ -1240,19 +1241,19 @@
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="03_prove_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="03_prove_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="03_prove_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="03_prove_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="03_prove_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="03_prove_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="03_prove_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="03_prove_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="03_prove_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="03_prove_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

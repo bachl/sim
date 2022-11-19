@@ -1,0 +1,1157 @@
+[
+  {
+    "objectID": "qmd/03_prove.html#traktandenliste",
+    "href": "qmd/03_prove.html#traktandenliste",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Traktandenliste",
+    "text": "Traktandenliste\n\nIntroduction & overview\nMonte Carlo Simulation?\nProof by simulation — the Central Limit Theorem (CLT)\nErrors and power — torturing the t-test\nMisclassification and bias — Messages mismeasured\nOutlook: What’s next?"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-the-clt",
+    "href": "qmd/03_prove.html#proof-by-simulation-the-clt",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "3. Proof by simulation — the CLT",
+    "text": "3. Proof by simulation — the CLT\n\nShort intro (refresher): Getting Started with Randomness (in R)\n“Proving” the Central Limit Theorem by simulation"
+  },
+  {
+    "objectID": "qmd/03_prove.html#how-to-generate-pseudo-random-numbers",
+    "href": "qmd/03_prove.html#how-to-generate-pseudo-random-numbers",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "How to generate pseudo-random numbers",
+    "text": "How to generate pseudo-random numbers\n\nComputers are deterministic machines and, by themselves alone, cannot create true random numbers.\nPseudo-random number generators are used to create numbers which appear random according to a set of criteria.\nLong tradition of research in Computer Science, including work by John von Neumann.\nPseudo-randomness is mostly considered a problem. But there is one advantage for simulation studies: Pseudo-random numbers are reproducible (R: set.seed()).\nFor details in R, see ?RNG."
+  },
+  {
+    "objectID": "qmd/03_prove.html#how-to-generate-random-numbers-in-r",
+    "href": "qmd/03_prove.html#how-to-generate-random-numbers-in-r",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "How to generate random numbers in R",
+    "text": "How to generate random numbers in R\n\nThe {stats} package (comes with R) includes functions for working with many standard probability distributions, see ?Distributions for an overview.\nFunctions are provided for density function, cumulative distribution function, quantile function and random number generation.\nThey are named dxxx, pxxx, qxxx, and rxxx.\n\ne.g., dnorm, pnorm, qnorm, and rnorm for the ?Normal distribution."
+  },
+  {
+    "objectID": "qmd/03_prove.html#dnorm---density-of-a-normal-distribution",
+    "href": "qmd/03_prove.html#dnorm---density-of-a-normal-distribution",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "dnorm() - density of a normal distribution",
+    "text": "dnorm() - density of a normal distribution\n\ndnorm(x = 0, mean = 0, sd = 1, log = FALSE)\n\n[1] 0.3989423\n\ndnorm(x = seq(-2.5, 2.5, by = 0.5), mean = 0, sd = 1, log = FALSE)\n\n [1] 0.01752830 0.05399097 0.12951760 0.24197072 0.35206533 0.39894228\n [7] 0.35206533 0.24197072 0.12951760 0.05399097 0.01752830"
+  },
+  {
+    "objectID": "qmd/03_prove.html#dnorm---density-of-a-normal-distribution-1",
+    "href": "qmd/03_prove.html#dnorm---density-of-a-normal-distribution-1",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "dnorm() - density of a normal distribution",
+    "text": "dnorm() - density of a normal distribution\n\ntibble(x = seq(-2.5, 2.5, by = 0.5), y = dnorm(x)) %>% \n  ggplot(aes(x, y)) + geom_point() + stat_function(fun = dnorm)"
+  },
+  {
+    "objectID": "qmd/03_prove.html#pnorm---distribution-function-of-a-normal-distribution",
+    "href": "qmd/03_prove.html#pnorm---distribution-function-of-a-normal-distribution",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "pnorm() - distribution function of a normal distribution",
+    "text": "pnorm() - distribution function of a normal distribution\n\npnorm(q = 0, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)\n\n[1] 0.5\n\n\nCommon use case: normal test statistics to p values\n\n2 * (1 - pnorm(q = 1.96))\n\n[1] 0.04999579"
+  },
+  {
+    "objectID": "qmd/03_prove.html#qnorm---quantile-function-of-a-normal-distribution",
+    "href": "qmd/03_prove.html#qnorm---quantile-function-of-a-normal-distribution",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "qnorm() - quantile function of a normal distribution",
+    "text": "qnorm() - quantile function of a normal distribution\n\nqnorm(p = 0.5, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)\n\n[1] 0\n\n\nCommon use case: critical values for normal test statistics (e.g., for confidence interval construction)\n\nqnorm(p = c(0.025, 0.975), mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)\n\n[1] -1.959964  1.959964"
+  },
+  {
+    "objectID": "qmd/03_prove.html#rnorm---draw-random-numbers-from-a-normal-distribution",
+    "href": "qmd/03_prove.html#rnorm---draw-random-numbers-from-a-normal-distribution",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "rnorm() - draw random numbers from a normal distribution",
+    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1]  1.11824709 -0.57252507 -0.91265756 -1.98922808 -0.05445263 -0.61891274\n [7]  0.31648840 -1.40441814 -0.23117183  0.06622617\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -2.77829987 -0.74830268 -0.60694919  0.93621954  2.21288613  1.21863617\n [7] -0.03010129 -0.07835352  1.04771629 -0.79768267"
+  },
+  {
+    "objectID": "qmd/03_prove.html#always-use-set.seed-to-make-simulation-results-reproducible",
+    "href": "qmd/03_prove.html#always-use-set.seed-to-make-simulation-results-reproducible",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Always use set.seed() to make simulation results reproducible",
+    "text": "Always use set.seed() to make simulation results reproducible\n\nset.seed(12)\n(sim1 = rnorm(n = 10, mean = 0, sd = 1))\n\n [1] -1.4805676  1.5771695 -0.9567445 -0.9200052 -1.9976421 -0.2722960\n [7] -0.3153487 -0.6282552 -0.1064639  0.4280148\n\nset.seed(12)\n(sim2 = rnorm(n = 10, mean = 0, sd = 1))\n\n [1] -1.4805676  1.5771695 -0.9567445 -0.9200052 -1.9976421 -0.2722960\n [7] -0.3153487 -0.6282552 -0.1064639  0.4280148\n\nsim1 == sim2\n\n [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE\n\n\n\nBe aware that seeds do not necessarily lead to the same results across different machines."
+  },
+  {
+    "objectID": "qmd/03_prove.html#sample-draws-a-random-sample-from-a-vector",
+    "href": "qmd/03_prove.html#sample-draws-a-random-sample-from-a-vector",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "sample() draws a random sample from a vector",
+    "text": "sample() draws a random sample from a vector\nVector with 6 elements\n\nLETTERS[1:6]\n\n[1] \"A\" \"B\" \"C\" \"D\" \"E\" \"F\"\n\n\nSample 3 elements without replacement, equal sampling probabilities\n\nsample(x = LETTERS[1:6], size = 3, replace = FALSE, prob = NULL)\n\n[1] \"E\" \"D\" \"F\"\n\n\nSample 3 elements with replacement, different sampling probabilities\n\nsample(x = LETTERS[1:6], size = 3, replace = TRUE, prob = 1:6)\n\n[1] \"E\" \"F\" \"E\""
+  },
+  {
+    "objectID": "qmd/03_prove.html#sample-can-do-many-useful-things",
+    "href": "qmd/03_prove.html#sample-can-do-many-useful-things",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "sample() can do many useful things",
+    "text": "sample() can do many useful things\n\nThe default for size is length(x).\n\nRandom permutation: Sample 6 out 6 elements without replacement\n\nsample(x = LETTERS[1:6])\n\n[1] \"B\" \"C\" \"F\" \"A\" \"E\" \"D\"\n\n\nBootstrapping: Sample 6 elements with replacement\n\nsample(x = LETTERS[1:6], replace = TRUE)\n\n[1] \"D\" \"E\" \"E\" \"A\" \"B\" \"F\""
+  },
+  {
+    "objectID": "qmd/03_prove.html#the-central-limit-theorem-clt",
+    "href": "qmd/03_prove.html#the-central-limit-theorem-clt",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "The Central Limit Theorem (CLT)",
+    "text": "The Central Limit Theorem (CLT)\n\nCentral Limit Theorem according to Wikipedia"
+  },
+  {
+    "objectID": "qmd/03_prove.html#clt-step-by-step",
+    "href": "qmd/03_prove.html#clt-step-by-step",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "CLT step-by-step",
+    "text": "CLT step-by-step\n\nThere is a quantity with population mean \\(\\mu\\) and population standard deviation \\(\\sigma\\).\nWe repeatedly draw samples of size \\(n\\) from the population.\nWe compute the sample mean \\(\\hat{\\mu}\\) of the quantity for each sample.\nThe means will have a normal distribution, \\(\\sf{Normal}(\\mu, \\frac{\\sigma}{\\sqrt{n}})\\).\nThis holds regardless of the distribution of the quantity in the population (if the distribution has finite variance).\nBut is this really true?"
+  },
+  {
+    "objectID": "qmd/03_prove.html#analytical-proof-of-the-clt",
+    "href": "qmd/03_prove.html#analytical-proof-of-the-clt",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Analytical proof of the CLT",
+    "text": "Analytical proof of the CLT\n\nAnalytical proof according to Wikipedia"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation",
+    "href": "qmd/03_prove.html#proof-by-simulation",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nThere is a quantity with population mean \\(\\mu\\) and population standard deviation \\(\\sigma\\).\nMost simple example: The quantity is normally distributed in the population.\n\n\n\nset.seed(436) # make results reproducible \nmu = 5\nsigma = 3\nggplot() + \n  stat_function(fun = dnorm,\n                args = list(mean = mu, sd = sigma),\n                xlim = c(mu-3*sigma, mu+3*sigma))"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-1",
+    "href": "qmd/03_prove.html#proof-by-simulation-1",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nWe repeatedly draw samples of size \\(n\\) from the population.\n\n\nn = 100\n(one_sim = rnorm(n = n, mean = mu, sd = sigma)) %>% round(2)\n\n  [1]  8.99  3.01  0.93 11.51 11.86 -1.90  3.84  7.03  2.14  5.55  5.91  6.91\n [13]  8.82 11.83  2.92  4.44  5.38  5.77  5.41  2.08  0.71 10.02  4.42  9.70\n [25]  3.88  2.31  3.35  6.21  1.34  6.53  3.27  1.71  5.13  1.14  2.44  8.87\n [37]  4.29 -1.31  2.08  6.49  5.94  3.24  9.08  1.07  3.77  5.57  2.23  5.01\n [49]  5.00  6.67  5.73  3.45  3.47 10.22  3.44  8.23 10.06  4.90  9.24  5.30\n [61]  4.25  6.36  8.33  2.74  3.45  3.86 -0.37  9.06  8.85  8.65  5.19  1.78\n [73]  5.49  4.48  1.25  5.19  5.14  7.96  2.72 -0.83  5.07  6.64  6.51  4.32\n [85] -0.89  7.75  4.55  4.17 11.46  1.57  3.84  0.37  1.03  3.69  8.05 -0.83\n [97]  2.26  4.21  4.42  4.46"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-2",
+    "href": "qmd/03_prove.html#proof-by-simulation-2",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nWe compute the sample mean \\(\\hat{\\mu}\\) of the quantity for each sample.\n\n\nmean(one_sim)\n\n[1] 4.828196"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-3",
+    "href": "qmd/03_prove.html#proof-by-simulation-3",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nIf we want to do stuff repeatedly in R, we should use a function.\n\n\nsim_CLT_normal = function(n, mu, sigma) {\n  sims = rnorm(n = n, mean = mu, sd = sigma) # Draw sample\n  mean(sims) # Compute mean\n}\nsim_CLT_normal(n = n, mu = mu, sigma = sigma)\n\n[1] 5.217277"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-4",
+    "href": "qmd/03_prove.html#proof-by-simulation-4",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nAnd we call the function repeatedly with purrr::map().\n\n\ni = 10000 # number of simulations\nmany_means = map_dbl(1:i, .f = ~ sim_CLT_normal(n = n, mu = mu, sigma = sigma))\nmany_means[1:20] %>% round(2)\n\n [1] 5.25 5.50 5.04 5.11 5.03 4.88 5.35 5.06 5.02 5.37 4.79 4.99 4.93 5.27 5.23\n[16] 4.89 4.87 4.86 4.57 5.45"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-5",
+    "href": "qmd/03_prove.html#proof-by-simulation-5",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nThe means will have a normal distribution, \\(\\sf{Normal}(\\mu, \\frac{\\sigma}{\\sqrt{n}})\\).\n\n\nmu; mean(many_means)\n\n[1] 5\n\n\n[1] 5.002684\n\nsigma / sqrt(n); sd(many_means)\n\n[1] 0.3\n\n\n[1] 0.2992968"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-6",
+    "href": "qmd/03_prove.html#proof-by-simulation-6",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nThe means will have a normal distribution, \\(\\sf{Normal}(\\mu, \\frac{\\sigma}{\\sqrt{n}})\\).\n\n\n\nShow the code\nd_many_means = tibble(sim = 1:i, mu_hat = many_means)\nd_many_means %>% \n  ggplot(aes(mu_hat)) + geom_histogram() + \n  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +\n  geom_vline(xintercept = c(mean(many_means)-sd(many_means),\n                            mean(many_means),\n                            mean(many_means)+sd(many_means)), \n             color = \"red\", linetype = 2)\nd_many_means %>% \n  ggplot(aes(sample = many_means)) +\n  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + \n  geom_abline(slope = 1)\n\n\n\n\n\n\n\nHistogram of sample means\n\n\n\n\n\n\n\nQ-Q-Plot"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-7",
+    "href": "qmd/03_prove.html#proof-by-simulation-7",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nThis holds regardless of the distribution of the quantity in the population (if the distribution has finite variance).\nLet’s check for a uniform distribution.\n\n\n\nset.seed(89) # make results reproducible \nlower = 2 # lower bound of the uniform distribution\nupper = 12 # upper bound of the uniform distribution\nn = 100\nmu = (lower + upper) / 2 # mean of a uniform distribution\nsigma = sqrt(1/12 * (upper - lower)^2) # standard deviation of a uniform distribution\nggplot() + \n  stat_function(fun = dunif,\n                args = list(min = lower, max = upper),\n                xlim = c(mu-3*sigma, mu+3*sigma)) + \n  geom_vline(xintercept = mu) + labs(x = NULL)"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-8",
+    "href": "qmd/03_prove.html#proof-by-simulation-8",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nSimulation for a uniform distribution.\n\n\n# new function\nsim_CLT_uniform = function(n, lower, upper) {\n  sims = runif(n = n, min = lower, max = upper)\n  mean(sims)\n}\ni = 10000\nmany_means = map_dbl(1:i, .f = ~ sim_CLT_uniform(n = n, lower = lower, upper = upper))"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-9",
+    "href": "qmd/03_prove.html#proof-by-simulation-9",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nThe CLT also holds for a uniform distribution.\n\n\nmu; mean(many_means)\n\n[1] 7\n\n\n[1] 6.998775\n\nsigma / sqrt(n); sd(many_means)\n\n[1] 0.2886751\n\n\n[1] 0.2890647"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-10",
+    "href": "qmd/03_prove.html#proof-by-simulation-10",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nThe CLT also holds for a uniform distribution.\n\n\n\nShow the code\nd_many_means = tibble(sim = 1:i, mu_hat = many_means)\nd_many_means %>% \n  ggplot(aes(mu_hat)) + geom_histogram() + \n  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +\n  geom_vline(xintercept = c(mean(many_means)-sd(many_means),\n                            mean(many_means),\n                            mean(many_means)+sd(many_means)), \n             color = \"red\", linetype = 2)\nd_many_means %>% \n  ggplot(aes(sample = many_means)) +\n  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + \n  geom_abline(slope = 1)\n\n\n\n\n\n\n\nHistogram of sample means\n\n\n\n\n\n\n\nQ-Q-Plot"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-11",
+    "href": "qmd/03_prove.html#proof-by-simulation-11",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nThis holds regardless of the distribution of the quantity in the population (if the distribution has finite variance).\nAnd for a discrete distribution? Let’s check for a binomial.\n\n\n\nset.seed(357) # make results reproducible \nprob_one = 0.4 # Probability of a success (1, not 0)\nn = 100\nmu = prob_one # Because of CLT ;)\nsigma = sqrt(prob_one * (1 - prob_one)) # Standard deviation of a binomial distribution\nggplot() + \n  stat_function(fun = dbinom,\n                args = list(size = 1, prob = prob_one),\n                xlim = c(0, 1),\n                n = 2,\n                geom = \"bar\") + \n  geom_vline(xintercept = mu) + labs(x = NULL)"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-12",
+    "href": "qmd/03_prove.html#proof-by-simulation-12",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nSimulation for a uniform distribution.\n\n\n# new function\nsim_CLT_binom = function(n, prob_one) {\n  sims = rbinom(n = n, size = 1, prob = prob_one)\n  mean(sims) # mean = prop(1)\n}\ni = 10000\nmany_means = map_dbl(1:i, .f = ~ sim_CLT_binom(n = n, prob_one = prob_one))"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-13",
+    "href": "qmd/03_prove.html#proof-by-simulation-13",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nThe CLT holds again.\n\n\nmu; mean(many_means)\n\n[1] 0.4\n\n\n[1] 0.400484\n\nsigma / sqrt(n); sd(many_means)\n\n[1] 0.04898979\n\n\n[1] 0.04901026"
+  },
+  {
+    "objectID": "qmd/03_prove.html#proof-by-simulation-14",
+    "href": "qmd/03_prove.html#proof-by-simulation-14",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Proof by simulation",
+    "text": "Proof by simulation\n\nThe CLT holds again.\n\n\n\nShow the code\nd_many_means = tibble(sim = 1:i, mu_hat = many_means)\nd_many_means %>% \n  ggplot(aes(mu_hat)) + geom_histogram() + \n  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +\n  geom_vline(xintercept = c(mean(many_means)-sd(many_means),\n                            mean(many_means),\n                            mean(many_means)+sd(many_means)), \n             color = \"red\", linetype = 2)\nd_many_means %>% \n  ggplot(aes(sample = many_means)) +\n  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + \n  geom_abline(slope = 1)\n\n\n\n\n\n\n\nHistogram of sample means\n\n\n\n\n\n\n\nQ-Q-Plot"
+  },
+  {
+    "objectID": "qmd/03_prove.html#general-lessons-for-simulation-studies",
+    "href": "qmd/03_prove.html#general-lessons-for-simulation-studies",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "General lessons for simulation studies",
+    "text": "General lessons for simulation studies\nConceptual points: 5 questions for Monte Carlo simulation studies\n\nQuestion: What is the goal of the simulation?\n\nWill the CLT hold for different population distributions?\n\nQuantities of interest: What is measured in the simulation?\n\nMean and standard deviation of the sampling distribution\n\nEvaluation strategy: How are the quantities assessed?\n\nComparison with population mean and analytical sampling distribution\n\nConditions: Which characteristics of the data generating model will be varied?\n\nDifferent (types of) population distributions.\n\nData generating model: How are the data simulated?\n\nRandom draws from different distribtions with fixed sample sizes and moments."
+  },
+  {
+    "objectID": "qmd/03_prove.html#general-lessons-for-simulation-studies-1",
+    "href": "qmd/03_prove.html#general-lessons-for-simulation-studies-1",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "General lessons for simulation studies",
+    "text": "General lessons for simulation studies\nPractical points (in R)\n\nHow to generate pseudo-random data\nHow to use functions for things we want to do repeatedly.\nHow to use purrr:map() to do things repeatedly.\nHow to summarize data from simulation experiments."
+  },
+  {
+    "objectID": "qmd/03_prove.html#exercise-1a.-proving-the-clt-for-a-poisson-distribution",
+    "href": "qmd/03_prove.html#exercise-1a.-proving-the-clt-for-a-poisson-distribution",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Exercise 1a. Proving the CLT for a Poisson distribution",
+    "text": "Exercise 1a. Proving the CLT for a Poisson distribution\n\nAdapt the code from the examples to check whether the CLT also holds for a Poisson distribution.\n\nRandom numbers are sampled with rpois(n, lambda), where n is the sample size and lambda is the mean (and also the variance) of the distribution.\nThe population standard deviation is \\(\\sqrt{\\lambda}\\)."
+  },
+  {
+    "objectID": "qmd/03_prove.html#exercise-1b.-proving-the-clt-for-any-other-suitable-distribution",
+    "href": "qmd/03_prove.html#exercise-1b.-proving-the-clt-for-any-other-suitable-distribution",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Exercise 1b. Proving the CLT for any other suitable distribution",
+    "text": "Exercise 1b. Proving the CLT for any other suitable distribution\n\nSelect another suitable distribution from ?Distributions\n\nRead the documentation to understand which arguments must be provided.\nFind the definition of the population distribution’s standard deviation to calculate the analytical standard deviation of the sampling distribution.\nAdapt the simulation and analysis code accordingly."
+  },
+  {
+    "objectID": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution",
+    "href": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Solution 1a: Proving the CLT for a Poisson distribution",
+    "text": "Solution 1a: Proving the CLT for a Poisson distribution\n\n\n# Population distribution: Poisson\nset.seed(825) # make results reproducible \nlambda = 5\nn = 100\nmu = lambda\nsigma = sqrt(lambda)\nggplot() + \n  stat_function(fun = dpois,\n                n = 16,\n                xlim = c(0,15),\n                args = list(lambda = lambda),\n                geom = \"bar\") + \n  geom_vline(xintercept = mu) + labs(x = NULL)"
+  },
+  {
+    "objectID": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution-1",
+    "href": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution-1",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Solution 1a: Proving the CLT for a Poisson distribution",
+    "text": "Solution 1a: Proving the CLT for a Poisson distribution\n\n# new function\nsim_CLT_pois = function(n, lambda) {\n  sims = rpois(n = n, lambda = lambda)\n  mean(sims)\n}\ni = 10000\nmany_means = map_dbl(1:i, .f = ~ sim_CLT_pois(n = n, lambda = lambda))"
+  },
+  {
+    "objectID": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution-2",
+    "href": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution-2",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Solution 1a: Proving the CLT for a Poisson distribution",
+    "text": "Solution 1a: Proving the CLT for a Poisson distribution\n\nmu; mean(many_means)\n\n[1] 5\n\n\n[1] 4.997543\n\nsigma / sqrt(n); sd(many_means)\n\n[1] 0.2236068\n\n\n[1] 0.2214916"
+  },
+  {
+    "objectID": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution-3",
+    "href": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution-3",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Solution 1a: Proving the CLT for a Poisson distribution",
+    "text": "Solution 1a: Proving the CLT for a Poisson distribution\n\n\nShow the code\nd_many_means = tibble(sim = 1:i, mu_hat = many_means)\nd_many_means %>% \n  ggplot(aes(mu_hat)) + geom_histogram() + \n  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +\n  geom_vline(xintercept = c(mean(many_means)-sd(many_means),\n                            mean(many_means),\n                            mean(many_means)+sd(many_means)), \n             color = \"red\", linetype = 2)\nd_many_means %>% \n  ggplot(aes(sample = many_means)) +\n  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + \n  geom_abline(slope = 1)\n\n\n\n\n\n\n\nHistogram of sample means\n\n\n\n\n\n\n\nQ-Q-Plot"
+  },
+  {
+    "objectID": "qmd/03_prove.html#one-possible-solution-for-1b.-proving-the-clt-for-a-student-t-distribution",
+    "href": "qmd/03_prove.html#one-possible-solution-for-1b.-proving-the-clt-for-a-student-t-distribution",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "One possible solution for 1b. Proving the CLT for a Student T distribution",
+    "text": "One possible solution for 1b. Proving the CLT for a Student T distribution\n\n\nset.seed(951) # make results reproducible \ndf = 5 # degrees of freedom\nn = 100\nmu = 0 # Central T\nsigma = sqrt(df/(df - 2)) # Standard deviation of a T distribution\nggplot() + \n  stat_function(fun = dt,\n                args = list(df = df),\n                xlim = c(-3,3)) + \n  geom_vline(xintercept = mu) + labs(x = NULL)"
+  },
+  {
+    "objectID": "qmd/03_prove.html#solution-1b.-proving-the-clt-for-a-student-t-distribution",
+    "href": "qmd/03_prove.html#solution-1b.-proving-the-clt-for-a-student-t-distribution",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Solution 1b. Proving the CLT for a Student T distribution",
+    "text": "Solution 1b. Proving the CLT for a Student T distribution\n\n# new function\nsim_CLT_t = function(n, df) {\n  sims = rt(n = n, df = df)\n  mean(sims)\n}\ni = 10000\nmany_means = map_dbl(1:i, .f = ~ sim_CLT_t(n = n, df = df))"
+  },
+  {
+    "objectID": "qmd/03_prove.html#solution-1b.-proving-the-clt-for-a-student-t-distribution-1",
+    "href": "qmd/03_prove.html#solution-1b.-proving-the-clt-for-a-student-t-distribution-1",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Solution 1b. Proving the CLT for a Student T distribution",
+    "text": "Solution 1b. Proving the CLT for a Student T distribution\n\nmu; mean(many_means)\n\n[1] 0\n\n\n[1] 0.0004013506\n\nsigma / sqrt(n); sd(many_means)\n\n[1] 0.1290994\n\n\n[1] 0.1288953"
+  },
+  {
+    "objectID": "qmd/03_prove.html#solution-1b.-proving-the-clt-for-a-student-t-distribution-2",
+    "href": "qmd/03_prove.html#solution-1b.-proving-the-clt-for-a-student-t-distribution-2",
+    "title": "3) Proof by simulation — the Central Limit Theorem (CLT)",
+    "section": "Solution 1b. Proving the CLT for a Student T distribution",
+    "text": "Solution 1b. Proving the CLT for a Student T distribution\n\n\nShow the code\nd_many_means = tibble(sim = 1:i, mu_hat = many_means)\nd_many_means %>% \n  ggplot(aes(mu_hat)) + geom_histogram() + \n  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +\n  geom_vline(xintercept = c(mean(many_means)-sd(many_means),\n                            mean(many_means),\n                            mean(many_means)+sd(many_means)), \n             color = \"red\", linetype = 2)\nd_many_means %>% \n  ggplot(aes(sample = many_means)) +\n  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + \n  geom_abline(slope = 1)\n\n\n\n\n\n\n\nHistogram of sample means\n\n\n\n\n\n\n\nQ-Q-Plot"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#traktandenliste",
+    "href": "qmd/04_2_errors_power.html#traktandenliste",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Traktandenliste",
+    "text": "Traktandenliste\n\nIntroduction & overview\nSome types and examples of simulation studies\nProof by simulation — the Central Limit Theorem (CLT)\nErrors and power — torturing the t-test\nMisclassification and bias — Messages mismeasured\nOutlook: What’s next?"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#errors-and-power-torturing-the-t-test",
+    "href": "qmd/04_2_errors_power.html#errors-and-power-torturing-the-t-test",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "4. Errors and power — torturing the t-test",
+    "text": "4. Errors and power — torturing the t-test\n\nComparison of Student’s and Welch’s t-tests\nA priori power calculation for Welch’s t-test"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#students-t-test-welchs-t-test",
+    "href": "qmd/04_2_errors_power.html#students-t-test-welchs-t-test",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Student’s t-test & Welch’s t-test",
+    "text": "Student’s t-test & Welch’s t-test\n\nOld school advice: Student’s t-test for equal variances, Welch’s t-test for unequal variances.\n\nHigher power of Student’s t-test if assumptions hold.\n\nModern advice: Always use Welch’s t-test.\n\nBetter if assumptions are violated; not worse if assumptions hold.\ne.g., Delacre, M., Lakens, D., & Leys, C. (2017). Why Psychologists Should by Default Use Welch’s t-test Instead of Student’s t-test. International Review of Social Psychology, 30(1). https://doi.org/10.5334/irsp.82\n\nFor those who don’t care about t-tests: Idea also applies to heteroskedasticity-consistent standard errors."
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#second-simulation-study-power",
+    "href": "qmd/04_2_errors_power.html#second-simulation-study-power",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Second Simulation study: Power",
+    "text": "Second Simulation study: Power\n\nQuestion: What is the goal of the simulation?\n\nComparison of Student’s and Welch’s t-tests\n\nQuantities of interest: What is measured in the simulation?\n\nPower (\\(1 - \\beta\\)) of the tests\n\nEvaluation strategy: How are the quantities assessed?\n\nComparison of statistical power to reject the Null hypothesis if the alternative hypothesis is true\n\nConditions: Which characteristics of the data generating model will be varied?\n\nSample size, effect size (mean difference)\n\nData generating model: How are the data simulated?\n\nRandom draws from normal distributions with different group means and different overall sample sizes, but euqal group sizes and standard deviations"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#additional-practical-considerations",
+    "href": "qmd/04_2_errors_power.html#additional-practical-considerations",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Additional practical considerations",
+    "text": "Additional practical considerations\n\nHow to adapt the simulation function to include different group means?\nHow to adapt the experimental conditions\n\nto include different group means and different total sample sizes?\nto only include conditions in which the assumptions of Student’s t-test hold?"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#adapt-the-simulation-function",
+    "href": "qmd/04_2_errors_power.html#adapt-the-simulation-function",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Adapt the simulation function",
+    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.1061553\n\n$Student\n[1] 0.1061369"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#adapt-the-experimental-conditions",
+    "href": "qmd/04_2_errors_power.html#adapt-the-experimental-conditions",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Adapt the experimental conditions",
+    "text": "Adapt the experimental conditions\n\n\n\nGR and SDR are now fixed at 1.\nNew between-simulation factors: n and M_diff\n\n\n\nconditions = expand_grid(\n  GR = 1, \n  SDR = 1,\n  n = c(100, 200, 300),\n  M_diff = c(0.2, 0.4, 0.6)) %>% \n  rowid_to_column(var = \"condition\")\nconditions\n\n# A tibble: 9 × 5\n  condition    GR   SDR     n M_diff\n      <int> <dbl> <dbl> <dbl>  <dbl>\n1         1     1     1   100    0.2\n2         2     1     1   100    0.4\n3         3     1     1   100    0.6\n4         4     1     1   200    0.2\n5         5     1     1   200    0.4\n6         6     1     1   200    0.6\n7         7     1     1   300    0.2\n8         8     1     1   300    0.4\n9         9     1     1   300    0.6"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#run-simulation-experiment",
+    "href": "qmd/04_2_errors_power.html#run-simulation-experiment",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Run simulation experiment",
+    "text": "Run simulation experiment\n\nset.seed(326)\ni = 10000\ntic()\nsims = map_dfr(1:i, ~ conditions) %>% # each condition i times\n  rowid_to_column(var = \"sim\") %>% # within simulation comparison\n  rowwise() %>%\n  mutate(p.value = list(sim_ttest(n = n, M_diff = M_diff))) %>% \n  unnest_longer(p.value, indices_to = \"method\")\ntoc()\n\n22.822 sec elapsed"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#check-results-simulation-v-analytical-solution",
+    "href": "qmd/04_2_errors_power.html#check-results-simulation-v-analytical-solution",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Check results: Simulation v analytical solution",
+    "text": "Check results: Simulation v analytical solution\n\n\n\nsims %>% \n  filter(M_diff == 0.4 & method == \"Student\") %>% \n  group_by(n, M_diff, method) %>% \n  summarise(P_p05 = mean(p.value < 0.05)) %>% \n  ungroup() %>% \n  mutate(across(where(is.numeric), round, 3))\n\n# A tibble: 3 × 4\n      n M_diff method  P_p05\n  <dbl>  <dbl> <chr>   <dbl>\n1   100    0.4 Student 0.505\n2   200    0.4 Student 0.802\n3   300    0.4 Student 0.928\n\n\n\n\npower.t.test(n = c(100, 200, 300)/2,\n             delta = 0.4, sd = 1,\n             sig.level = 0.05)\n\n\n     Two-sample t test power calculation \n\n              n = 50, 100, 150\n          delta = 0.4\n             sd = 1\n      sig.level = 0.05\n          power = 0.5081451, 0.8036466, 0.9322752\n    alternative = two.sided\n\nNOTE: n is number in *each* group\n\n\n\n\n\nClose enough for government work"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#results-power-comparison",
+    "href": "qmd/04_2_errors_power.html#results-power-comparison",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Results: Power comparison",
+    "text": "Results: Power comparison\n\n\nShow the code\nsims %>% \n  group_by(n, M_diff, method) %>% \n  summarise(P_p05 = mean(p.value < 0.05)) %>% \n  ggplot(aes(factor(n), P_p05, color = method, group = method)) +\n  geom_point(position = position_dodge(width = 0.3), size = 3) + \n  geom_line(position = position_dodge(width = 0.3), size = 1.5) +\n  facet_wrap(vars(M_diff), labeller = label_both) +\n  labs(x = \"n\", y = \"Power\")"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#summary-of-the-t-test-comparison",
+    "href": "qmd/04_2_errors_power.html#summary-of-the-t-test-comparison",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Summary of the t-test comparison",
+    "text": "Summary of the t-test comparison\n\nStudent’s t-test fails the nominal false discovery rate if variances and group sizes are unequal (simulation study 1).\nWelch’s t-test has similar statistical power as Student’s t-test if the assumption of equal group variances holds (simulation study 2).\nWe should always use Welch’s t-test as a default.\nFor those who don’t use t-tests: We probably should also use heteroskedasticity-consistent standard errors as default in OLS linear models."
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#lessons-learnt-for-simulation-experiments",
+    "href": "qmd/04_2_errors_power.html#lessons-learnt-for-simulation-experiments",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Lessons learnt for simulation experiments",
+    "text": "Lessons learnt for simulation experiments\n\nTODO"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#power-estimation-for-welchs-t-test-1",
+    "href": "qmd/04_2_errors_power.html#power-estimation-for-welchs-t-test-1",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Power estimation for Welch’s t-test",
+    "text": "Power estimation for Welch’s t-test\n\nSo far we have learnt that we should prefer Welch’s t-test over Student’s t-test when comparing two group means.\nIs seems plausible that different group sizes and group standard deviations may influence statistical power.\nHowever, the standard options for a priori power calculation often do not allow for varying group sizes and varying group SDs.\nThis is a good segue to using Monte Carlo simulation experiments for a priori power calculation with a (seemingly) simple example."
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#getting-started-some-preliminary-thoughts",
+    "href": "qmd/04_2_errors_power.html#getting-started-some-preliminary-thoughts",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Getting started: Some preliminary thoughts",
+    "text": "Getting started: Some preliminary thoughts\n\nWe know that effect size and total sample size are positively related to statistical power, so we are not that interested in their effects.\nWe know less about the role of group sample sizes and group standard deviations differences, so this is what we want to investigate in the simulation.\nWe have to think more about how we define the effect size.\n\nThis is generally one of the harder tasks in a priori power calculation\nand it becomes more complicated if simple “mean divided by SD” rules of thumb get more ambiguous."
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#third-simulation-study-power-again",
+    "href": "qmd/04_2_errors_power.html#third-simulation-study-power-again",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Third Simulation study: Power (again)",
+    "text": "Third Simulation study: Power (again)\n\nQuestion: What is the goal of the simulation?\n\nUnderstand roles of group sample sizes and group standard deviations for statistical power\n\nQuantities of interest: What is measured in the simulation?\n\nPower (\\(1 - \\beta\\)) of the designs using Welch’s t-test\n\nEvaluation strategy: How are the quantities assessed?\n\nComparison of statistical power to reject the Null hypothesis if the alternative hypothesis is true\n\nConditions: Which characteristics of the data generating model will be varied?\n\nGroup sample sizes, group standard deviations\n\nData generating model: How are the data simulated?\n\nRandom draws from normal distributions with different euqal group sizes and standard deviations, but fixed group mean differences and overall sample size."
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#first-try-adapt-the-simulation-function",
+    "href": "qmd/04_2_errors_power.html#first-try-adapt-the-simulation-function",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "First try: Adapt the simulation function",
+    "text": "First try: Adapt the simulation function\n\n\n\nWe no longer need Student’s t-test.\n\nThe output is simply the p-value of Welch’s t-test.\n\nBeyond that, the simulation function stays the same.\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1)\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2)\n  res = t.test(g1, g2)$p.value\n  return(res)\n}\nsim_ttest(n = 300, M_diff = 0.3, GR = 0.5)\n\n[1] 0.1974923"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#first-try-adapt-the-experimental-conditions",
+    "href": "qmd/04_2_errors_power.html#first-try-adapt-the-experimental-conditions",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "First try: Adapt the experimental conditions",
+    "text": "First try: Adapt the experimental conditions\n\n\n\nTotal sample size n = 300 and effect size M_diff = 0.3 are now fixed.\nNew between-simulation factors: GR and SDR\n\n\n\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         SDR = c(0.5, 1, 2),\n                         n = 300,\n                         M_diff = 0.3) %>% \n  rowid_to_column(var = \"condition\") %>% \n  mutate(\n    n1 = round(n / (GR + 1)),\n    n2 = round(n1 * GR),\n    sd1 = 1,\n    sd2 = sd1 * SDR\n    ) \nconditions %>% select(1:5)\n\n# A tibble: 9 × 5\n  condition    GR   SDR     n M_diff\n      <int> <dbl> <dbl> <dbl>  <dbl>\n1         1   0.5   0.5   300    0.3\n2         2   0.5   1     300    0.3\n3         3   0.5   2     300    0.3\n4         4   1     0.5   300    0.3\n5         5   1     1     300    0.3\n6         6   1     2     300    0.3\n7         7   2     0.5   300    0.3\n8         8   2     1     300    0.3\n9         9   2     2     300    0.3"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#this-has-some-implications",
+    "href": "qmd/04_2_errors_power.html#this-has-some-implications",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "This has some implications",
+    "text": "This has some implications\n\nFor effect size interpretation:\n\nIf the SD ratio is not equal to 1, the pooled SD is not equal to 1 and the mean difference is not in units of the pooled SD (as in traditional d).\nInstead, it is the difference in SD of the control group units.\nSensible definition for intervention trials with passive control group: Estimate of the population variation without a intervention.\nMaybe less sensible in other designs with more active controls (e.g., typical media effects experimental studies)."
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#this-has-some-implications-1",
+    "href": "qmd/04_2_errors_power.html#this-has-some-implications-1",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "This has some implications",
+    "text": "This has some implications\n\nFor substantive interpretation:\n\nSDR = 0.5 assumes a treatment which not only increases the level of the outcome by M_diff, but also halves the variation in the outcome.\nSDR = 2 assumes a treatment which not only increases the level of the outcome by M_diff, but also doubles the variation in the outcome.\nHeterogeneous treatment effects!"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#first-try-run-simulation-experiment",
+    "href": "qmd/04_2_errors_power.html#first-try-run-simulation-experiment",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "First try: Run simulation experiment",
+    "text": "First try: Run simulation experiment\n\nset.seed(7913)\ni = 10000\ntic()\nsims = map_dfr(1:i, ~ conditions) %>% # each condition 10,000 times\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(p.value = sim_ttest(n = n, M_diff = M_diff, GR = GR, SDR = SDR))\ntoc()\n\n11.441 sec elapsed"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#first-try-results",
+    "href": "qmd/04_2_errors_power.html#first-try-results",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "First try: Results",
+    "text": "First try: Results\n\n\nShow the code\nsims %>% \n  group_by(GR, SDR) %>% \n  summarise(P_p05 = mean(p.value < 0.05)) %>% \n  ggplot(aes(factor(GR), P_p05, group = 1)) + \n  geom_point() + geom_line() +\n  facet_wrap(vars(SDR), labeller = label_both) +\n  labs(x = \"Group size ratio\", y = \"Power\")"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#first-try-results-1",
+    "href": "qmd/04_2_errors_power.html#first-try-results-1",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "First try: Results",
+    "text": "First try: Results\n\n\nShow the code\nsims %>% \n  group_by(n, M_diff, GR, SDR, n1, n2, sd1, sd2) %>% \n  summarise(P_p05 = mean(p.value < 0.05), .groups = \"drop\") %>% \n  mutate(implies = str_glue(\"n_c = {n1}, n_t = {n2}, sd_c = {round(sd1, 2)}, sd_t = {round(sd2, 2)}\")) %>% \n  mutate(implies = fct_reorder(implies, P_p05)) %>% \n  ggplot(aes(P_p05, implies)) + geom_point(size = 3) +\n  labs(x = \"Power\", y = \"Condition\") +\n  theme(axis.text.y = element_text(size = 20))"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#first-try-summary",
+    "href": "qmd/04_2_errors_power.html#first-try-summary",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "First try: Summary",
+    "text": "First try: Summary\n\nTODO"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#second-try-bring-back-a-pooled-sd-of-1",
+    "href": "qmd/04_2_errors_power.html#second-try-bring-back-a-pooled-sd-of-1",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Second try: Bring back a pooled SD of 1",
+    "text": "Second try: Bring back a pooled SD of 1\n\nWe might not be satisfied with the trivial result that more variation decreases power.\nWe might be interested in a more conventional d-style scaling of the effect size.\nWe want a pooled SD of 1 while retaining the SD ratio design."
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#wikipedia-to-the-rescue",
+    "href": "qmd/04_2_errors_power.html#wikipedia-to-the-rescue",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Wikipedia to the rescue",
+    "text": "Wikipedia to the rescue\nStandard deviations of non-overlapping (X ∩ Y = ∅) sub-populations can be aggregated as follows if the size (actual or relative to one another) and means of each are known:\n\\[\n\\sigma_{X\\cup Y} = \\sqrt{ \\frac{N_X \\sigma_X^2 + N_Y \\sigma_Y^2}{N_X + N_Y} + \\frac{N_X N_Y}{(N_X+N_Y)^2}(\\mu_X - \\mu_Y)^2 }\n\\] and\n\\[\n\\sigma_Y = SDR * \\sigma_X\n\\]"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#second-try-adapt-the-simulation-function",
+    "href": "qmd/04_2_errors_power.html#second-try-adapt-the-simulation-function",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Second try: Adapt the simulation function",
+    "text": "Second try: Adapt the simulation function\n\n\n\nWe add a new argument, pooled_sd.\nsd1 is computed based on pooled_sd, GR (via n1 and n2), SDR, and M_diff.\n\n\n\nsim_ttest = function(n = 200, pooled_sd = 1, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = sqrt(\n    ((pooled_sd^2 - ((n1 * n2) / (n1 + n2)^2) * M_diff^2) * (n1 + n2)) / \n      (n1 + n2 * SDR^2)\n    )\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1)\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2)\n  res = t.test(g1, g2)$p.value\n  return(res)\n}\nsim_ttest(n = 300, M_diff = 0.3, GR = 0.5)\n\n[1] 0.01249033"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#second-try-adapt-the-experimental-conditions",
+    "href": "qmd/04_2_errors_power.html#second-try-adapt-the-experimental-conditions",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Second try: Adapt the experimental conditions",
+    "text": "Second try: Adapt the experimental conditions\n\n\n\nTotal sample size n = 300 and effect size M_diff = 0.3 are now fixed.\nIn addition, pooled_sd is fixed at 1, returning to a d-style interpretation of the effect size.\nBetween-simulation factors: GR and SDR\n\n\n\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         SDR = c(0.5, 1, 2),\n                         pooled_sd = 1,\n                         n = 300,\n                         M_diff = 0.3) %>% \n  rowid_to_column(var = \"condition\") %>% \n  mutate(\n    n1 = round(n / (GR + 1)), n2 = round(n1 * GR),\n    sd1 = sqrt(((pooled_sd^2 - ((n1 * n2) / (n1 + n2)^2) * M_diff^2) * (n1 + n2)) / (n1 + n2 * SDR^2)),\n    sd2 = sd1 * SDR\n    ) \nconditions %>% select(1:6)\n\n# A tibble: 9 × 6\n  condition    GR   SDR pooled_sd     n M_diff\n      <int> <dbl> <dbl>     <dbl> <dbl>  <dbl>\n1         1   0.5   0.5         1   300    0.3\n2         2   0.5   1           1   300    0.3\n3         3   0.5   2           1   300    0.3\n4         4   1     0.5         1   300    0.3\n5         5   1     1           1   300    0.3\n6         6   1     2           1   300    0.3\n7         7   2     0.5         1   300    0.3\n8         8   2     1           1   300    0.3\n9         9   2     2           1   300    0.3"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#second-try-run-simulation-experiment",
+    "href": "qmd/04_2_errors_power.html#second-try-run-simulation-experiment",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Second try: Run simulation experiment",
+    "text": "Second try: Run simulation experiment\n\nset.seed(39)\ni = 10000\ntic()\nsims = map_dfr(1:i, ~ conditions) %>% # each condition 10,000 times\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(p.value = sim_ttest(n = n, M_diff = M_diff, GR = GR, SDR = SDR))\ntoc()\n\n11.141 sec elapsed"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#second-try-results",
+    "href": "qmd/04_2_errors_power.html#second-try-results",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Second try: Results",
+    "text": "Second try: Results\n\n\nShow the code\nsims %>% \n  group_by(GR, SDR) %>% \n  summarise(P_p05 = mean(p.value < 0.05)) %>% \n  ggplot(aes(factor(GR), P_p05, group = 1)) + \n  geom_point() + geom_line() +\n  facet_wrap(vars(SDR), labeller = label_both) +\n  labs(x = \"Group size ratio\", y = \"Power\")"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#second-try-results-1",
+    "href": "qmd/04_2_errors_power.html#second-try-results-1",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Second try: Results",
+    "text": "Second try: Results\n\n\nShow the code\nsims %>% \n  group_by(n, M_diff, GR, SDR, n1, n2, sd1, sd2) %>% \n  summarise(P_p05 = mean(p.value < 0.05), .groups = \"drop\") %>% \n  mutate(implies = str_glue(\"n_c = {n1}, n_t = {n2}, sd_c = {round(sd1, 2)}, sd_t = {round(sd2, 2)}\")) %>% \n  mutate(implies = fct_reorder(implies, P_p05)) %>% \n  ggplot(aes(P_p05, implies)) + geom_point(size = 3) +\n  labs(x = \"Power\", y = \"Condition\") +\n  theme(axis.text.y = element_text(size = 20))"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#second-try-summary",
+    "href": "qmd/04_2_errors_power.html#second-try-summary",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Second try: Summary",
+    "text": "Second try: Summary\nXXX"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#simulation-for-a-priori-power-calculation-summary",
+    "href": "qmd/04_2_errors_power.html#simulation-for-a-priori-power-calculation-summary",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Simulation for a priori power calculation: Summary",
+    "text": "Simulation for a priori power calculation: Summary\nXXX"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#group-exercise-2b.",
+    "href": "qmd/04_2_errors_power.html#group-exercise-2b.",
+    "title": "4b) Errors and power — torturing the t-test",
+    "section": "Group exercise 2b.",
+    "text": "Group exercise 2b.\n\nIntroduce Poisson"
+  },
+  {
+    "objectID": "qmd/01_intro.html#introduction-i",
+    "href": "qmd/01_intro.html#introduction-i",
+    "title": "Data Simulation with Monte Carlo Methods",
+    "section": "Introduction (I)",
+    "text": "Introduction (I)\n\n\nHi, I’m Marko.\n\n \n\nI am not a statistician, econometrician, psychometrician, or any kind of *ician.\nMost importantly, I am also not a mathematician — this is why I often need simulation methods.\nI am also not a computer scientist or trained programmer."
+  },
+  {
+    "objectID": "qmd/01_intro.html#introduction-ii",
+    "href": "qmd/01_intro.html#introduction-ii",
+    "title": "Data Simulation with Monte Carlo Methods",
+    "section": "Introduction (II)",
+    "text": "Introduction (II)\n\nI am a trained social scientist / communication researcher with an interest in quantitative methods.\nI use data simulation methods for teaching myself and others as well as in my applied and methods research."
+  },
+  {
+    "objectID": "qmd/01_intro.html#introduction-iii",
+    "href": "qmd/01_intro.html#introduction-iii",
+    "title": "Data Simulation with Monte Carlo Methods",
+    "section": "Introduction (III)",
+    "text": "Introduction (III)\nRandom sample in R\n\nsample(x = 30, size = 4)\n\n[1]  4 28 24  2\n\n\n\nWho are you — and why are you here?"
+  },
+  {
+    "objectID": "qmd/01_intro.html#traktandenliste",
+    "href": "qmd/01_intro.html#traktandenliste",
+    "title": "Data Simulation with Monte Carlo Methods",
+    "section": "Traktandenliste",
+    "text": "Traktandenliste\n\nIntroduction & overview\nMonte Carlo Simulation?\nProof by simulation — the Central Limit Theorem (CLT)\nErrors and power — torturing the t-test\nMisclassification and bias — Messages mismeasured\nOutlook: What’s next?"
+  },
+  {
+    "objectID": "qmd/01_intro.html#overview-i",
+    "href": "qmd/01_intro.html#overview-i",
+    "title": "Data Simulation with Monte Carlo Methods",
+    "section": "Overview (I)",
+    "text": "Overview (I)\n\nIntroduction to Monte Carlo Simulation Methods\n\nHow to think about simulation experiments\nHow to get started in R\n\n\n \n\nHow we will cover applied examples\n\nSimple, readable code, mostly {tidyverse}\nData simulation “from scratch”"
+  },
+  {
+    "objectID": "qmd/01_intro.html#overview-ii",
+    "href": "qmd/01_intro.html#overview-ii",
+    "title": "Data Simulation with Monte Carlo Methods",
+    "section": "Overview (II)",
+    "text": "Overview (II)\n\nWhat we will not cover\n\nPackages for simulation experiments and data simulation (easier to use, but harder to understand)\nAdvanced computing and programming stuff (not that hard to understand until its very hard to understand, very different skill set)\n\nSome resources in the end"
+  },
+  {
+    "objectID": "qmd/01_intro.html#workshop-concept",
+    "href": "qmd/01_intro.html#workshop-concept",
+    "title": "Data Simulation with Monte Carlo Methods",
+    "section": "Workshop concept",
+    "text": "Workshop concept\n\nMe talking: Lecture with code illustrations\nYou talking: Questions\nAll talking: Group exercices in breakout rooms"
+  },
+  {
+    "objectID": "qmd/01_intro.html#resources",
+    "href": "qmd/01_intro.html#resources",
+    "title": "Data Simulation with Monte Carlo Methods",
+    "section": "Resources",
+    "text": "Resources\nSlides, scripts, and exercises:\n\nhttps://github.com/bachl/sim\n\nR & packages:\nR (Vers. 4.2.1), dplyr (Vers. 1.0.9), extraDistr (Vers. 1.9.1), forcats (Vers. 0.5.1), ggplot2 (Vers. 3.3.6), knitr (Vers. 1.39), purrr (Vers. 0.3.4), readr (Vers. 2.1.2), stringr (Vers. 1.4.0), tibble (Vers. 3.1.8), tictoc (Vers. 1.1), tidyr (Vers. 1.2.0), tidyverse (Vers. 1.3.2)"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#traktandenliste",
+    "href": "qmd/05_misclass_bias.html#traktandenliste",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Traktandenliste",
+    "text": "Traktandenliste\n\nIntroduction & overview\nMonte Carlo Simulation?\nProof by simulation — the Central Limit Theorem (CLT)\nErrors and power — torturing the t-test\nMisclassification and bias — Messages mismeasured\nOutlook: What’s next?"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#misclassification-and-bias-messages-mismeasured-1",
+    "href": "qmd/05_misclass_bias.html#misclassification-and-bias-messages-mismeasured-1",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "5. Misclassification and bias — Messages mismeasured",
+    "text": "5. Misclassification and bias — Messages mismeasured\n\nUnivariate analysis of the misclassified variable\nMisclassified variables as predictors"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#misclassification",
+    "href": "qmd/05_misclass_bias.html#misclassification",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Misclassification",
+    "text": "Misclassification\n\nMisclassification: Measurement error in categorical variables\nUnits are assigned the “wrong” category.\nImportant, but often ignored issue in (computational and human) content analysis:\n\nBiased estimates\nReduced power of statistical tests"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#misclassification-1",
+    "href": "qmd/05_misclass_bias.html#misclassification-1",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Misclassification",
+    "text": "Misclassification\n\nCan be expressed as misclassification or confusion matrix:\n\n\\[\n\\Theta_A =\n\\begin{pmatrix}\n\\theta_{1|1} & \\theta_{1|2} & \\theta_{1|\\dots} & \\theta_{1|k} \\\\\n\\theta_{2|1} & \\theta_{2|2} & \\theta_{2|\\dots} & \\theta_{2|k} \\\\\n\\theta_{\\dots|1} & \\theta_{\\dots|2} & \\theta_{\\dots|\\dots} & \\theta_{\\dots|k} \\\\\n\\theta_{k|1} & \\theta_{k|2} & \\theta_{k|\\dots} & \\theta_{k|k}\n\\end{pmatrix}\n\\]\n\nProbability that each category is assigned given the true category.\nColumns sum to 1"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#first-simulation-study-univariate-analysis",
+    "href": "qmd/05_misclass_bias.html#first-simulation-study-univariate-analysis",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "First simulation study: Univariate analysis",
+    "text": "First simulation study: Univariate analysis\n\nQuestion: What is the goal of the simulation?\n\nUnderstand how misclassification error affects the estimated proportions of a misclassified variable\n\nQuantities of interest: What is measured in the simulation?\n\nDeviation of proportion estimates from known population proportions\n\nEvaluation strategy: How are the quantities assessed?\n\nInspection of the deviation for fixed population configurations; Root mean squared error (RMSE) for general analysis.\n\nConditions: Which characteristics of the data generating model will be varied?\n\nAccuracy of the classification; Population distributions.\n\nData generating model: How are the data simulated?\n\nRandom draws from a categorical distribution; subsequent misclassification of the sampled units."
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#practical-considerations",
+    "href": "qmd/05_misclass_bias.html#practical-considerations",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Practical considerations",
+    "text": "Practical considerations\n\nHow to (somewhat efficiently) implement misclassification?\nHow to evaluate the deviation of estimates from population values?\nHow to sample population distributions from a \\(\\sf{Dirichlet}\\) distribution?\nHow to implement a randomly sampled factor in the simulation?"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#two-steps-of-the-data-generating-process",
+    "href": "qmd/05_misclass_bias.html#two-steps-of-the-data-generating-process",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Two steps of the data generating process",
+    "text": "Two steps of the data generating process\n\nSample units from population\nMeasure variable with misclassification error"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#one-simulation-population",
+    "href": "qmd/05_misclass_bias.html#one-simulation-population",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "One simulation: Population",
+    "text": "One simulation: Population\n\nset.seed(28)\npop_dist = c(0.55, 0.3, 0.1, 0.05)\nk = length(pop_dist) # number of categories\ncategories = LETTERS[1:k] # names of the categories\nnames(pop_dist) = categories\npop_dist\n\n   A    B    C    D \n0.55 0.30 0.10 0.05"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#one-simulation-sample",
+    "href": "qmd/05_misclass_bias.html#one-simulation-sample",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "One simulation: Sample",
+    "text": "One simulation: Sample\n\nn = 1000 # sample size\nsample_true = sample(x = categories, \n                     size = n, \n                     replace = TRUE, \n                     prob = pop_dist) %>% \n  factor(levels = categories) %>% # if any categories not observed in the sample\n  sort() # important later for efficient misclassification\nfreq_true = sample_true %>% \n  table() %>% \n  prop.table()\nfreq_true\n\n.\n    A     B     C     D \n0.563 0.307 0.085 0.045"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification-matrix",
+    "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-matrix",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "One simulation: Misclassification matrix",
+    "text": "One simulation: Misclassification matrix\n\n# Simple: Equal error rates, equal difficulties, one process\naccuracy = 0.8\nequal_error = (1 - accuracy) / k\nmisclass_prop = matrix(equal_error, nrow = k, ncol = k, \n                       dimnames = list(categories, categories))\ndiag(misclass_prop) = accuracy\nmisclass_prop\n\n     A    B    C    D\nA 0.80 0.05 0.05 0.05\nB 0.05 0.80 0.05 0.05\nC 0.05 0.05 0.80 0.05\nD 0.05 0.05 0.05 0.80"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification",
+    "href": "qmd/05_misclass_bias.html#one-simulation-misclassification",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "One simulation: Misclassification",
+    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.016 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.502 0.309 0.114 0.075"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
+    "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "One simulation: Misclassification",
+    "text": "One simulation: Misclassification\nSecond try\n\nLess computational costs at the at category level\n\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.005 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.517 0.299 0.112 0.072"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#one-simulation-quantification-of-error",
+    "href": "qmd/05_misclass_bias.html#one-simulation-quantification-of-error",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "One simulation: Quantification of error",
+    "text": "One simulation: Quantification of error\nRoot mean squared error (RMSE); but which reference?\n\nError due to sampling and misclassification compared to population\n\n\nsqrt(mean((pop_dist - freq_obs)^2)) %>% round(2)\n\n[1] 0.02\n\n\n\nError due to misclassification compared to true values in sample\n\n\nsqrt(mean((freq_true - freq_obs)^2)) %>% round(2)\n\n[1] 0.03\n\n\n\n(Error due to sampling compared to population)\n\n\nsqrt(mean((pop_dist - freq_true)^2)) %>% round(2)\n\n[1] 0.01"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#wrap-it-into-a-function",
+    "href": "qmd/05_misclass_bias.html#wrap-it-into-a-function",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Wrap it into a function",
+    "text": "Wrap it into a function\n\nsim_misclass = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),\n                        n = 1000,\n                        accuracy = 0.8) {\n  # Population\n  k = length(pop_dist)\n  categories = LETTERS[1:k]\n  \n  # Sample\n  sample_true = sample(x = categories, \n                       size = n, \n                       replace = TRUE, \n                       prob = pop_dist) %>% \n    factor(levels = categories) %>% \n    sort()\n  freq_true = sample_true %>% \n    table() %>% \n    prop.table()\n  \n  # Misclassification\n  equal_error = (1 - accuracy) / k\n  misclass_prop = matrix(equal_error, nrow = k, ncol = k,\n                         dimnames = list(categories, categories))\n  diag(misclass_prop) = accuracy\n\n  sample_obs = table(sample_true) %>%  \n    imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\n  freq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\n\n  # Error summary\n  rmse = sqrt(mean((pop_dist - freq_obs)^2))\n\n  # Output\n  out = lst(freq_true, freq_obs, rmse)\n  out\n}"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#experimental-conditions",
+    "href": "qmd/05_misclass_bias.html#experimental-conditions",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Experimental conditions",
+    "text": "Experimental conditions\n\n\n\npop_dist must be wrapped into another list, because the condition is defined by the vector of proportions.\nn (sample size) fixed.\nBetween-simulation factor: accuracy.\n\n\n\nconditions = expand_grid(\n  pop_dist = list(c(0.55, 0.3, 0.1, 0.05)),\n  n = 1000,\n  accuracy = seq(from = 0.4, to = 1, by = 0.1) # 1: because I am lazy\n  ) %>% \n  rowid_to_column(var = \"condition\")\nconditions\n\n# A tibble: 7 × 4\n  condition pop_dist      n accuracy\n      <int> <list>    <dbl>    <dbl>\n1         1 <dbl [4]>  1000      0.4\n2         2 <dbl [4]>  1000      0.5\n3         3 <dbl [4]>  1000      0.6\n4         4 <dbl [4]>  1000      0.7\n5         5 <dbl [4]>  1000      0.8\n6         6 <dbl [4]>  1000      0.9\n7         7 <dbl [4]>  1000      1"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#run-simulation-experiment",
+    "href": "qmd/05_misclass_bias.html#run-simulation-experiment",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Run simulation experiment",
+    "text": "Run simulation experiment\n\ni = 1000 # less simulations to save some workshop time \nset.seed(39)\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(res = list(sim_misclass(pop_dist = pop_dist, \n                                 n = n, accuracy = accuracy)))\ntoc()\n\n5.322 sec elapsed"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#results",
+    "href": "qmd/05_misclass_bias.html#results",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Results",
+    "text": "Results\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  unnest_longer(freq_obs, indices_to = \"category\") %>% \n  group_by(accuracy, category) %>% \n  summarise(Q = list(quantile(freq_obs, probs = c(0.25, 0.5, 0.75)))) %>% \n  unnest_wider(Q) %>% \n  ggplot(aes(`50%`, factor(accuracy), \n             xmin = `25%`, xmax = `75%`, color = category)) +\n  geom_pointrange() +\n  labs(x = str_glue(\"Median and IQR of the proportions from {i} simulation runs per condition.\"),\n       y = \"accuracy\")"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#results-1",
+    "href": "qmd/05_misclass_bias.html#results-1",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Results",
+    "text": "Results\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  group_by(accuracy) %>% \n  summarise(Q = list(quantile(rmse, probs = c(0.25, 0.5, 0.75)))) %>% \n  unnest_wider(Q) %>% \n  ggplot(aes(accuracy, `50%`, ymin = `25%`, ymax = `75%`)) + \n  geom_pointrange() + \n  geom_line() +\n  labs(y = \"RMSE (Mdn & IQR)\",\n       x = \"accuracy\")"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#summary",
+    "href": "qmd/05_misclass_bias.html#summary",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Summary",
+    "text": "Summary\n\nBias towards \\(1/k\\).\nLess accuracy, stronger bias. Substantial bias even with seemingly sufficient accuracy.\nStronger bias for categories which are farther from \\(1/k\\).\nImplies: More uneven distributions, stronger bias — but how much?"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#adjust-experimental-conditions",
+    "href": "qmd/05_misclass_bias.html#adjust-experimental-conditions",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Adjust experimental conditions",
+    "text": "Adjust experimental conditions\n\nAdd varying population distributions - but how?\nOne possible solution: Factor of different distributions, e.g.,\n\n\nlist(pd1 = c(0.25, 0.25, 0.25, 0.25), \n     pd2 = c(0.55, 0.30, 0.10, 0.05))\n\n\nAnother possibility: Sample from a distribution of population distributions.\n\n\nrdirichlet(n = 3, alpha = c(1,1,1,1)) %>% round(2)\n\n     [,1] [,2] [,3] [,4]\n[1,] 0.26 0.54 0.19 0.01\n[2,] 0.59 0.37 0.04 0.00\n[3,] 0.19 0.50 0.22 0.09"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#adjust-experimental-conditions-1",
+    "href": "qmd/05_misclass_bias.html#adjust-experimental-conditions-1",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Adjust experimental conditions",
+    "text": "Adjust experimental conditions\n\n\n\nOnly accuracy is varied between conditions.\npop_dist is sampled from rdirichlet(alpha = c(1,1,1,1)) for each simulation run.\ni (number of simulations) and set.seed() required for building conditions.\n\n\n\ni = 5000\nset.seed(39)\nconditions = expand_grid(\n  n = 1000,\n  accuracy = seq(from = 0.4, to = 1, by = 0.2)\n  ) %>% \n  rowid_to_column(var = \"condition\")\nconditions = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  mutate(pop_dist = split(rdirichlet(nrow(.), c(1,1,1,1)), 1:nrow(.)))\nconditions\n\n# A tibble: 20,000 × 5\n     sim condition     n accuracy pop_dist    \n   <int>     <int> <dbl>    <dbl> <named list>\n 1     1         1  1000      0.4 <dbl [4]>   \n 2     2         2  1000      0.6 <dbl [4]>   \n 3     3         3  1000      0.8 <dbl [4]>   \n 4     4         4  1000      1   <dbl [4]>   \n 5     5         1  1000      0.4 <dbl [4]>   \n 6     6         2  1000      0.6 <dbl [4]>   \n 7     7         3  1000      0.8 <dbl [4]>   \n 8     8         4  1000      1   <dbl [4]>   \n 9     9         1  1000      0.4 <dbl [4]>   \n10    10         2  1000      0.6 <dbl [4]>   \n# … with 19,990 more rows\n# ℹ Use `print(n = ...)` to see more rows"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#run-simulation-experiment-1",
+    "href": "qmd/05_misclass_bias.html#run-simulation-experiment-1",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Run simulation experiment",
+    "text": "Run simulation experiment\n\ntic()\nsims = conditions %>% \n  rowwise() %>%\n  mutate(res = list(sim_misclass(pop_dist = pop_dist, n = n, accuracy = accuracy)))\ntoc()\n\n16.975 sec elapsed"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#measure-for-population-distribution-variation",
+    "href": "qmd/05_misclass_bias.html#measure-for-population-distribution-variation",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Measure for population distribution variation",
+    "text": "Measure for population distribution variation\n\n\\(\\chi^2\\) value of the standardized (proportions * 100, independent from n) distribution.\n\n\n\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  mutate(chi2_pop_dist = map_dbl(pop_dist, ~ chisq.test(.x*100)$statistic)) %>% \n  ggplot(aes(chi2_pop_dist)) +\n  geom_histogram()"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#results-2",
+    "href": "qmd/05_misclass_bias.html#results-2",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Results",
+    "text": "Results\n\n\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  mutate(chi2_pop_dist = map_dbl(pop_dist, ~ chisq.test(.x*100)$statistic)) %>% \n  ggplot(aes(chi2_pop_dist, rmse, color = factor(accuracy))) +\n  geom_smooth() +\n  xlim(0, 155) +\n  labs(x = \"chi2_pop_dist\",\n       color = \"accuracy\",\n       y = \"RMSE\",\n       caption = \"method = 'gam' and formula 'y ~ s(x, bs = 'cs')\")\n\n\n\n\n\n\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  mutate(chi2_pop_dist = map_dbl(pop_dist, ~ chisq.test(.x*100)$statistic)) %>% \n  filter(round(chi2_pop_dist) %in% c(0, 25, 50, 75, 100, 125, 150)) %>% \n  group_by(round(chi2_pop_dist)) %>% \n  slice(1) %>% \n  ungroup() %>% \n  arrange(chi2_pop_dist) %>% \n  select(chi2_pop_dist, pop_dist) %>% \n  mutate(pop_dist = map(pop_dist, sort, decreasing = TRUE)) %>% \n  unnest_wider(pop_dist) %>% \n  kable(digits = 2, col.names = c(\"chi2_pop_dist\", LETTERS[1:4]))\n\n\n\n\n\nchi2_pop_dist\nA\nB\nC\nD\n\n\n\n\n0.11\n0.26\n0.26\n0.25\n0.24\n\n\n24.58\n0.40\n0.34\n0.14\n0.12\n\n\n50.27\n0.53\n0.25\n0.15\n0.06\n\n\n74.82\n0.62\n0.17\n0.12\n0.09\n\n\n99.68\n0.68\n0.16\n0.10\n0.06\n\n\n124.52\n0.73\n0.13\n0.07\n0.06\n\n\n150.11\n0.77\n0.16\n0.04\n0.03"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#summary-substantial-conclusion",
+    "href": "qmd/05_misclass_bias.html#summary-substantial-conclusion",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Summary: Substantial conclusion",
+    "text": "Summary: Substantial conclusion\n\nDeviation of the populations distribution from equal proportions is strongly related to error magnitude, such that more unequal proportions are estimated less accurate.\nThere seems to be a non-linear interaction between population distribution and accuracy, such that the consequences of lesser accuracy are more severe for more unequal distribution."
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#summary-for-simulation-experiments",
+    "href": "qmd/05_misclass_bias.html#summary-for-simulation-experiments",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Summary: For simulation experiments",
+    "text": "Summary: For simulation experiments\n\nAssignment of random values at each simulation run as an alternative\nAlso an option for accuracy (runif(min = 0.4, 1.0)) or sample size (sample(x = 300:2000, replace = TRUE) or rdunif(min = 300, max = 2000))\nMost helpful if we want to look at an outcome across the whole range of values. Not so helpful if discretized after the simulation."
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#misclassification-and-bias-messages-mismeasured-3",
+    "href": "qmd/05_misclass_bias.html#misclassification-and-bias-messages-mismeasured-3",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "5. Misclassification and bias — Messages mismeasured",
+    "text": "5. Misclassification and bias — Messages mismeasured\n\nUnivariate analysis of the misclassified variable\nMisclassified variables as predictors"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#second-simulation-study-misclassified-predictors",
+    "href": "qmd/05_misclass_bias.html#second-simulation-study-misclassified-predictors",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Second simulation study: Misclassified predictors",
+    "text": "Second simulation study: Misclassified predictors\n\nQuestion: What is the goal of the simulation?\n\nHow does misclassification error affect the estimated differences in an outcome and the statistical power to detect these differences if the grouping variable is misclassified?\n\nQuantities of interest: What is measured in the simulation?\n\nObserved group differences and their ratios to the true group differences\nStatistical power to detect the difference with \\(p < .05\\) in Welch’s t-test\n\nEvaluation strategy: How are the quantities assessed?\n\nInspection of the deviation between true and observed differences and their ratios across conditions\nComparison of statistical power to reject the Null hypothesis if the alternative hypothesis is true\n\nConditions: Which characteristics of the data generating model will be varied?\n\nAccuracy of the classification; within-group variances\n\nData generating model: How are the data simulated?\n\nGrouping variable: Random draws from a categorical distribution; subsequent misclassification of the sampled units\nOutcome: Random draws from Poisson distributions with different \\(\\lambda\\) values"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#three-steps-of-the-data-generating-process",
+    "href": "qmd/05_misclass_bias.html#three-steps-of-the-data-generating-process",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Three steps of the data generating process",
+    "text": "Three steps of the data generating process\n\nSample units from population\nMeasure variable with misclassification error\nSample outcome from population"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#one-simulation-population-grouping-variable",
+    "href": "qmd/05_misclass_bias.html#one-simulation-population-grouping-variable",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "One simulation: Population grouping variable",
+    "text": "One simulation: Population grouping variable\nSame as before\n\nset.seed(4026)\npop_dist = c(0.55, 0.3, 0.1, 0.05)\nk = length(pop_dist) # number of categories\ncategories = LETTERS[1:k] # names of the categories\nnames(pop_dist) = categories\npop_dist\n\n   A    B    C    D \n0.55 0.30 0.10 0.05"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#one-simulation-sample-grouping-variable",
+    "href": "qmd/05_misclass_bias.html#one-simulation-sample-grouping-variable",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "One simulation: Sample grouping variable",
+    "text": "One simulation: Sample grouping variable\nSame as before\n\nn = 1000 # sample size\nsample_true = sample(x = categories, \n                     size = n, \n                     replace = TRUE, \n                     prob = pop_dist) %>% \n  factor(levels = categories) %>% # if any categories not observed in the sample\n  sort() # important later for efficient misclassification\nfreq_true = sample_true %>% \n  table() %>% \n  prop.table()\nfreq_true\n\n.\n    A     B     C     D \n0.568 0.290 0.100 0.042"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#one-simulation-sample-outcome",
+    "href": "qmd/05_misclass_bias.html#one-simulation-sample-outcome",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "One simulation: Sample outcome",
+    "text": "One simulation: Sample outcome\n\nlambdas = c(21:24)\nnames(lambdas) = categories\noutcomes = table(sample_true) %>% \n  imap(~ rpois(n = .x, lambda = lambdas[.y])) %>% \n  unlist(use.names = FALSE)\ntable(sample_true, outcomes)\n\n           outcomes\nsample_true  8 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30\n          A  1  2  8  4  7 16 24 33 41 36 43 56 50 39 44 59 28 24 17 12  9  6\n          B  0  0  0  0  7  7  8 12 14 16 22 19 19 30 27 20 19 16 17  8  6  9\n          C  0  0  0  0  2  3  2  3  6  2  8  6  4  6  7  7  6  5  7  6 10  2\n          D  0  0  0  0  0  0  1  1  4  1  2  2  2  4  2  4  3  4  4  3  1  1\n           outcomes\nsample_true 31 32 33 34 35 42\n          A  2  2  2  2  0  1\n          B  7  0  2  4  1  0\n          C  3  2  3  0  0  0\n          D  1  0  1  1  0  0"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification-matrix-1",
+    "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-matrix-1",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "One simulation: Misclassification matrix",
+    "text": "One simulation: Misclassification matrix\nSame as before\n\n# Simple: Equal error rates, equal difficulties, one process\naccuracy = 0.8\nequal_error = (1 - accuracy) / k\nmisclass_prop = matrix(equal_error, nrow = k, ncol = k, \n                       dimnames = list(categories, categories))\ndiag(misclass_prop) = accuracy\nmisclass_prop\n\n     A    B    C    D\nA 0.80 0.05 0.05 0.05\nB 0.05 0.80 0.05 0.05\nC 0.05 0.05 0.80 0.05\nD 0.05 0.05 0.05 0.80"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification-2",
+    "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-2",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "One simulation: Misclassification",
+    "text": "One simulation: Misclassification\nSame as before\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.003 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.491 0.280 0.134 0.095"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#one-simulation-measure-quantities-of-interest",
+    "href": "qmd/05_misclass_bias.html#one-simulation-measure-quantities-of-interest",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "One simulation: Measure quantities of interest",
+    "text": "One simulation: Measure quantities of interest\n\nTest means of outcome in categories B, C, and D agains A (the default)\n\n\nt_res = categories[2:k] %>% \n  map(~ t.test(outcomes[sample_true == \"A\"],\n               outcomes[sample_true == .x])) %>% \n  set_names(str_c(\"A_\", categories[2:k]))\n\n \n\nExtract group mean differences\n\n\n\nt_res %>% \n  map_dbl(~ diff(.x$estimate)) %>% round(2)\n\n\n A_B  A_C  A_D \n1.41 2.58 2.83 \n\n\n\n\nExtract p-values\n\n\n\nt_res %>% \n  map_dbl(~ .x$p.value) %>% round(5)\n\n\n    A_B     A_C     A_D \n0.00003 0.00001 0.00039"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#wrap-it-into-a-function-1",
+    "href": "qmd/05_misclass_bias.html#wrap-it-into-a-function-1",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Wrap it into a function",
+    "text": "Wrap it into a function\n\nsim_misclass_test = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),\n                        lambdas = c(3:6),\n                        n = 1000,\n                        accuracy = 0.8) {\n  # Population\n  k = length(pop_dist)\n  categories = LETTERS[1:k]\n  names(lambdas) = categories\n  \n  # True sample\n  sample_true = sample(x = categories, \n                       size = n, \n                       replace = TRUE, \n                       prob = pop_dist) %>% \n    factor(levels = categories) %>% \n    sort()\n  freq_true = sample_true %>% \n    table() %>% \n    prop.table()\n  outcomes = table(sample_true) %>% \n    imap(~ rpois(n = .x, lambda = lambdas[.y])) %>% \n    unlist(use.names = FALSE)\n\n  # Misclassification probabilities\n  equal_error = (1 - accuracy) / k\n  misclass_prop = matrix(equal_error, nrow = k, ncol = k, \n                         dimnames = list(categories, categories))\n  diag(misclass_prop) = accuracy\n  \n  # Misclassification  \n  sample_obs = table(sample_true) %>%  \n    imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\n  freq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\n  \n  # Model\n  ttests_obs = categories[2:k] %>% \n    map(~ t.test(outcomes[sample_obs == \"A\"],\n                 outcomes[sample_obs == .x])) %>% \n    set_names(str_c(\"A_\", categories[2:k]))\n\n  # Error summary for categories\n  rmse = sqrt(mean((pop_dist - freq_obs)^2))\n\n  # Output\n  out = lst(freq_true, freq_obs, rmse,\n            p_obs = ttests_obs %>% \n              map_dbl(~ .x$p.value),\n            diff_obs = ttests_obs %>% \n              map_dbl(~ diff(.x$estimate))\n            )\n  out\n}"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#experimental-conditions-1",
+    "href": "qmd/05_misclass_bias.html#experimental-conditions-1",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Experimental conditions",
+    "text": "Experimental conditions\n\n\n\nlambdas is a named list with two sets of values The group differences are the same in both conditions, but the variances differ strongly.\nBetween-simulation factor: accuracy varies with 4 values.\npop_dist and n (sample size) are fixed.\n\n\n\nconditions = expand_grid(\n  pop_dist = list(c(0.55, 0.3, 0.1, 0.05)),\n  lambdas = list(start_1 = c(1:4),\n                 start_21 = c(21:24)),\n  n = 1000,\n  accuracy = seq(from = 0.4, to = 1, by = 0.2)\n) %>% \n  rowid_to_column(var = \"condition\")\nconditions\n\n# A tibble: 8 × 5\n  condition pop_dist  lambdas          n accuracy\n      <int> <list>    <named list> <dbl>    <dbl>\n1         1 <dbl [4]> <int [4]>     1000      0.4\n2         2 <dbl [4]> <int [4]>     1000      0.6\n3         3 <dbl [4]> <int [4]>     1000      0.8\n4         4 <dbl [4]> <int [4]>     1000      1  \n5         5 <dbl [4]> <int [4]>     1000      0.4\n6         6 <dbl [4]> <int [4]>     1000      0.6\n7         7 <dbl [4]> <int [4]>     1000      0.8\n8         8 <dbl [4]> <int [4]>     1000      1"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#run-simulation-experiment-2",
+    "href": "qmd/05_misclass_bias.html#run-simulation-experiment-2",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Run simulation experiment",
+    "text": "Run simulation experiment\n\ni = 1000\nset.seed(39)\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(res = list(sim_misclass_test(\n    pop_dist = pop_dist,\n    lambdas = lambdas, \n    n = n, accuracy = accuracy)))\ntoc()\n\n17.146 sec elapsed"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#results-3",
+    "href": "qmd/05_misclass_bias.html#results-3",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Results",
+    "text": "Results\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  unnest_longer(diff_obs, indices_to = \"difference\") %>% \n  mutate(lambdas = names(lambdas)) %>% \n  group_by(accuracy, difference, lambdas) %>% \n  summarise(Q = list(quantile(diff_obs, probs = c(0.25, 0.5, 0.75)))) %>% \n  unnest_wider(Q) %>% \n  ggplot(aes(`50%`, factor(accuracy),\n             xmin = `25%`, xmax = `75%`, color = difference)) +\n  geom_pointrange() +\n  facet_wrap(vars(lambdas)) + \n  labs(y = \"accuracy\",\n       x = str_glue(\"Median and IQR of the mean differences from {i} simulation runs per condition.\"))"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#results-4",
+    "href": "qmd/05_misclass_bias.html#results-4",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Results",
+    "text": "Results\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  unnest_longer(diff_obs, indices_to = \"difference\") %>% \n  mutate(\n    diff_true = case_when(\n      difference == \"A_B\" ~ 1L,\n      difference == \"A_C\" ~ 2L,\n      difference == \"A_D\" ~ 3L\n    ),\n    recovered = diff_obs / diff_true,\n    lambdas = names(lambdas)\n    ) %>% \n  select(accuracy, difference, lambdas, diff_obs, diff_true, recovered) %>% \n  group_by(accuracy, difference, lambdas) %>% \n  summarise(Q = list(quantile(recovered, probs = c(0.25, 0.5, 0.75)))) %>% \n  unnest_wider(Q) %>% \n  ggplot(aes(`50%`, factor(accuracy),\n             xmin = `25%`, xmax = `75%`, color = difference)) +\n  geom_pointrange() +\n  facet_wrap(vars(lambdas)) + \n  labs(y = \"accuracy\",\n       x = str_glue(\"Median and IQR of the ratio true by observed difference\\nfrom {i} simulation runs per condition.\"))"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#results-5",
+    "href": "qmd/05_misclass_bias.html#results-5",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Results",
+    "text": "Results\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  mutate(lambdas = names(lambdas)) %>% \n  unnest_wider(res) %>% \n  unnest_longer(p_obs, indices_to = \"difference\") %>% \n  group_by(accuracy, difference, lambdas) %>% \n  summarise(P_p05 = mean(p_obs < 0.05)) %>% \n  ggplot(aes(accuracy, P_p05, color = difference)) + \n  geom_point() + geom_line() +\n  facet_wrap(vars(lambdas)) + \n  labs(y = \"Power at p < .05\")"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#summary-1",
+    "href": "qmd/05_misclass_bias.html#summary-1",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Summary",
+    "text": "Summary\n\nX\nX"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#group-exercise-3-1",
+    "href": "qmd/05_misclass_bias.html#group-exercise-3-1",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Group exercise 3",
+    "text": "Group exercise 3\n\nTODO"
+  },
+  {
+    "objectID": "qmd/index.html",
+    "href": "qmd/index.html",
+    "title": "Workshop Data Simulation with Monte Carlo Methods",
+    "section": "",
+    "text": "Dr. Marko Bachl, University of Hohenheim\nOrganized by the Computational Methods Working Group (CMWG) at the University of Zurich & ETH Zurich, Switzerland"
+  },
+  {
+    "objectID": "qmd/02_monte_carlo.html#traktandenliste",
+    "href": "qmd/02_monte_carlo.html#traktandenliste",
+    "title": "3) Monte Carlo Simulation?",
+    "section": "Traktandenliste",
+    "text": "Traktandenliste\n\nIntroduction & overview\nMonte Carlo Simulation?\nProof by simulation — the Central Limit Theorem (CLT)\nErrors and power — torturing the t-test\nMisclassification and bias — Messages mismeasured\nOutlook: What’s next?"
+  },
+  {
+    "objectID": "qmd/02_monte_carlo.html#monte-carlo-simulation-1",
+    "href": "qmd/02_monte_carlo.html#monte-carlo-simulation-1",
+    "title": "3) Monte Carlo Simulation?",
+    "section": "Monte Carlo Simulation?",
+    "text": "Monte Carlo Simulation?\n\nWikipedia\n\nThere is no consensus on how Monte Carlo should be defined.\n\n\n\nMonte Carlo methods as part of data analysis (e.g., Sampling from a posterior distribution in Bayesian data analysis, cross tables with small cell counts)\nMonte Carlo methods for the solution of general numerical problems (e.g., Monte Carlo integration)\nMonte Carlo methods for quantitative (social) science methods research"
+  },
+  {
+    "objectID": "qmd/02_monte_carlo.html#monte-carlo-simulation-2",
+    "href": "qmd/02_monte_carlo.html#monte-carlo-simulation-2",
+    "title": "3) Monte Carlo Simulation?",
+    "section": "Monte Carlo Simulation?",
+    "text": "Monte Carlo Simulation?\n\nMonte Carlo Simulation Methods in quantitative (social) science methods research\n\n“In a typical application, data are simulated to be consistent with the model structure and/or assumptions underlying the quantitative method under study; models are then fitted to those simulated data and predefined outcome measures of interest are evaluated to gauge the method’s performance.”\n\n\n\n\nMcNeish, D., Lane, S., & Curran, P. (2018). Monte Carlo Simulation Methods. In G. R. Hancock, L. M. Stapleton, & R. O. Mueller (Eds.), The Reviewer’s Guide to Quantitative Methods in the Social Sciences (2nd ed.). Routledge."
+  },
+  {
+    "objectID": "qmd/02_monte_carlo.html#monte-carlo-simulation-workflow",
+    "href": "qmd/02_monte_carlo.html#monte-carlo-simulation-workflow",
+    "title": "3) Monte Carlo Simulation?",
+    "section": "Monte Carlo Simulation Workflow",
+    "text": "Monte Carlo Simulation Workflow\n\nRandomly generate data set with known properties\nAnalyse data with a statistical method\nRepeat 1. and 2. many times\nCollect and aggregate results\nCompare results to expectation under the known data-generating process\n\nMake it an experiment\n\nSystematically vary parameters in Step 1 (between factor) and compare different ways to do Step 2 (within factor)."
+  },
+  {
+    "objectID": "qmd/02_monte_carlo.html#example-simple-demonstrations",
+    "href": "qmd/02_monte_carlo.html#example-simple-demonstrations",
+    "title": "3) Monte Carlo Simulation?",
+    "section": "Example: Simple demonstrations",
+    "text": "Example: Simple demonstrations\n\n\n\n\n\n\n\nDelacre, M., Lakens, D., & Leys, C. (2017). Why Psychologists Should by Default Use Welch’s t-test Instead of Student’s t-test. International Review of Social Psychology, 30(1). https://doi.org/10.5334/irsp.82"
+  },
+  {
+    "objectID": "qmd/02_monte_carlo.html#example-typical-applied-statistics-research",
+    "href": "qmd/02_monte_carlo.html#example-typical-applied-statistics-research",
+    "title": "3) Monte Carlo Simulation?",
+    "section": "Example: Typical applied statistics research",
+    "text": "Example: Typical applied statistics research\n\n\n\n\n\n\n\nNylund, K. L., Asparouhov, T., & Muthén, B. O. (2007). Deciding on the number of classes in latent class analysis and growth mixture modeling: A Monte Carlo simulation study. Structural Equation Modeling: A Multidisciplinary Journal, 14(4), 535–569. https://doi.org/10/fhg28s"
+  },
+  {
+    "objectID": "qmd/02_monte_carlo.html#example-content-analysis",
+    "href": "qmd/02_monte_carlo.html#example-content-analysis",
+    "title": "3) Monte Carlo Simulation?",
+    "section": "Example: Content analysis",
+    "text": "Example: Content analysis\n\n\n\n\n\n\n\nBachl, M., & Scharkow, M. (2017). Correcting measurement error in content analysis. Communication Methods and Measures, 11(2), 87–104. https://doi.org/10/ghhzbn"
+  },
+  {
+    "objectID": "qmd/06_outlook.html#traktandenliste",
+    "href": "qmd/06_outlook.html#traktandenliste",
+    "title": "6) Outlook: What’s next?",
+    "section": "Traktandenliste",
+    "text": "Traktandenliste\n\nIntroduction & overview\nMonte Carlo Simulation?\nProof by simulation — the Central Limit Theorem (CLT)\nErrors and power — torturing the t-test\nMisclassification and bias — Messages mismeasured\nOutlook: What’s next?"
+  },
+  {
+    "objectID": "qmd/06_outlook.html#outlook-whats-next-1",
+    "href": "qmd/06_outlook.html#outlook-whats-next-1",
+    "title": "6) Outlook: What’s next?",
+    "section": "Outlook: What’s next?",
+    "text": "Outlook: What’s next?\n\nGetting started with Monte Carlo Simulation\nNow you want to use Monte Carlo Simulation …\n\n… for (self-) teaching\n… for a priori power calculation\n… for your next methods study"
+  },
+  {
+    "objectID": "qmd/06_outlook.html#resources-for-simulation-experiments",
+    "href": "qmd/06_outlook.html#resources-for-simulation-experiments",
+    "title": "6) Outlook: What’s next?",
+    "section": "Resources: For simulation experiments",
+    "text": "Resources: For simulation experiments\n\n\n\n{SimDesign}: “Structure for Organizing Monte Carlo Simulation Designs”\n\nCovers the whole simulation and analysis workflow\nExtensive documentation\n\n\n\n\n\n\n\nAlternative: {paramtest}: Some similar capacities, less specialized."
+  },
+  {
+    "objectID": "qmd/06_outlook.html#resources-for-simulating-data",
+    "href": "qmd/06_outlook.html#resources-for-simulating-data",
+    "title": "6) Outlook: What’s next?",
+    "section": "Resources: For simulating data",
+    "text": "Resources: For simulating data\n\n{simstudy}: Very flexible package for simulating data sets.\n{faux}: Simulate data for factorial designs.\n{simsem}: Simulate data from structural equation model specifications or objects."
+  },
+  {
+    "objectID": "qmd/06_outlook.html#resources-simulation-for-a-priori-power-calculation",
+    "href": "qmd/06_outlook.html#resources-simulation-for-a-priori-power-calculation",
+    "title": "6) Outlook: What’s next?",
+    "section": "Resources: Simulation for a priori power calculation",
+    "text": "Resources: Simulation for a priori power calculation\n\nDeclareDesign: “is a system for describing research designs in code and simulating them in order to understand their properties” — not ony power simulation, but also diagnosis of bias.\n{Superpower}: Calculate power for factorial designs, focus on ANOVA.\nWorkshop by Niklas Johannes: Intro to power calculations using simulation."
+  },
+  {
+    "objectID": "qmd/06_outlook.html#resources-teaching-with-simulations",
+    "href": "qmd/06_outlook.html#resources-teaching-with-simulations",
+    "title": "6) Outlook: What’s next?",
+    "section": "Resources: Teaching with simulations",
+    "text": "Resources: Teaching with simulations\n\nA general framework by the author of {SimDesign}: Sigal, M. J., & Chalmers, R. P. (2016). Play It Again: Teaching Statistics With Monte Carlo Simulation. Journal of Statistics Education, 24(3), 136–156. https://doi.org/10.1080/10691898.2016.1246953\nSpecial section Using Simulation to Convey Statistical Concepts in Advances in Methods and Practices in Psychological Science"
+  },
+  {
+    "objectID": "qmd/06_outlook.html#resources-faster-simulation-using-parallel-computing-in-r",
+    "href": "qmd/06_outlook.html#resources-faster-simulation-using-parallel-computing-in-r",
+    "title": "6) Outlook: What’s next?",
+    "section": "Resources: Faster simulation using parallel computing in R",
+    "text": "Resources: Faster simulation using parallel computing in R\n\nThe Futureverse and, in particular, {furrr}: Simple way to parallelize any code written with {purrr}. Just replace map with future_map.\ndatacolada blogpost on how to speed up simulations using parallel computing and convenient cloud computing services."
+  },
+  {
+    "objectID": "qmd/06_outlook.html#resources-reporting-simulation-studies",
+    "href": "qmd/06_outlook.html#resources-reporting-simulation-studies",
+    "title": "6) Outlook: What’s next?",
+    "section": "Resources: Reporting simulation studies",
+    "text": "Resources: Reporting simulation studies\n\n\nMcNeish, D., Lane, S., & Curran, P. (2018). Monte Carlo Simulation Methods. In G. R. Hancock, L. M. Stapleton, & R. O. Mueller (Eds.), The Reviewer’s Guide to Quantitative Methods in the Social Sciences (2nd ed.). Routledge."
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#traktandenliste",
+    "href": "qmd/04_1_errors_power.html#traktandenliste",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Traktandenliste",
+    "text": "Traktandenliste\n\nIntroduction & overview\nMonte Carlo Simulation?\nProof by simulation — the Central Limit Theorem (CLT)\nErrors and power — torturing the t-test\nMisclassification and bias — Messages mismeasured\nOutlook: What’s next?"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#errors-and-power-torturing-the-t-test-1",
+    "href": "qmd/04_1_errors_power.html#errors-and-power-torturing-the-t-test-1",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "4. Errors and power — torturing the t-test",
+    "text": "4. Errors and power — torturing the t-test\n\nComparison of Student’s and Welch’s t-tests\nA priori power calculation for Welch’s t-test"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#students-t-test-welchs-t-test",
+    "href": "qmd/04_1_errors_power.html#students-t-test-welchs-t-test",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Student’s t-test & Welch’s t-test",
+    "text": "Student’s t-test & Welch’s t-test\nStudent’s t-test for two independent means\n\\(t = \\frac{\\bar{X}_1 - \\bar{X}_2}{s_p \\sqrt\\frac{2}{n}}\\), where \\(s_p = \\sqrt{\\frac{s_{X_1}^2+s_{X_2}^2}{2}}\\) and \\(df = n_1 + n_2 − 2\\)\nWelch’s t-test for two independent means\n\\(t = \\frac{\\bar{X}_1 - \\bar{X}_2}{s_{\\bar\\Delta}}\\), where \\({\\bar\\Delta} = \\sqrt{\\frac{s_1^2}{n_1} + \\frac{s_2^2}{n_2}}\\) and \\(df = \\frac{\\left(\\frac{s_1^2}{n_1} + \\frac{s_2^2}{n_2}\\right)^2}{\\frac{\\left(s_1^2/n_1\\right)^2}{n_1-1} + \\frac{\\left(s_2^2/n_2\\right)^2}{n_2-1}}\\)"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#students-t-test-welchs-t-test-1",
+    "href": "qmd/04_1_errors_power.html#students-t-test-welchs-t-test-1",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Student’s t-test & Welch’s t-test",
+    "text": "Student’s t-test & Welch’s t-test\n\nOld school advice: Student’s t-test for equal variances, Welch’s t-test for unequal variances.\n\nHigher power of Student’s t-test if assumptions hold.\n\nModern advice: Always use Welch’s t-test.\n\nBetter if assumptions are violated; not worse if assumptions hold.\ne.g., Delacre, M., Lakens, D., & Leys, C. (2017). Why Psychologists Should by Default Use Welch’s t-test Instead of Student’s t-test. International Review of Social Psychology, 30(1). https://doi.org/10.5334/irsp.82\n\nFor those who don’t care about t-tests: Idea also applies to heteroskedasticity-consistent standard errors."
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#first-simulation-study-false-discoveries",
+    "href": "qmd/04_1_errors_power.html#first-simulation-study-false-discoveries",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "First Simulation study: False discoveries",
+    "text": "First Simulation study: False discoveries\n\nQuestion: What is the goal of the simulation?\n\nComparison of Student’s and Welch’s t-tests\n\nQuantities of interest: What is measured in the simulation?\n\n\\(\\alpha\\) error rate of the tests\n\nEvaluation strategy: How are the quantities assessed?\n\nComparison of empirical distribution of p-values with theoretical distribution under the Null hypothesis\n\nConditions: Which characteristics of the data generating model will be varied?\n\nGroup size ratio; Standard deviation ratio\n\nData generating model: How are the data simulated?\n\nRandom draws from normal distributions with equal means, but different group sizes and standard deviations"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#practical-considerations",
+    "href": "qmd/04_1_errors_power.html#practical-considerations",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Practical considerations",
+    "text": "Practical considerations\n\nHow does the t.test() work in R?\nWhich parameters and functions do we need for generating the data?\nHow do we implement the experimental design for the simulation study?\nHow do we run the simulation?\nHow do we assess and visualize the results?"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#one-simulation-parameters",
+    "href": "qmd/04_1_errors_power.html#one-simulation-parameters",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "One simulation: Parameters",
+    "text": "One simulation: Parameters\n\nTwo factors:\n\nGroup sizes: Equal or unequal?\nGroup standard deviations: Equal or unequal?\n\nImplementation with ratios and fixed total sample size.\n\n\nset.seed(28)\nn = 150 # fixed total sample size\nGR = 2 # n2/n1\nn1 = round(n / (GR + 1))\nn2 = round(n1 * GR)\nsd1 = 1\nSDR = 2  # sd2/sd1\nsd2 = sd1 * SDR"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#one-simulation-t-tests",
+    "href": "qmd/04_1_errors_power.html#one-simulation-t-tests",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "One simulation: t-tests",
+    "text": "One simulation: t-tests\n\ng1 = rnorm(n = n1, mean = 0, sd = sd1)\ng2 = rnorm(n = n2, mean = 0, sd = sd2)\nt.test(g1, g2) # Welch (default)\nt.test(g1, g2, var.equal = TRUE) # Student\n\n\n\n\n    Welch Two Sample t-test\n\ndata:  g1 and g2\nt = 0.74022, df = 147.94, p-value = 0.4603\nalternative hypothesis: true difference in means is not equal to 0\n95 percent confidence interval:\n -0.3198803  0.7030466\nsample estimates:\n  mean of x   mean of y \n-0.09838857 -0.28997168 \n\n\n\n    Two Sample t-test\n\ndata:  g1 and g2\nt = 0.60009, df = 148, p-value = 0.5494\nalternative hypothesis: true difference in means is not equal to 0\n95 percent confidence interval:\n -0.4393035  0.8224698\nsample estimates:\n  mean of x   mean of y \n-0.09838857 -0.28997168"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#inspect-the-output-of-t.test",
+    "href": "qmd/04_1_errors_power.html#inspect-the-output-of-t.test",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Inspect the output of t.test()",
+    "text": "Inspect the output of t.test()\n\nt.test(g1, g2) %>% str()\n\nList of 10\n $ statistic  : Named num 0.74\n  ..- attr(*, \"names\")= chr \"t\"\n $ parameter  : Named num 148\n  ..- attr(*, \"names\")= chr \"df\"\n $ p.value    : num 0.46\n $ conf.int   : num [1:2] -0.32 0.703\n  ..- attr(*, \"conf.level\")= num 0.95\n $ estimate   : Named num [1:2] -0.0984 -0.29\n  ..- attr(*, \"names\")= chr [1:2] \"mean of x\" \"mean of y\"\n $ null.value : Named num 0\n  ..- attr(*, \"names\")= chr \"difference in means\"\n $ stderr     : num 0.259\n $ alternative: chr \"two.sided\"\n $ method     : chr \"Welch Two Sample t-test\"\n $ data.name  : chr \"g1 and g2\"\n - attr(*, \"class\")= chr \"htest\"\n\n\n\nt.test(g1, g2)$p.value\n\n[1] 0.4603425"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#wrap-it-into-a-function",
+    "href": "qmd/04_1_errors_power.html#wrap-it-into-a-function",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Wrap it into a function",
+    "text": "Wrap it into a function\n\nsim_ttest = function(GR = 1, SDR = 1, n = 150) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR\n  g1 = rnorm(n = n1, mean = 0, sd = sd1)\n  g2 = rnorm(n = n2, mean = 0, sd = sd2)\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  return(res)\n}"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#call-the-function-once",
+    "href": "qmd/04_1_errors_power.html#call-the-function-once",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Call the function once",
+    "text": "Call the function once\n\nsim_ttest(GR = 2, SDR = 0.5) # Implies n1 = 50, n2 = 100, sd1 = 1, sd2 = 0.5\n\n$Welch\n[1] 0.5069771\n\n$Student\n[1] 0.4110377"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#setup-of-experimental-conditions",
+    "href": "qmd/04_1_errors_power.html#setup-of-experimental-conditions",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Setup of experimental conditions",
+    "text": "Setup of experimental conditions\n\nexpand_grid() is the tidy implementation of base::expand.grid().\nCreates a data frame from all combinations of the supplied vectors.\n\n\nexpand_grid(a = 1:2, b = 3:4)\n\n# A tibble: 4 × 2\n      a     b\n  <int> <int>\n1     1     3\n2     1     4\n3     2     3\n4     2     4"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#setup-of-experimental-conditions-1",
+    "href": "qmd/04_1_errors_power.html#setup-of-experimental-conditions-1",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Setup of experimental conditions",
+    "text": "Setup of experimental conditions\n\nTwo between-simulation factors: GR and SDR\n\n\nconditions = expand_grid(GR = c(1, 2),\n                         SDR = c(0.5, 1, 2)) %>% \n  rowid_to_column(var = \"condition\")\nconditions\n\n# A tibble: 6 × 3\n  condition    GR   SDR\n      <int> <dbl> <dbl>\n1         1     1   0.5\n2         2     1   1  \n3         3     1   2  \n4         4     2   0.5\n5         5     2   1  \n6         6     2   2"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#setup-of-experimental-conditions-2",
+    "href": "qmd/04_1_errors_power.html#setup-of-experimental-conditions-2",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Setup of experimental conditions",
+    "text": "Setup of experimental conditions\n\n\n\n\n\ncondition\nGR\nSDR\nimplies\n\n\n\n\n1\n1\n0.5\nn1 = 75, n2 = 75, sd1 = 1, sd2 = 0.5\n\n\n2\n1\n1.0\nn1 = 75, n2 = 75, sd1 = 1, sd2 = 1\n\n\n3\n1\n2.0\nn1 = 75, n2 = 75, sd1 = 1, sd2 = 2\n\n\n4\n2\n0.5\nn1 = 50, n2 = 100, sd1 = 1, sd2 = 0.5\n\n\n5\n2\n1.0\nn1 = 50, n2 = 100, sd1 = 1, sd2 = 1\n\n\n6\n2\n2.0\nn1 = 50, n2 = 100, sd1 = 1, sd2 = 2"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#run-simulation-experiment",
+    "href": "qmd/04_1_errors_power.html#run-simulation-experiment",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Run simulation experiment",
+    "text": "Run simulation experiment\n\nset.seed(689)\ni = 10000 # number of sim runs per condition\ntic() # simple way to measure wall time\nsims = map_dfr(1:i, ~ conditions) %>% # each condition i times\n  rowid_to_column(var = \"sim\") %>% # within simulation comparison\n  rowwise() %>%\n  mutate(p.value = list(sim_ttest(GR = GR, SDR = SDR))) %>% \n  unnest_longer(p.value, indices_to = \"method\")\ntoc() # simple way to measure wall time\n\n14.832 sec elapsed"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#inspect-simulated-data",
+    "href": "qmd/04_1_errors_power.html#inspect-simulated-data",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Inspect simulated data",
+    "text": "Inspect simulated data\n\n\n# A tibble: 120,000 × 6\n     sim condition    GR   SDR p.value method \n   <int>     <int> <dbl> <dbl>   <dbl> <chr>  \n 1     1         1     1   0.5 0.345   Welch  \n 2     1         1     1   0.5 0.344   Student\n 3     2         2     1   1   0.534   Welch  \n 4     2         2     1   1   0.534   Student\n 5     3         3     1   2   0.647   Welch  \n 6     3         3     1   2   0.647   Student\n 7     4         4     2   0.5 0.00985 Welch  \n 8     4         4     2   0.5 0.00224 Student\n 9     5         5     2   1   0.602   Welch  \n10     5         5     2   1   0.614   Student\n# … with 119,990 more rows\n# ℹ Use `print(n = ...)` to see more rows"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#results-histogram-of-p-values",
+    "href": "qmd/04_1_errors_power.html#results-histogram-of-p-values",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Results: Histogram of p-values",
+    "text": "Results: Histogram of p-values\n\nDistribution of p-values under the Null hypothesis should be \\(\\sf{Uniform}(0, 1)\\).\n\n\nsims %>% \n  ggplot(aes(p.value)) +\n  geom_histogram(binwidth = 0.05, boundary = 0) + \n  facet_grid(method ~ GR + SDR, labeller = label_both) + \n  scale_x_continuous(breaks = c(1, 3)/4)"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#results-histogram-of-p-values-output",
+    "href": "qmd/04_1_errors_power.html#results-histogram-of-p-values-output",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Results: Histogram of p-values",
+    "text": "Results: Histogram of p-values"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#results-q-q-plot-of-p-values",
+    "href": "qmd/04_1_errors_power.html#results-q-q-plot-of-p-values",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Results: Q-Q-plot of p-values",
+    "text": "Results: Q-Q-plot of p-values\n\nDistribution of p-values under the Null hypothesis should be \\(\\sf{Uniform}(0, 1)\\).\n\n\nsims %>% \n  ggplot(aes(sample = p.value, color = method)) +\n  geom_qq(distribution = stats::qunif, size = 0.2) + \n  geom_abline(slope = 1) + \n  facet_grid(GR ~ SDR, labeller = label_both)"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#results-q-q-plot-of-p-values-output",
+    "href": "qmd/04_1_errors_power.html#results-q-q-plot-of-p-values-output",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Results: Q-Q-plot of p-values",
+    "text": "Results: Q-Q-plot of p-values"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#results-looking-at-the-relevant-tail",
+    "href": "qmd/04_1_errors_power.html#results-looking-at-the-relevant-tail",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Results: Looking at the relevant tail",
+    "text": "Results: Looking at the relevant tail\n\n\nsims %>% \n  group_by(GR, SDR, method) %>% \n  summarise(P_p001 = mean(p.value <= 0.001),\n            P_p01 = mean(p.value <= 0.01), \n            P_p05 = mean(p.value <= 0.05)) %>% \n  kable(digits = 3)\n\n\n\n\n\nGR\nSDR\nmethod\nP_p001\nP_p01\nP_p05\n\n\n\n\n1\n0.5\nStudent\n0.001\n0.010\n0.049\n\n\n1\n0.5\nWelch\n0.001\n0.010\n0.048\n\n\n1\n1.0\nStudent\n0.000\n0.010\n0.048\n\n\n1\n1.0\nWelch\n0.000\n0.010\n0.048\n\n\n1\n2.0\nStudent\n0.001\n0.011\n0.047\n\n\n1\n2.0\nWelch\n0.001\n0.010\n0.047\n\n\n2\n0.5\nStudent\n0.008\n0.034\n0.107\n\n\n2\n0.5\nWelch\n0.002\n0.010\n0.049\n\n\n2\n1.0\nStudent\n0.001\n0.010\n0.051\n\n\n2\n1.0\nWelch\n0.000\n0.010\n0.052\n\n\n2\n2.0\nStudent\n0.000\n0.002\n0.016\n\n\n2\n2.0\nWelch\n0.001\n0.009\n0.052"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#exercise-2a.",
+    "href": "qmd/04_1_errors_power.html#exercise-2a.",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Exercise 2a.",
+    "text": "Exercise 2a.\n\nInvestigate how the amount of disparity in group sizes and standard deviations changes the results.\n\nWhen do the differences between the methods become neglegible?\nWhen does the false discovery rate of Student’s t-test become really bad?\n\nAdapt the experimental setup accordingly.\n\nChange or expand the levels of the GR and SDR factors.\nConsider changing the experimental design to make the simulation more efficient."
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#solution-2a",
+    "href": "qmd/04_1_errors_power.html#solution-2a",
+    "title": "4a) Errors and power — torturing the t-test",
+    "section": "Solution 2a",
+    "text": "Solution 2a\n\nTODO"
+  }
+]
