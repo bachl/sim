@@ -18,8 +18,7 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme:
+      light: flatly
+      dark: darkly
     toc: true
-
-
-
