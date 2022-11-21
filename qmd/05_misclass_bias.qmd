@@ -154,7 +154,7 @@ freq_true
 ```{r}
 # Simple: Equal error rates, equal difficulties, one process
 accuracy = 0.8
-equal_error = (1 - accuracy) / k
+equal_error = (1 - accuracy) / (k - 1)
 misclass_prop = matrix(equal_error, nrow = k, ncol = k, 
                        dimnames = list(categories, categories))
 diag(misclass_prop) = accuracy
@@ -247,7 +247,7 @@ sim_misclass = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),
     prop.table()
   
   # Misclassification
-  equal_error = (1 - accuracy) / k
+  equal_error = (1 - accuracy) / (k - 1)
   misclass_prop = matrix(equal_error, nrow = k, ncol = k,
                          dimnames = list(categories, categories))
   diag(misclass_prop) = accuracy
@@ -605,7 +605,7 @@ table(sample_true, outcomes)
 ```{r}
 # Simple: Equal error rates, equal difficulties, one process
 accuracy = 0.8
-equal_error = (1 - accuracy) / k
+equal_error = (1 - accuracy) / (k - 1)
 misclass_prop = matrix(equal_error, nrow = k, ncol = k, 
                        dimnames = list(categories, categories))
 diag(misclass_prop) = accuracy
@@ -687,7 +687,7 @@ sim_misclass_test = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),
     unlist(use.names = FALSE)
 
   # Misclassification probabilities
-  equal_error = (1 - accuracy) / k
+  equal_error = (1 - accuracy) / (k - 1)
   misclass_prop = matrix(equal_error, nrow = k, ncol = k, 
                          dimnames = list(categories, categories))
   diag(misclass_prop) = accuracy

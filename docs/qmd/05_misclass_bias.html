@@ -531,17 +531,17 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simple: Equal error rates, equal difficulties, one process</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>accuracy <span class="ot">=</span> <span class="fl">0.8</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>equal_error <span class="ot">=</span> (<span class="dv">1</span> <span class="sc">-</span> accuracy) <span class="sc">/</span> k</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>equal_error <span class="ot">=</span> (<span class="dv">1</span> <span class="sc">-</span> accuracy) <span class="sc">/</span> (k <span class="sc">-</span> <span class="dv">1</span>)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>misclass_prop <span class="ot">=</span> <span class="fu">matrix</span>(equal_error, <span class="at">nrow =</span> k, <span class="at">ncol =</span> k, </span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">dimnames =</span> <span class="fu">list</span>(categories, categories))</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(misclass_prop) <span class="ot">=</span> accuracy</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>misclass_prop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     A    B    C    D
-A 0.80 0.05 0.05 0.05
-B 0.05 0.80 0.05 0.05
-C 0.05 0.05 0.80 0.05
-D 0.05 0.05 0.05 0.80</code></pre>
+<pre><code>           A          B          C          D
+A 0.80000000 0.06666667 0.06666667 0.06666667
+B 0.06666667 0.80000000 0.06666667 0.06666667
+C 0.06666667 0.06666667 0.80000000 0.06666667
+D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 </div>
 </div>
 </section>
@@ -563,13 +563,13 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prop.table</span>()</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.022 sec elapsed</code></pre>
+<pre><code>0.017 sec elapsed</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>freq_obs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>.
     A     B     C     D 
-0.502 0.309 0.114 0.075 </code></pre>
+0.483 0.293 0.138 0.086 </code></pre>
 </div>
 </div>
 </section>
@@ -592,13 +592,13 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prop.table</span>()</span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.003 sec elapsed</code></pre>
+<pre><code>0.004 sec elapsed</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>freq_obs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>.
     A     B     C     D 
-0.517 0.299 0.112 0.072 </code></pre>
+0.496 0.299 0.128 0.077 </code></pre>
 </div>
 </div>
 </section>
@@ -611,7 +611,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>((pop_dist <span class="sc">-</span> freq_obs)<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.02</code></pre>
+<pre><code>[1] 0.03</code></pre>
 </div>
 </div>
 <ul>
@@ -620,7 +620,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">mean</span>((freq_true <span class="sc">-</span> freq_obs)<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">%&gt;%</span> <span class="fu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.03</code></pre>
+<pre><code>[1] 0.04</code></pre>
 </div>
 </div>
 <ul>
@@ -655,7 +655,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prop.table</span>()</span>
 <span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Misclassification</span></span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  equal_error <span class="ot">=</span> (<span class="dv">1</span> <span class="sc">-</span> accuracy) <span class="sc">/</span> k</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  equal_error <span class="ot">=</span> (<span class="dv">1</span> <span class="sc">-</span> accuracy) <span class="sc">/</span> (k <span class="sc">-</span> <span class="dv">1</span>)</span>
 <span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  misclass_prop <span class="ot">=</span> <span class="fu">matrix</span>(equal_error, <span class="at">nrow =</span> k, <span class="at">ncol =</span> k,</span>
 <span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>                         <span class="at">dimnames =</span> <span class="fu">list</span>(categories, categories))</span>
 <span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diag</span>(misclass_prop) <span class="ot">=</span> accuracy</span>
@@ -726,7 +726,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">n =</span> n, <span class="at">accuracy =</span> accuracy)))</span>
 <span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>5.386 sec elapsed</code></pre>
+<pre><code>5.302 sec elapsed</code></pre>
 </div>
 </div>
 </section>
@@ -855,7 +855,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">res =</span> <span class="fu">list</span>(<span class="fu">sim_misclass</span>(<span class="at">pop_dist =</span> pop_dist, <span class="at">n =</span> n, <span class="at">accuracy =</span> accuracy)))</span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>14.836 sec elapsed</code></pre>
+<pre><code>15.232 sec elapsed</code></pre>
 </div>
 </div>
 </section>
@@ -1125,17 +1125,17 @@ sample_true 31 32 33 34 35 42
 <div class="cell">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Simple: Equal error rates, equal difficulties, one process</span></span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>accuracy <span class="ot">=</span> <span class="fl">0.8</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>equal_error <span class="ot">=</span> (<span class="dv">1</span> <span class="sc">-</span> accuracy) <span class="sc">/</span> k</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>equal_error <span class="ot">=</span> (<span class="dv">1</span> <span class="sc">-</span> accuracy) <span class="sc">/</span> (k <span class="sc">-</span> <span class="dv">1</span>)</span>
 <span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>misclass_prop <span class="ot">=</span> <span class="fu">matrix</span>(equal_error, <span class="at">nrow =</span> k, <span class="at">ncol =</span> k, </span>
 <span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">dimnames =</span> <span class="fu">list</span>(categories, categories))</span>
 <span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(misclass_prop) <span class="ot">=</span> accuracy</span>
 <span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>misclass_prop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     A    B    C    D
-A 0.80 0.05 0.05 0.05
-B 0.05 0.80 0.05 0.05
-C 0.05 0.05 0.80 0.05
-D 0.05 0.05 0.05 0.80</code></pre>
+<pre><code>           A          B          C          D
+A 0.80000000 0.06666667 0.06666667 0.06666667
+B 0.06666667 0.80000000 0.06666667 0.06666667
+C 0.06666667 0.06666667 0.80000000 0.06666667
+D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 </div>
 </div>
 </section>
@@ -1155,13 +1155,13 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prop.table</span>()</span>
 <span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.003 sec elapsed</code></pre>
+<pre><code>0.004 sec elapsed</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>freq_obs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>.
     A     B     C     D 
-0.491 0.280 0.134 0.095 </code></pre>
+0.476 0.287 0.142 0.095 </code></pre>
 </div>
 </div>
 </section>
@@ -1233,7 +1233,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <span id="cb55-22"><a href="#cb55-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unlist</span>(<span class="at">use.names =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb55-23"><a href="#cb55-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb55-24"><a href="#cb55-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Misclassification probabilities</span></span>
-<span id="cb55-25"><a href="#cb55-25" aria-hidden="true" tabindex="-1"></a>  equal_error <span class="ot">=</span> (<span class="dv">1</span> <span class="sc">-</span> accuracy) <span class="sc">/</span> k</span>
+<span id="cb55-25"><a href="#cb55-25" aria-hidden="true" tabindex="-1"></a>  equal_error <span class="ot">=</span> (<span class="dv">1</span> <span class="sc">-</span> accuracy) <span class="sc">/</span> (k <span class="sc">-</span> <span class="dv">1</span>)</span>
 <span id="cb55-26"><a href="#cb55-26" aria-hidden="true" tabindex="-1"></a>  misclass_prop <span class="ot">=</span> <span class="fu">matrix</span>(equal_error, <span class="at">nrow =</span> k, <span class="at">ncol =</span> k, </span>
 <span id="cb55-27"><a href="#cb55-27" aria-hidden="true" tabindex="-1"></a>                         <span class="at">dimnames =</span> <span class="fu">list</span>(categories, categories))</span>
 <span id="cb55-28"><a href="#cb55-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diag</span>(misclass_prop) <span class="ot">=</span> accuracy</span>
@@ -1321,7 +1321,7 @@ D 0.05 0.05 0.05 0.80</code></pre>
 <span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> n, <span class="at">accuracy =</span> accuracy)))</span>
 <span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>13.941 sec elapsed</code></pre>
+<pre><code>13.353 sec elapsed</code></pre>
 </div>
 </div>
 </section>

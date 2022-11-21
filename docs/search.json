@@ -648,35 +648,35 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-matrix",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification matrix",
-    "text": "One simulation: Misclassification matrix\n\n# Simple: Equal error rates, equal difficulties, one process\naccuracy = 0.8\nequal_error = (1 - accuracy) / k\nmisclass_prop = matrix(equal_error, nrow = k, ncol = k, \n                       dimnames = list(categories, categories))\ndiag(misclass_prop) = accuracy\nmisclass_prop\n\n     A    B    C    D\nA 0.80 0.05 0.05 0.05\nB 0.05 0.80 0.05 0.05\nC 0.05 0.05 0.80 0.05\nD 0.05 0.05 0.05 0.80"
+    "text": "One simulation: Misclassification matrix\n\n# Simple: Equal error rates, equal difficulties, one process\naccuracy = 0.8\nequal_error = (1 - accuracy) / (k - 1)\nmisclass_prop = matrix(equal_error, nrow = k, ncol = k, \n                       dimnames = list(categories, categories))\ndiag(misclass_prop) = accuracy\nmisclass_prop\n\n           A          B          C          D\nA 0.80000000 0.06666667 0.06666667 0.06666667\nB 0.06666667 0.80000000 0.06666667 0.06666667\nC 0.06666667 0.06666667 0.80000000 0.06666667\nD 0.06666667 0.06666667 0.06666667 0.80000000"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification",
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.022 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.502 0.309 0.114 0.075"
+    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.017 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.483 0.293 0.138 0.086"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nSecond try\n\nLess computational costs at the at category level\n\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.003 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.517 0.299 0.112 0.072"
+    "text": "One simulation: Misclassification\nSecond try\n\nLess computational costs at the at category level\n\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.004 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.496 0.299 0.128 0.077"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-quantification-of-error",
     "href": "qmd/05_misclass_bias.html#one-simulation-quantification-of-error",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Quantification of error",
-    "text": "One simulation: Quantification of error\nRoot mean squared error (RMSE); but which reference?\n\nError due to sampling and misclassification compared to population\n\n\nsqrt(mean((pop_dist - freq_obs)^2)) %>% round(2)\n\n[1] 0.02\n\n\n\nError due to misclassification compared to true values in sample\n\n\nsqrt(mean((freq_true - freq_obs)^2)) %>% round(2)\n\n[1] 0.03\n\n\n\n(Error due to sampling compared to population)\n\n\nsqrt(mean((pop_dist - freq_true)^2)) %>% round(2)\n\n[1] 0.01"
+    "text": "One simulation: Quantification of error\nRoot mean squared error (RMSE); but which reference?\n\nError due to sampling and misclassification compared to population\n\n\nsqrt(mean((pop_dist - freq_obs)^2)) %>% round(2)\n\n[1] 0.03\n\n\n\nError due to misclassification compared to true values in sample\n\n\nsqrt(mean((freq_true - freq_obs)^2)) %>% round(2)\n\n[1] 0.04\n\n\n\n(Error due to sampling compared to population)\n\n\nsqrt(mean((pop_dist - freq_true)^2)) %>% round(2)\n\n[1] 0.01"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#wrap-it-into-a-function",
     "href": "qmd/05_misclass_bias.html#wrap-it-into-a-function",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "Wrap it into a function",
-    "text": "Wrap it into a function\n\nsim_misclass = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),\n                        n = 1000,\n                        accuracy = 0.8) {\n  # Population\n  k = length(pop_dist)\n  categories = LETTERS[1:k]\n  \n  # Sample\n  sample_true = sample(x = categories, \n                       size = n, \n                       replace = TRUE, \n                       prob = pop_dist) %>% \n    factor(levels = categories) %>% \n    sort()\n  freq_true = sample_true %>% \n    table() %>% \n    prop.table()\n  \n  # Misclassification\n  equal_error = (1 - accuracy) / k\n  misclass_prop = matrix(equal_error, nrow = k, ncol = k,\n                         dimnames = list(categories, categories))\n  diag(misclass_prop) = accuracy\n\n  sample_obs = table(sample_true) %>%  \n    imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\n  freq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\n\n  # Error summary\n  rmse = sqrt(mean((pop_dist - freq_obs)^2))\n\n  # Output\n  out = lst(freq_true, freq_obs, rmse)\n  out\n}"
+    "text": "Wrap it into a function\n\nsim_misclass = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),\n                        n = 1000,\n                        accuracy = 0.8) {\n  # Population\n  k = length(pop_dist)\n  categories = LETTERS[1:k]\n  \n  # Sample\n  sample_true = sample(x = categories, \n                       size = n, \n                       replace = TRUE, \n                       prob = pop_dist) %>% \n    factor(levels = categories) %>% \n    sort()\n  freq_true = sample_true %>% \n    table() %>% \n    prop.table()\n  \n  # Misclassification\n  equal_error = (1 - accuracy) / (k - 1)\n  misclass_prop = matrix(equal_error, nrow = k, ncol = k,\n                         dimnames = list(categories, categories))\n  diag(misclass_prop) = accuracy\n\n  sample_obs = table(sample_true) %>%  \n    imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\n  freq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\n\n  # Error summary\n  rmse = sqrt(mean((pop_dist - freq_obs)^2))\n\n  # Output\n  out = lst(freq_true, freq_obs, rmse)\n  out\n}"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#experimental-conditions",
@@ -690,7 +690,7 @@
     "href": "qmd/05_misclass_bias.html#run-simulation-experiment",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "Run simulation experiment",
-    "text": "Run simulation experiment\n\ni = 1000 # less simulations to save some workshop time \nset.seed(39)\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(res = list(sim_misclass(pop_dist = pop_dist, \n                                 n = n, accuracy = accuracy)))\ntoc()\n\n5.386 sec elapsed"
+    "text": "Run simulation experiment\n\ni = 1000 # less simulations to save some workshop time \nset.seed(39)\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(res = list(sim_misclass(pop_dist = pop_dist, \n                                 n = n, accuracy = accuracy)))\ntoc()\n\n5.302 sec elapsed"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#results",
@@ -732,7 +732,7 @@
     "href": "qmd/05_misclass_bias.html#run-simulation-experiment-1",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "Run simulation experiment",
-    "text": "Run simulation experiment\n\ntic()\nsims = conditions %>% \n  rowwise() %>%\n  mutate(res = list(sim_misclass(pop_dist = pop_dist, n = n, accuracy = accuracy)))\ntoc()\n\n14.836 sec elapsed"
+    "text": "Run simulation experiment\n\ntic()\nsims = conditions %>% \n  rowwise() %>%\n  mutate(res = list(sim_misclass(pop_dist = pop_dist, n = n, accuracy = accuracy)))\ntoc()\n\n15.232 sec elapsed"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#measure-for-population-distribution-variation",
@@ -809,14 +809,14 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-matrix-1",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification matrix",
-    "text": "One simulation: Misclassification matrix\nSame as before\n\n# Simple: Equal error rates, equal difficulties, one process\naccuracy = 0.8\nequal_error = (1 - accuracy) / k\nmisclass_prop = matrix(equal_error, nrow = k, ncol = k, \n                       dimnames = list(categories, categories))\ndiag(misclass_prop) = accuracy\nmisclass_prop\n\n     A    B    C    D\nA 0.80 0.05 0.05 0.05\nB 0.05 0.80 0.05 0.05\nC 0.05 0.05 0.80 0.05\nD 0.05 0.05 0.05 0.80"
+    "text": "One simulation: Misclassification matrix\nSame as before\n\n# Simple: Equal error rates, equal difficulties, one process\naccuracy = 0.8\nequal_error = (1 - accuracy) / (k - 1)\nmisclass_prop = matrix(equal_error, nrow = k, ncol = k, \n                       dimnames = list(categories, categories))\ndiag(misclass_prop) = accuracy\nmisclass_prop\n\n           A          B          C          D\nA 0.80000000 0.06666667 0.06666667 0.06666667\nB 0.06666667 0.80000000 0.06666667 0.06666667\nC 0.06666667 0.06666667 0.80000000 0.06666667\nD 0.06666667 0.06666667 0.06666667 0.80000000"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification-2",
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-2",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nSame as before\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.003 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.491 0.280 0.134 0.095"
+    "text": "One simulation: Misclassification\nSame as before\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.004 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.476 0.287 0.142 0.095"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-measure-quantities-of-interest",
@@ -830,7 +830,7 @@
     "href": "qmd/05_misclass_bias.html#wrap-it-into-a-function-1",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "Wrap it into a function",
-    "text": "Wrap it into a function\n\nsim_misclass_test = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),\n                        lambdas = c(3:6),\n                        n = 1000,\n                        accuracy = 0.8) {\n  # Population\n  k = length(pop_dist)\n  categories = LETTERS[1:k]\n  names(lambdas) = categories\n  \n  # True sample\n  sample_true = sample(x = categories, \n                       size = n, \n                       replace = TRUE, \n                       prob = pop_dist) %>% \n    factor(levels = categories) %>% \n    sort()\n  freq_true = sample_true %>% \n    table() %>% \n    prop.table()\n  outcomes = table(sample_true) %>% \n    imap(~ rpois(n = .x, lambda = lambdas[.y])) %>% \n    unlist(use.names = FALSE)\n\n  # Misclassification probabilities\n  equal_error = (1 - accuracy) / k\n  misclass_prop = matrix(equal_error, nrow = k, ncol = k, \n                         dimnames = list(categories, categories))\n  diag(misclass_prop) = accuracy\n  \n  # Misclassification  \n  sample_obs = table(sample_true) %>%  \n    imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\n  freq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\n  \n  # Model\n  ttests_obs = categories[2:k] %>% \n    map(~ t.test(outcomes[sample_obs == \"A\"],\n                 outcomes[sample_obs == .x])) %>% \n    set_names(str_c(\"A_\", categories[2:k]))\n\n  # Error summary for categories\n  rmse = sqrt(mean((pop_dist - freq_obs)^2))\n\n  # Output\n  out = lst(freq_true, freq_obs, rmse,\n            p_obs = ttests_obs %>% \n              map_dbl(~ .x$p.value),\n            diff_obs = ttests_obs %>% \n              map_dbl(~ diff(.x$estimate))\n            )\n  out\n}"
+    "text": "Wrap it into a function\n\nsim_misclass_test = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),\n                        lambdas = c(3:6),\n                        n = 1000,\n                        accuracy = 0.8) {\n  # Population\n  k = length(pop_dist)\n  categories = LETTERS[1:k]\n  names(lambdas) = categories\n  \n  # True sample\n  sample_true = sample(x = categories, \n                       size = n, \n                       replace = TRUE, \n                       prob = pop_dist) %>% \n    factor(levels = categories) %>% \n    sort()\n  freq_true = sample_true %>% \n    table() %>% \n    prop.table()\n  outcomes = table(sample_true) %>% \n    imap(~ rpois(n = .x, lambda = lambdas[.y])) %>% \n    unlist(use.names = FALSE)\n\n  # Misclassification probabilities\n  equal_error = (1 - accuracy) / (k - 1)\n  misclass_prop = matrix(equal_error, nrow = k, ncol = k, \n                         dimnames = list(categories, categories))\n  diag(misclass_prop) = accuracy\n  \n  # Misclassification  \n  sample_obs = table(sample_true) %>%  \n    imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\n  freq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\n  \n  # Model\n  ttests_obs = categories[2:k] %>% \n    map(~ t.test(outcomes[sample_obs == \"A\"],\n                 outcomes[sample_obs == .x])) %>% \n    set_names(str_c(\"A_\", categories[2:k]))\n\n  # Error summary for categories\n  rmse = sqrt(mean((pop_dist - freq_obs)^2))\n\n  # Output\n  out = lst(freq_true, freq_obs, rmse,\n            p_obs = ttests_obs %>% \n              map_dbl(~ .x$p.value),\n            diff_obs = ttests_obs %>% \n              map_dbl(~ diff(.x$estimate))\n            )\n  out\n}"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#experimental-conditions-1",
@@ -844,7 +844,7 @@
     "href": "qmd/05_misclass_bias.html#run-simulation-experiment-2",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "Run simulation experiment",
-    "text": "Run simulation experiment\n\ni = 1000\nset.seed(39)\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(res = list(sim_misclass_test(\n    pop_dist = pop_dist,\n    lambdas = lambdas, \n    n = n, accuracy = accuracy)))\ntoc()\n\n13.941 sec elapsed"
+    "text": "Run simulation experiment\n\ni = 1000\nset.seed(39)\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(res = list(sim_misclass_test(\n    pop_dist = pop_dist,\n    lambdas = lambdas, \n    n = n, accuracy = accuracy)))\ntoc()\n\n13.353 sec elapsed"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#results-3",
