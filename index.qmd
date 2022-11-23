@@ -17,15 +17,15 @@ at the University of Zurich & ETH Zurich, Switzerland
 
 3)  Proof by simulation --- The Central Limit Theorem (CLT) 
     - [Slides](qmd/03_prove.html)
-    - [Pure R Script](https://github.com/bachl/sim/blob/main/R/03_prove.R)
+    - [Pure R Script](R/03_prove.R)
 
 4)  Errors and power --- Torturing the *t*-test
     - [Slides 1](qmd/04_1_errors_power.html), [Slides 2](qmd/04_2_errors_power.html)
-    - [Pure R Script 1](https://github.com/bachl/sim/blob/main/R/04_1_errors_power.R), [Pure R Script 2](https://github.com/bachl/sim/blob/main/R/04_2_errors_power.R)
+    - [Pure R Script 1](R/04_1_errors_power.R), [Pure R Script 2](R/04_2_errors_power.R)
 
 5)  Misclassification and bias --- Messages mismeasured
     - [Slides](qmd/05_misclass_bias.html)
-    - [Pure R Script](https://github.com/bachl/sim/blob/main/R/05_misclass_bias.R)
+    - [Pure R Script](R/05_misclass_bias.R)
 
 6)  Outlook: What's next?
     - [Slides](qmd/06_outlook.html)
