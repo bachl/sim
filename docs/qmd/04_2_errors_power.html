@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-html/tabby.min.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="04_2_errors_power_files/libs/clipboard/clipboard.min.js"></script>
+<script src="04_2_errors_power_files/libs/quarto-html/tabby.min.js"></script>
+<script src="04_2_errors_power_files/libs/quarto-html/popper.min.js"></script>
+<script src="04_2_errors_power_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="04_2_errors_power_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="04_2_errors_power_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="04_2_errors_power_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.1.251">
 
   <meta name="author" content="Marko Bachl">
-  <title>Workshop Data Simulation with Monte Carlo Methods - 4b) Errors and power — Torturing the t-test</title>
+  <title>4b) Errors and power — Torturing the t-test</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="04_2_errors_power_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="04_2_errors_power_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -93,12 +93,12 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link rel="stylesheet" href="04_2_errors_power_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link rel="stylesheet" href="colors.css">
-  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link href="04_2_errors_power_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="04_2_errors_power_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="04_2_errors_power_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="04_2_errors_power_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -404,7 +404,7 @@
 <h2>Traktandenliste</h2>
 <ol type="1">
 <li><p>Introduction &amp; overview</p></li>
-<li><p>Some types and examples of simulation studies</p></li>
+<li><p>Monte Carlo Simulation?</p></li>
 <li><p>Proof by simulation — The Central Limit Theorem (CLT)</p></li>
 <li><p>Errors and power — Torturing the <em>t</em>-test</p></li>
 <li><p>Misclassification and bias — Messages mismeasured</p></li>
@@ -461,11 +461,11 @@
 <section id="additional-practical-considerations" class="slide level2">
 <h2>Additional practical considerations</h2>
 <ul>
-<li><p>How to adapt the simulation function to include different group means?</p></li>
+<li><p>How to adapt the simulation function to include different group means</p></li>
 <li><p>How to adapt the experimental conditions</p>
 <ul>
-<li><p>to include different group means and different total sample sizes?</p></li>
-<li><p>to only include conditions in which the assumptions of Student’s <em>t</em>-test hold?</p></li>
+<li><p>to include different group means and different total sample sizes</p></li>
+<li><p>to include many different levels of the total sample size</p></li>
 </ul></li>
 </ul>
 </section>
@@ -497,10 +497,10 @@
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ttest</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">M_diff =</span> <span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Welch
-[1] 0.1871525
+[1] 0.09194143
 
 $Student
-[1] 0.1871121</code></pre>
+[1] 0.09193348</code></pre>
 </div>
 </div>
 </div>
@@ -635,17 +635,211 @@ NOTE: n is number in *each* group</code></pre>
 </section>
 
 <section>
-<section id="power-estimation-for-welchs-t-test" class="title-slide slide level1 center">
-<h1>Power estimation for Welch’s <em>t</em>-test</h1>
+<section id="a-priori-power-calculation-for-welchs-t-test" class="title-slide slide level1 center">
+<h1><em>a priori</em> Power calculation for Welch’s <em>t</em>-test</h1>
 
 </section>
-<section id="power-estimation-for-welchs-t-test-1" class="slide level2">
-<h2>Power estimation for Welch’s <em>t</em>-test</h2>
+<section id="a-priori-power-calculation-for-welchs-t-test-1" class="slide level2">
+<h2><em>a priori</em> Power calculation for Welch’s <em>t</em>-test</h2>
 <ul>
 <li><p>So far we have learnt that we should prefer Welch’s <em>t</em>-test over Student’s <em>t</em>-test when comparing two group means.</p></li>
-<li><p>Is seems plausible that different group sizes and group standard deviations may influence statistical power.</p></li>
+<li><p>We also know that different group sizes and group standard deviations influence statistical power.</p></li>
 <li><p>However, the standard options for <em>a priori</em> power calculation often do not allow for varying group sizes <em>and</em> varying group <em>SD</em>s.</p></li>
 <li><p>This is a good segue to using Monte Carlo simulation experiments for <em>a priori</em> power calculation with a (seemingly) simple example.</p></li>
+</ul>
+</section>
+<section id="using-a-model-fitted-to-simulated-data-as-power-calculator" class="slide level2">
+<h2>Using a model fitted to simulated data as power calculator</h2>
+<ul>
+<li><p>We start with a simple example: The relationship between sample size and statistical power.</p></li>
+<li><p>For now, we assume equal group sample sizes and group standard deviations.</p></li>
+<li><p>We also limit the example to one effect size.</p></li>
+</ul>
+</section>
+<section id="calculator-adapt-the-simulation-function" class="slide level2">
+<h2>Calculator: Adapt the simulation function</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<ul>
+<li>We no longer need Student’s <em>t</em>-test.
+<ul>
+<li>The output is simply the <em>p</em>-value of Welch’s <em>t</em>-test.</li>
+</ul></li>
+<li>Beyond that, the simulation function stays the same.</li>
+</ul>
+</div><div class="column" style="width:55%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sim_ttest <span class="ot">=</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">GR =</span> <span class="dv">1</span>, <span class="at">SDR =</span> <span class="dv">1</span>, <span class="at">M_diff =</span> <span class="dv">0</span>) {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">=</span> <span class="fu">round</span>(n <span class="sc">/</span> (GR <span class="sc">+</span> <span class="dv">1</span>))</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  n2 <span class="ot">=</span> <span class="fu">round</span>(n1 <span class="sc">*</span> GR)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  sd1 <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  sd2 <span class="ot">=</span> sd1 <span class="sc">*</span> SDR <span class="co"># sd2/sd1</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  g1 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n1, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sd1)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  g2 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n2, <span class="at">mean =</span> M_diff, <span class="at">sd =</span> sd2)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2)<span class="sc">$</span>p.value</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ttest</span>(<span class="at">n =</span> <span class="dv">300</span>, <span class="at">M_diff =</span> <span class="fl">0.4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1350032</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="calculator-adapt-the-experimental-conditions" class="slide level2 smaller">
+<h2>Calculator: Adapt the experimental conditions</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Option 1: more fine-grained factor <code>n</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">expand_grid</span>(<span class="at">GR =</span> <span class="dv">1</span>, </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">SDR =</span> <span class="dv">1</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">n =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">50</span>, <span class="at">to =</span> <span class="dv">500</span>, <span class="at">by =</span> <span class="dv">10</span>),</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">M_diff =</span> <span class="fl">0.4</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"condition"</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">250</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span>i, <span class="sc">~</span> conditions) <span class="sc">%&gt;%</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"sim"</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>conditions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 11,500 × 6
+     sim condition    GR   SDR     n M_diff
+   &lt;int&gt;     &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+ 1     1         1     1     1    50    0.4
+ 2     2         2     1     1    60    0.4
+ 3     3         3     1     1    70    0.4
+ 4     4         4     1     1    80    0.4
+ 5     5         5     1     1    90    0.4
+ 6     6         6     1     1   100    0.4
+ 7     7         7     1     1   110    0.4
+ 8     8         8     1     1   120    0.4
+ 9     9         9     1     1   130    0.4
+10    10        10     1     1   140    0.4
+# … with 11,490 more rows
+# ℹ Use `print(n = ...)` to see more rows</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Option 2: many random draws of <code>n</code> from a distribution</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">250</span><span class="sc">*</span><span class="dv">46</span> <span class="co"># same total number of simulations</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">86</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">sim =</span> <span class="dv">1</span><span class="sc">:</span>i,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">GR =</span> <span class="dv">1</span>, </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">SDR =</span> <span class="dv">1</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">n =</span> <span class="fu">sample</span>(<span class="at">x =</span> <span class="dv">50</span><span class="sc">:</span><span class="dv">500</span>, <span class="at">size =</span> i, <span class="at">replace =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">M_diff =</span> <span class="fl">0.4</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>conditions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 11,500 × 5
+     sim    GR   SDR     n M_diff
+   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
+ 1     1     1     1   244    0.4
+ 2     2     1     1   462    0.4
+ 3     3     1     1   306    0.4
+ 4     4     1     1    78    0.4
+ 5     5     1     1   285    0.4
+ 6     6     1     1   396    0.4
+ 7     7     1     1   419    0.4
+ 8     8     1     1   392    0.4
+ 9     9     1     1   226    0.4
+10    10     1     1   278    0.4
+# … with 11,490 more rows
+# ℹ Use `print(n = ...)` to see more rows</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="calculator-run-simulation" class="slide level2">
+<h2>Calculator: Run simulation</h2>
+<div class="cell" data-hash="04_2_errors_power_cache/revealjs/unnamed-chunk-10_6742bd5bc14597c4d5ed81a6fb0cb421">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>sims <span class="ot">=</span> conditions <span class="sc">%&gt;%</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p.value =</span> <span class="fu">sim_ttest</span>(<span class="at">n =</span> n, <span class="at">M_diff =</span> M_diff, <span class="at">GR =</span> GR, <span class="at">SDR =</span> SDR))</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1.562 sec elapsed</code></pre>
+</div>
+</div>
+</section>
+<section id="calculator-visual-results" class="slide level2">
+<h2>Calculator: Visual results</h2>
+<div class="cell columns column-output-location">
+<div class="column">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p05 =</span> <span class="fu">as.integer</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, p05)) <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"gam"</span>, </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">formula =</span> y <span class="sc">~</span> <span class="fu">s</span>(x, <span class="at">bs =</span> <span class="st">"cr"</span>), </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">method.args =</span> <span class="fu">list</span>(<span class="at">family =</span> <span class="st">"binomial"</span>)) <span class="sc">+</span> </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Power"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column">
+<div class="cell-output-display">
+<p><img data-src="04_2_errors_power_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
+</div>
+</div>
+</div>
+</section>
+<section id="calculator-predict-results-for-any-n" class="slide level2">
+<h2>Calculator: Predict results for any <code>n</code></h2>
+<div class="columns">
+<p>Fit (non-linear) model (here: <code>mgcv::gam</code>)</p><div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>power_mod <span class="ot">=</span> sims <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p05 =</span> <span class="fu">as.integer</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gam</span>(p05 <span class="sc">~</span> <span class="fu">s</span>(n, <span class="at">bs =</span> <span class="st">"cr"</span>), <span class="at">family =</span> binomial, <span class="at">data =</span> .)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column" style="width:50%;">
+<p>Predict power for any <code>n</code> (within range of simulated values!)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">n =</span> <span class="fu">c</span>(<span class="dv">120</span>, <span class="dv">256</span>, <span class="dv">404</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">power =</span> <span class="fu">predict</span>(power_mod, <span class="at">newdata =</span> .,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">type =</span> <span class="st">"response"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+      n power
+  &lt;dbl&gt; &lt;dbl&gt;
+1   120 0.587
+2   256 0.884
+3   404 0.978</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>Check against analytical solution</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">power.t.test</span>(<span class="at">n =</span> <span class="fu">c</span>(<span class="dv">120</span>, <span class="dv">256</span>, <span class="dv">404</span>)<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">delta =</span> <span class="fl">0.4</span>, <span class="at">sd =</span> <span class="dv">1</span>, </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">sig.level =</span> <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+     Two-sample t test power calculation 
+
+              n = 60, 128, 202
+          delta = 0.4
+             sd = 1
+      sig.level = 0.05
+          power = 0.5843645, 0.8902603, 0.9798356
+    alternative = two.sided
+
+NOTE: n is number in *each* group</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="calculator-summary" class="slide level2">
+<h2>Calculator: Summary</h2>
+<ul>
+<li><p>(Trivial) result: Larger sample size, more power</p></li>
+<li><p>General take-away: Using many values instead of few discrete factor levels can be an interesting alternative</p>
+<ul>
+<li>if we know (assume) that there is a fixed functional relationship with the outcome</li>
+<li>if we want to look at an outcome across the whole range of values</li>
+<li>if we want to make predictions across the range of values</li>
+<li>if we evaluate models which need more computational resources</li>
+<li>Not so helpful if discretized after the simulation.</li>
+</ul></li>
 </ul>
 </section>
 <section id="getting-started-some-preliminary-thoughts" class="slide level2">
@@ -690,27 +884,23 @@ NOTE: n is number in *each* group</code></pre>
 <div class="columns">
 <div class="column" style="width:45%;">
 <ul>
-<li><p>We no longer need Student’s <em>t</em>-test.</p>
-<ul>
-<li>The output is simply the <em>p</em>-value of Welch’s <em>t</em>-test.</li>
-</ul></li>
-<li><p>Beyond that, the simulation function stays the same.</p></li>
+<li>We use the same simulation function as before.</li>
 </ul>
 </div><div class="column" style="width:55%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sim_ttest <span class="ot">=</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">GR =</span> <span class="dv">1</span>, <span class="at">SDR =</span> <span class="dv">1</span>, <span class="at">M_diff =</span> <span class="dv">0</span>) {</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">=</span> <span class="fu">round</span>(n <span class="sc">/</span> (GR <span class="sc">+</span> <span class="dv">1</span>))</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  n2 <span class="ot">=</span> <span class="fu">round</span>(n1 <span class="sc">*</span> GR)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  sd1 <span class="ot">=</span> <span class="dv">1</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  sd2 <span class="ot">=</span> sd1 <span class="sc">*</span> SDR <span class="co"># sd2/sd1</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  g1 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n1, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sd1)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  g2 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n2, <span class="at">mean =</span> M_diff, <span class="at">sd =</span> sd2)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2)<span class="sc">$</span>p.value</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ttest</span>(<span class="at">n =</span> <span class="dv">300</span>, <span class="at">M_diff =</span> <span class="fl">0.3</span>, <span class="at">GR =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>sim_ttest <span class="ot">=</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">GR =</span> <span class="dv">1</span>, <span class="at">SDR =</span> <span class="dv">1</span>, <span class="at">M_diff =</span> <span class="dv">0</span>) {</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">=</span> <span class="fu">round</span>(n <span class="sc">/</span> (GR <span class="sc">+</span> <span class="dv">1</span>))</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  n2 <span class="ot">=</span> <span class="fu">round</span>(n1 <span class="sc">*</span> GR)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  sd1 <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  sd2 <span class="ot">=</span> sd1 <span class="sc">*</span> SDR <span class="co"># sd2/sd1</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  g1 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n1, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sd1)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  g2 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n2, <span class="at">mean =</span> M_diff, <span class="at">sd =</span> sd2)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2)<span class="sc">$</span>p.value</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ttest</span>(<span class="at">n =</span> <span class="dv">300</span>, <span class="at">M_diff =</span> <span class="fl">0.3</span>, <span class="at">GR =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1974923</code></pre>
+<pre><code>[1] 0.1476812</code></pre>
 </div>
 </div>
 </div>
@@ -726,18 +916,18 @@ NOTE: n is number in *each* group</code></pre>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">expand_grid</span>(<span class="at">GR =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>), </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">SDR =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">n =</span> <span class="dv">300</span>,</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">M_diff =</span> <span class="fl">0.3</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"condition"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">n1 =</span> <span class="fu">round</span>(n <span class="sc">/</span> (GR <span class="sc">+</span> <span class="dv">1</span>)),</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">n2 =</span> <span class="fu">round</span>(n1 <span class="sc">*</span> GR),</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd1 =</span> <span class="dv">1</span>,</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd2 =</span> sd1 <span class="sc">*</span> SDR</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    ) </span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>conditions <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">expand_grid</span>(<span class="at">GR =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>), </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">SDR =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">n =</span> <span class="dv">300</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">M_diff =</span> <span class="fl">0.3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"condition"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">n1 =</span> <span class="fu">round</span>(n <span class="sc">/</span> (GR <span class="sc">+</span> <span class="dv">1</span>)),</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">n2 =</span> <span class="fu">round</span>(n1 <span class="sc">*</span> GR),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd1 =</span> <span class="dv">1</span>,</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd2 =</span> sd1 <span class="sc">*</span> SDR</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    ) </span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>conditions <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 9 × 5
   condition    GR   SDR     n M_diff
@@ -781,17 +971,17 @@ NOTE: n is number in *each* group</code></pre>
 </section>
 <section id="first-try-run-simulation-experiment" class="slide level2">
 <h2>First try: Run simulation experiment</h2>
-<div class="cell" data-hash="04_2_errors_power_cache/revealjs/unnamed-chunk-9_e354f91bddc56836035c025a8c5a95f3">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7913</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">10000</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>sims <span class="ot">=</span> <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span>i, <span class="sc">~</span> conditions) <span class="sc">%&gt;%</span> <span class="co"># each condition 10,000 times</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"sim"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p.value =</span> <span class="fu">sim_ttest</span>(<span class="at">n =</span> n, <span class="at">M_diff =</span> M_diff, <span class="at">GR =</span> GR, <span class="at">SDR =</span> SDR))</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="04_2_errors_power_cache/revealjs/unnamed-chunk-17_dd54194fa57a82b0c9457d0697ca82d5">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7913</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>sims <span class="ot">=</span> <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span>i, <span class="sc">~</span> conditions) <span class="sc">%&gt;%</span> <span class="co"># each condition 10,000 times</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"sim"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p.value =</span> <span class="fu">sim_ttest</span>(<span class="at">n =</span> n, <span class="at">M_diff =</span> M_diff, <span class="at">GR =</span> GR, <span class="at">SDR =</span> SDR))</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>11.441 sec elapsed</code></pre>
+<pre><code>11.681 sec elapsed</code></pre>
 </div>
 </div>
 </section>
@@ -800,34 +990,34 @@ NOTE: n is number in *each* group</code></pre>
 <div class="cell">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(GR, SDR) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">P_p05 =</span> <span class="fu">mean</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">factor</span>(GR), P_p05, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span> </span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(SDR), <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Group size ratio"</span>, <span class="at">y =</span> <span class="st">"Power"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(GR, SDR) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">P_p05 =</span> <span class="fu">mean</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">factor</span>(GR), P_p05, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(SDR), <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Group size ratio"</span>, <span class="at">y =</span> <span class="st">"Power"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="04_2_errors_power_files/figure-revealjs/unnamed-chunk-10-1.png" width="1152" class="r-stretch"></section>
+<img data-src="04_2_errors_power_files/figure-revealjs/unnamed-chunk-18-1.png" width="1152" class="r-stretch"></section>
 <section id="first-try-results-1" class="slide level2">
 <h2>First try: Results</h2>
 <div class="cell">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(n, M_diff, GR, SDR, n1, n2, sd1, sd2) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">P_p05 =</span> <span class="fu">mean</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">implies =</span> <span class="fu">str_glue</span>(<span class="st">"n_c = {n1}, n_t = {n2}, sd_c = {round(sd1, 2)}, sd_t = {round(sd2, 2)}"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">implies =</span> <span class="fu">fct_reorder</span>(implies, P_p05)) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(P_p05, implies)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Power"</span>, <span class="at">y =</span> <span class="st">"Condition"</span>) <span class="sc">+</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(n, M_diff, GR, SDR, n1, n2, sd1, sd2) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">P_p05 =</span> <span class="fu">mean</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">implies =</span> <span class="fu">str_glue</span>(<span class="st">"n_c = {n1}, n_t = {n2}, sd_c = {round(sd1, 2)}, sd_t = {round(sd2, 2)}"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">implies =</span> <span class="fu">fct_reorder</span>(implies, P_p05)) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(P_p05, implies)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Power"</span>, <span class="at">y =</span> <span class="st">"Condition"</span>) <span class="sc">+</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="04_2_errors_power_files/figure-revealjs/unnamed-chunk-11-1.png" width="1152" class="r-stretch"></section>
+<img data-src="04_2_errors_power_files/figure-revealjs/unnamed-chunk-19-1.png" width="1152" class="r-stretch"></section>
 <section id="first-try-summary" class="slide level2">
 <h2>First try: Summary</h2>
 <ul>
@@ -862,20 +1052,20 @@ NOTE: n is number in *each* group</code></pre>
 </ul>
 </div><div class="column" style="width:55%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>sim_ttest <span class="ot">=</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">pooled_sd =</span> <span class="dv">1</span>, <span class="at">GR =</span> <span class="dv">1</span>, <span class="at">SDR =</span> <span class="dv">1</span>, <span class="at">M_diff =</span> <span class="dv">0</span>) {</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">=</span> <span class="fu">round</span>(n <span class="sc">/</span> (GR <span class="sc">+</span> <span class="dv">1</span>))</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  n2 <span class="ot">=</span> <span class="fu">round</span>(n1 <span class="sc">*</span> GR)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  sd1 <span class="ot">=</span> <span class="fu">sqrt</span>(</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    ((pooled_sd<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> ((n1 <span class="sc">*</span> n2) <span class="sc">/</span> (n1 <span class="sc">+</span> n2)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> M_diff<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> (n1 <span class="sc">+</span> n2)) <span class="sc">/</span> </span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>      (n1 <span class="sc">+</span> n2 <span class="sc">*</span> SDR<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  sd2 <span class="ot">=</span> sd1 <span class="sc">*</span> SDR <span class="co"># sd2/sd1</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  g1 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n1, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sd1)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  g2 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n2, <span class="at">mean =</span> M_diff, <span class="at">sd =</span> sd2)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2)<span class="sc">$</span>p.value</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ttest</span>(<span class="at">n =</span> <span class="dv">300</span>, <span class="at">M_diff =</span> <span class="fl">0.3</span>, <span class="at">GR =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>sim_ttest <span class="ot">=</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">pooled_sd =</span> <span class="dv">1</span>, <span class="at">GR =</span> <span class="dv">1</span>, <span class="at">SDR =</span> <span class="dv">1</span>, <span class="at">M_diff =</span> <span class="dv">0</span>) {</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">=</span> <span class="fu">round</span>(n <span class="sc">/</span> (GR <span class="sc">+</span> <span class="dv">1</span>))</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  n2 <span class="ot">=</span> <span class="fu">round</span>(n1 <span class="sc">*</span> GR)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  sd1 <span class="ot">=</span> <span class="fu">sqrt</span>(</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    ((pooled_sd<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> ((n1 <span class="sc">*</span> n2) <span class="sc">/</span> (n1 <span class="sc">+</span> n2)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> M_diff<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> (n1 <span class="sc">+</span> n2)) <span class="sc">/</span> </span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>      (n1 <span class="sc">+</span> n2 <span class="sc">*</span> SDR<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  sd2 <span class="ot">=</span> sd1 <span class="sc">*</span> SDR <span class="co"># sd2/sd1</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  g1 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n1, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sd1)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  g2 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n2, <span class="at">mean =</span> M_diff, <span class="at">sd =</span> sd2)</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2)<span class="sc">$</span>p.value</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ttest</span>(<span class="at">n =</span> <span class="dv">300</span>, <span class="at">M_diff =</span> <span class="fl">0.3</span>, <span class="at">GR =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.01249033</code></pre>
 </div>
@@ -894,18 +1084,18 @@ NOTE: n is number in *each* group</code></pre>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">expand_grid</span>(<span class="at">GR =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>), </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">SDR =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">pooled_sd =</span> <span class="dv">1</span>,</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">n =</span> <span class="dv">300</span>,</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">M_diff =</span> <span class="fl">0.3</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"condition"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">n1 =</span> <span class="fu">round</span>(n <span class="sc">/</span> (GR <span class="sc">+</span> <span class="dv">1</span>)), <span class="at">n2 =</span> <span class="fu">round</span>(n1 <span class="sc">*</span> GR),</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd1 =</span> <span class="fu">sqrt</span>(((pooled_sd<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> ((n1 <span class="sc">*</span> n2) <span class="sc">/</span> (n1 <span class="sc">+</span> n2)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> M_diff<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> (n1 <span class="sc">+</span> n2)) <span class="sc">/</span> (n1 <span class="sc">+</span> n2 <span class="sc">*</span> SDR<span class="sc">^</span><span class="dv">2</span>)),</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd2 =</span> sd1 <span class="sc">*</span> SDR</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    ) </span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>conditions <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">expand_grid</span>(<span class="at">GR =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>), </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">SDR =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>),</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">pooled_sd =</span> <span class="dv">1</span>,</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">n =</span> <span class="dv">300</span>,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">M_diff =</span> <span class="fl">0.3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"condition"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">n1 =</span> <span class="fu">round</span>(n <span class="sc">/</span> (GR <span class="sc">+</span> <span class="dv">1</span>)), <span class="at">n2 =</span> <span class="fu">round</span>(n1 <span class="sc">*</span> GR),</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd1 =</span> <span class="fu">sqrt</span>(((pooled_sd<span class="sc">^</span><span class="dv">2</span> <span class="sc">-</span> ((n1 <span class="sc">*</span> n2) <span class="sc">/</span> (n1 <span class="sc">+</span> n2)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> M_diff<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> (n1 <span class="sc">+</span> n2)) <span class="sc">/</span> (n1 <span class="sc">+</span> n2 <span class="sc">*</span> SDR<span class="sc">^</span><span class="dv">2</span>)),</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd2 =</span> sd1 <span class="sc">*</span> SDR</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    ) </span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>conditions <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 9 × 6
   condition    GR   SDR pooled_sd     n M_diff
@@ -926,17 +1116,17 @@ NOTE: n is number in *each* group</code></pre>
 </section>
 <section id="second-try-run-simulation-experiment" class="slide level2">
 <h2>Second try: Run simulation experiment</h2>
-<div class="cell" data-hash="04_2_errors_power_cache/revealjs/unnamed-chunk-14_9839b7aeeaa0efa8094ab4f76427c9c3">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">39</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">10000</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>sims <span class="ot">=</span> <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span>i, <span class="sc">~</span> conditions) <span class="sc">%&gt;%</span> <span class="co"># each condition 10,000 times</span></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"sim"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p.value =</span> <span class="fu">sim_ttest</span>(<span class="at">n =</span> n, <span class="at">M_diff =</span> M_diff, <span class="at">GR =</span> GR, <span class="at">SDR =</span> SDR))</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="04_2_errors_power_cache/revealjs/unnamed-chunk-22_2d2a045f3903434c8344498659963ca7">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">39</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>sims <span class="ot">=</span> <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span>i, <span class="sc">~</span> conditions) <span class="sc">%&gt;%</span> <span class="co"># each condition 10,000 times</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"sim"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p.value =</span> <span class="fu">sim_ttest</span>(<span class="at">n =</span> n, <span class="at">M_diff =</span> M_diff, <span class="at">GR =</span> GR, <span class="at">SDR =</span> SDR))</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>11.141 sec elapsed</code></pre>
+<pre><code>13.393 sec elapsed</code></pre>
 </div>
 </div>
 </section>
@@ -945,34 +1135,34 @@ NOTE: n is number in *each* group</code></pre>
 <div class="cell">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(GR, SDR) <span class="sc">%&gt;%</span> </span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">P_p05 =</span> <span class="fu">mean</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">factor</span>(GR), P_p05, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span> </span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(SDR), <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Group size ratio"</span>, <span class="at">y =</span> <span class="st">"Power"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(GR, SDR) <span class="sc">%&gt;%</span> </span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">P_p05 =</span> <span class="fu">mean</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">factor</span>(GR), P_p05, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span> </span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(SDR), <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Group size ratio"</span>, <span class="at">y =</span> <span class="st">"Power"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="04_2_errors_power_files/figure-revealjs/unnamed-chunk-15-1.png" width="1152" class="r-stretch"></section>
+<img data-src="04_2_errors_power_files/figure-revealjs/unnamed-chunk-23-1.png" width="1152" class="r-stretch"></section>
 <section id="second-try-results-1" class="slide level2">
 <h2>Second try: Results</h2>
 <div class="cell">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(n, M_diff, GR, SDR, n1, n2, sd1, sd2) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">P_p05 =</span> <span class="fu">mean</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">implies =</span> <span class="fu">str_glue</span>(<span class="st">"n_c = {n1}, n_t = {n2}, sd_c = {round(sd1, 2)}, sd_t = {round(sd2, 2)}"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">implies =</span> <span class="fu">fct_reorder</span>(implies, P_p05)) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(P_p05, implies)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Power"</span>, <span class="at">y =</span> <span class="st">"Condition"</span>) <span class="sc">+</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(n, M_diff, GR, SDR, n1, n2, sd1, sd2) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">P_p05 =</span> <span class="fu">mean</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">implies =</span> <span class="fu">str_glue</span>(<span class="st">"n_c = {n1}, n_t = {n2}, sd_c = {round(sd1, 2)}, sd_t = {round(sd2, 2)}"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">implies =</span> <span class="fu">fct_reorder</span>(implies, P_p05)) <span class="sc">%&gt;%</span> </span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(P_p05, implies)) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Power"</span>, <span class="at">y =</span> <span class="st">"Condition"</span>) <span class="sc">+</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="04_2_errors_power_files/figure-revealjs/unnamed-chunk-16-1.png" width="1152" class="r-stretch"></section>
+<img data-src="04_2_errors_power_files/figure-revealjs/unnamed-chunk-24-1.png" width="1152" class="r-stretch"></section>
 <section id="second-try-summary" class="slide level2">
 <h2>Second try: Summary</h2>
 <p>XXX</p>
@@ -996,7 +1186,6 @@ NOTE: n is number in *each* group</code></pre>
 <ul>
 <li>Introduce Poisson</li>
 </ul>
-
 <div class="footer footer-default">
 
 </div>
@@ -1005,19 +1194,19 @@ NOTE: n is number in *each* group</code></pre>
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <script src="04_2_errors_power_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="04_2_errors_power_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="04_2_errors_power_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="04_2_errors_power_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="04_2_errors_power_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="04_2_errors_power_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
-  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script src="04_2_errors_power_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="04_2_errors_power_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="04_2_errors_power_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="04_2_errors_power_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

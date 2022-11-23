@@ -288,7 +288,7 @@ sim_misclass = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),
 conditions = expand_grid(
   pop_dist = list(c(0.55, 0.3, 0.1, 0.05)),
   n = 1000,
-  accuracy = seq(from = 0.4, to = 1, by = 0.1) # 1: because I am lazy
+  accuracy = seq(from = 0.4, to = 1, by = 0.1)
   ) %>% 
   rowid_to_column(var = "condition")
 conditions
@@ -504,7 +504,7 @@ sims %>%
 
 - Assignment of random values at each simulation run as an alternative
 
-- Also an option for accuracy (`runif(min = 0.4, 1.0)`) or sample size (`sample(x = 300:2000, replace = TRUE)` or `rdunif(min = 300, max = 2000)`)
+- Also an option for accuracy (`runif(min = 0.4, 1.0)`) or sample size (`sample(x = 300:2000, replace = TRUE)`, see Section 4)
 
 - Most helpful if we want to look at an outcome across the whole range of values. Not so helpful if discretized after the simulation.
 

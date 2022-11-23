@@ -21,7 +21,7 @@ css: colors.css
 ---
 
 ```{r setup, include=FALSE}
-pacman::p_load(knitr, hrbrthemes, extraDistr, tictoc, tidyverse)
+pacman::p_load(knitr, mgcv, hrbrthemes, extraDistr, tictoc, tidyverse)
 set.seed(376)
 ```
 

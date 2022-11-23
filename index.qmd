@@ -17,6 +17,7 @@ at the University of Zurich & ETH Zurich, Switzerland
 
 3)  Proof by simulation --- The Central Limit Theorem (CLT) 
     - [Slides](qmd/03_prove.html)
+    - [Pure R Script](qmd/03_prove.html)
 
 4)  Errors and power --- Torturing the *t*-test
     - [Slides 1](qmd/04_1_errors_power.html), [Slides 2](qmd/04_2_errors_power.html)

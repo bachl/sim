@@ -24,7 +24,7 @@ execute:
 ---
 
 ```{r setup, include=FALSE}
-pacman::p_load(knitr, tictoc, tidyverse)
+pacman::p_load(knitr, mgcv, tictoc, tidyverse)
 theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
                                      axis_title_size = 25,
                                      strip_text_size = 20))
@@ -36,7 +36,7 @@ theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
 
 1)  Introduction & overview
 
-2)  Some types and examples of simulation studies
+2)  Monte Carlo Simulation?
 
 3)  Proof by simulation --- The Central Limit Theorem (CLT)
 
@@ -92,13 +92,13 @@ b)  *A priori* power calculation for Welch's *t*-test
 
 ## Additional practical considerations
 
--   How to adapt the simulation function to include different group means?
+-   How to adapt the simulation function to include different group means
 
 -   How to adapt the experimental conditions
 
-    - to include different group means and different total sample sizes?
+    - to include different group means and different total sample sizes
     
-    - to only include conditions in which the assumptions of Student's *t*-test hold?
+    - to include many different levels of the total sample size
 
 ## Adapt the simulation function
 
@@ -231,17 +231,168 @@ sims %>%
 
 # Questions?
 
-# Power estimation for Welch's *t*-test
+# *A priori* power calculation for Welch's *t*-test
 
-## Power estimation for Welch's *t*-test
+## *a priori* Power calculation for Welch's *t*-test
 
 - So far we have learnt that we should prefer Welch's *t*-test over Student's *t*-test when comparing two group means. 
 
-- Is seems plausible that different group sizes and group standard deviations may influence statistical power.
+- We also know that different group sizes and group standard deviations influence statistical power.
 
 - However, the standard options for *a priori* power calculation often do not allow for varying group sizes *and* varying group *SD*s.
 
 - This is a good segue to using Monte Carlo simulation experiments for *a priori* power calculation with a (seemingly) simple example.
+
+## Using a model fitted to simulated data as power calculator
+
+- We start with a simple example: The relationship between sample size and statistical power.
+
+- For now, we assume equal group sample sizes and group standard deviations.
+
+- We also limit the example to one effect size.
+
+## Calculator: Adapt the simulation function
+
+:::: {.columns}
+
+::: {.column width="45%"}
+- We no longer need Student's *t*-test.
+    - The output is simply the *p*-value of Welch's *t*-test.
+
+- Beyond that, the simulation function stays the same.
+    
+:::
+
+::: {.column width="55%"}
+```{r}
+sim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {
+  n1 = round(n / (GR + 1))
+  n2 = round(n1 * GR)
+  sd1 = 1
+  sd2 = sd1 * SDR # sd2/sd1
+  g1 = rnorm(n = n1, mean = 0, sd = sd1)
+  g2 = rnorm(n = n2, mean = M_diff, sd = sd2)
+  res = t.test(g1, g2)$p.value
+  return(res)
+}
+sim_ttest(n = 300, M_diff = 0.4)
+```
+:::
+
+::::
+
+## Calculator: Adapt the experimental conditions {.smaller}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+Option 1: more fine-grained factor `n`
+
+```{r}
+conditions = expand_grid(GR = 1, 
+                         SDR = 1,
+                         n = seq(from = 50, to = 500, by = 10),
+                         M_diff = 0.4) %>% 
+  rowid_to_column(var = "condition")
+i = 250
+conditions = map_dfr(1:i, ~ conditions) %>%
+  rowid_to_column(var = "sim")
+conditions
+```
+:::
+
+::: {.column width="50%"}
+Option 2: many random draws of `n` from a distribution
+
+```{r}
+i = 250*46 # same total number of simulations
+set.seed(86)
+conditions = tibble(sim = 1:i,
+                    GR = 1, 
+                    SDR = 1,
+                    n = sample(x = 50:500, size = i, replace = TRUE),
+                    M_diff = 0.4)
+conditions
+```
+
+:::
+
+::::
+
+## Calculator: Run simulation
+
+```{r}
+#| cache: true
+tic()
+sims = conditions %>% 
+  rowwise() %>%
+  mutate(p.value = sim_ttest(n = n, M_diff = M_diff, GR = GR, SDR = SDR))
+toc()
+```
+
+
+## Calculator: Visual results
+
+```{r}
+#| output-location: column
+sims %>% 
+  mutate(p05 = as.integer(p.value < 0.05)) %>% 
+  ggplot(aes(n, p05)) +
+  geom_smooth(method = "gam", 
+              formula = y ~ s(x, bs = "cr"), 
+              method.args = list(family = "binomial")) + 
+  labs(y = "Power")
+```
+
+## Calculator: Predict results for any `n`
+
+:::: {.columns}
+
+Fit (non-linear) model (e.g., `mgcv::gam`)
+
+```{r}
+power_mod = sims %>% 
+  mutate(p05 = as.integer(p.value < 0.05)) %>%
+  gam(p05 ~ s(n, bs = "cr"), family = binomial, data = .)
+```
+
+::: {.column width="50%"}
+Predict power for any `n` (within range of simulated values!)
+
+```{r}
+tibble(n = c(120, 256, 404)) %>% 
+  mutate(power = predict(power_mod, newdata = .,
+                         type = "response"))
+```
+:::
+
+::: {.column width="50%"}
+Check against analytical solution
+
+```{r}
+power.t.test(n = c(120, 256, 404)/2,
+             delta = 0.4, sd = 1, 
+             sig.level = 0.05)
+```
+
+:::
+
+::::
+
+## Calculator: Summary
+
+- (Trivial) result: Larger sample size, more power
+
+- General take-away: Using many values instead of few discrete factor levels can be an interesting alternative
+    - if we know (assume) that there is a fixed functional relationship with the outcome
+    - if we want to look at an outcome across the whole range of values
+    - if we want to make predictions across the range of values
+    - if we evaluate models which need more computational resources
+    - Not so helpful if discretized after the simulation.
+
+# Questions?
+
+# *A priori* power calculation for Welch's *t*-test
 
 ## Getting started: Some preliminary thoughts
 
@@ -250,9 +401,7 @@ sims %>%
 - We know less about the role of group sample sizes and group standard deviations differences, so this is what we want to investigate in the simulation.
 
 - We have to think more about how we define the effect size.
-
     - This is generally one of the harder tasks in *a priori* power calculation
-
     - and it becomes more complicated if simple "mean divided by SD" rules of thumb get more ambiguous.
 
 ## Third Simulation study: Power (again) {.smaller}
@@ -282,11 +431,7 @@ sims %>%
 :::: {.columns}
 
 ::: {.column width="45%"}
-- We no longer need Student's *t*-test.
-
-    - The output is simply the *p*-value of Welch's *t*-test.
-
-- Beyond that, the simulation function stays the same.
+- We use the same simulation function as before.
     
 :::
 

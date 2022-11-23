@@ -60,7 +60,7 @@ theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25, axis_title_size = 25))
 
 Monte Carlo Simulation Methods in quantitative (social) science methods research
 
-:   "In a typical application, data are simulated to be consistent with the model structure and/or assumptions underlying the quantitative method under study; models are then fitted to those simulated data and predefined outcome measures of interest are evaluated to gauge the method's performance."
+:   In a typical application, data are simulated to be consistent with the model structure and/or assumptions underlying the quantitative method under study; models are then fitted to those simulated data and predefined outcome measures of interest are evaluated to gauge the method's performance.
 
 ::: aside
 McNeish, D., Lane, S., & Curran, P. (2018). Monte Carlo Simulation Methods. In G. R. Hancock, L. M. Stapleton, & R. O. Mueller (Eds.), The Reviewer's Guide to Quantitative Methods in the Social Sciences (2nd ed.). Routledge.

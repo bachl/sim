@@ -298,7 +298,7 @@
     "href": "qmd/04_2_errors_power.html#traktandenliste",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Traktandenliste",
-    "text": "Traktandenliste\n\nIntroduction & overview\nSome types and examples of simulation studies\nProof by simulation — The Central Limit Theorem (CLT)\nErrors and power — Torturing the t-test\nMisclassification and bias — Messages mismeasured\nOutlook: What’s next?"
+    "text": "Traktandenliste\n\nIntroduction & overview\nMonte Carlo Simulation?\nProof by simulation — The Central Limit Theorem (CLT)\nErrors and power — Torturing the t-test\nMisclassification and bias — Messages mismeasured\nOutlook: What’s next?"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#errors-and-power-torturing-the-t-test",
@@ -333,7 +333,7 @@
     "href": "qmd/04_2_errors_power.html#adapt-the-simulation-function",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Adapt the simulation function",
-    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.1871525\n\n$Student\n[1] 0.1871121"
+    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.4452558\n\n$Student\n[1] 0.4452455"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#adapt-the-experimental-conditions",
