@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-html/tabby.min.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="04_1_errors_power_files/libs/clipboard/clipboard.min.js"></script>
+<script src="04_1_errors_power_files/libs/quarto-html/tabby.min.js"></script>
+<script src="04_1_errors_power_files/libs/quarto-html/popper.min.js"></script>
+<script src="04_1_errors_power_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="04_1_errors_power_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="04_1_errors_power_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="04_1_errors_power_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.1.251">
 
   <meta name="author" content="Marko Bachl">
-  <title>Workshop Data Simulation with Monte Carlo Methods - 4a) Errors and power — Torturing the t-test</title>
+  <title>4a) Errors and power — Torturing the t-test</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="04_1_errors_power_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="04_1_errors_power_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -93,12 +93,12 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link rel="stylesheet" href="04_1_errors_power_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link rel="stylesheet" href="colors.css">
-  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link href="04_1_errors_power_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="04_1_errors_power_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="04_1_errors_power_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="04_1_errors_power_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -695,7 +695,7 @@ $Student
 </section>
 <section id="run-simulation-experiment" class="slide level2">
 <h2>Run simulation experiment</h2>
-<div class="cell" data-hash="04_1_errors_power_cache/revealjs/unnamed-chunk-10_292554a6ea54ad63d619dfddb419d741">
+<div class="cell" data-hash="04_1_errors_power_cache/revealjs/Run simulation experiment_d0fe81e7544abf66021efff17ac03010">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">689</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">10000</span> <span class="co"># number of sim runs per condition</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>() <span class="co"># simple way to measure wall time</span></span>
@@ -706,7 +706,7 @@ $Student
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_longer</span>(p.value, <span class="at">indices_to =</span> <span class="st">"method"</span>)</span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>() <span class="co"># simple way to measure wall time</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>14.832 sec elapsed</code></pre>
+<pre><code>14.949 sec elapsed</code></pre>
 </div>
 </div>
 </section>
@@ -748,7 +748,7 @@ $Student
 </section>
 <section id="results-histogram-of-p-values-output" class="slide level2 output-location-slide"><h2>Results: Histogram of <em>p</em>-values</h2><div class="cell output-location-slide">
 <div class="cell-output-display">
-<p><img data-src="04_1_errors_power_files/figure-revealjs/unnamed-chunk-12-1.png" width="1536"></p>
+<p><img data-src="04_1_errors_power_files/figure-revealjs/Results-%20Histogram%20of%20p-values-1.png" width="1536"></p>
 </div>
 </div></section><section id="results-q-q-plot-of-p-values" class="slide level2">
 <h2>Results: Q-Q-plot of <em>p</em>-values</h2>
@@ -766,7 +766,7 @@ $Student
 </section>
 <section id="results-q-q-plot-of-p-values-output" class="slide level2 output-location-slide"><h2>Results: Q-Q-plot of <em>p</em>-values</h2><div class="cell output-location-slide">
 <div class="cell-output-display">
-<p><img data-src="04_1_errors_power_files/figure-revealjs/unnamed-chunk-13-1.png" width="1536"></p>
+<p><img data-src="04_1_errors_power_files/figure-revealjs/Results-%20Q-Q-plot%20of%20p-values-1.png" width="1536"></p>
 </div>
 </div></section><section id="results-looking-at-the-relevant-tail" class="slide level2 smaller">
 <h2>Results: Looking at the relevant tail</h2>
@@ -904,21 +904,145 @@ $Student
 <h1>Group exercise 2</h1>
 
 </section>
-<section id="exercise-2a." class="slide level2">
-<h2>Exercise 2a.</h2>
+<section id="exercise-2-welchs-t-test-for-count-data" class="slide level2">
+<h2>Exercise 2: Welch’s <em>t</em>-test for count data</h2>
+<h3 id="part-1-false-discovery-rates">Part 1: False discovery rates</h3>
 <ul>
-<li><p>Investigate how the amount of disparity in group sizes and standard deviations changes the results.</p>
+<li><p>It is generally recommended to model count outcomes (e.g., number of likes of social media posts) with <em>Poisson</em> models (or <em>negative binomial</em> models, but that’s for another simulation).</p></li>
+<li><p>However, if we only want to compare two groups on a count outcome, Welch’s <em>t</em>-test might be an easier option and should also do well:</p>
 <ul>
-<li><p>When do the differences between the methods become neglegible?</p></li>
-<li><p>When does the false discovery rate of Student’s <em>t</em>-test become really bad?</p></li>
-</ul></li>
-<li><p>Adapt the experimental setup accordingly.</p>
-<ul>
-<li><p>Change or expand the levels of the GR and SDR factors.</p></li>
-<li><p>Consider changing the experimental design to make the simulation more efficient.</p></li>
+<li>The mean is a consistent estimator of the rate parameter (CLT; see exercise 1a).</li>
+<li>Welch’s <em>t</em>-test is robust if the group standard deviations are unequal, which, by definition, would be the case if the counted event occurred at different rates in the two groups.</li>
 </ul></li>
 </ul>
-
+</section>
+<section id="exercise-2a-false-discovery-rates" class="slide level2">
+<h2>Exercise 2a: False discovery rates</h2>
+<ul>
+<li><p>We can test this assumption by simulation, similar to the comparison of Student’s and Welch’s <em>t</em>-test. More specifically, we first want to compare the false discovery rates of</p>
+<ul>
+<li>Student’s <em>t</em>-test,</li>
+<li>Welch’s <em>t</em>-test, and</li>
+<li>Poisson regression with a dummy predictor</li>
+</ul></li>
+<li><p>if the true data generating process is drawing from a Poisson distribution.</p></li>
+<li><p>Extend and adapt the previous simulation.</p></li>
+</ul>
+</section>
+<section id="exercise-2a-help" class="slide level2 scrollable">
+<h2>Exercise 2a: Help</h2>
+<h3 id="expand-if-you-need-help.">Expand if you need help.</h3>
+<h3 id="dont-expand-if-you-want-to-figure-it-out-by-yourself.">Don’t expand if you want to figure it out by yourself.</h3>
+<h3 id="scroll-down-if-you-need-more-help-on-later-steps.">Scroll down if you need more help on later steps.</h3>
+<p>Sample from a Poisson distribution</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpois</span>(<span class="at">n =</span> n1, <span class="at">lambda =</span> lambda1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Poisson regression</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glm</span>(outcome <span class="sc">~</span> group, <span class="at">data =</span> data, <span class="at">family =</span> poisson)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Data format for Poisson regression</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">outcome =</span> <span class="fu">c</span>(g1, g2),</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">group =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"g1"</span>, n1), <span class="fu">rep</span>(<span class="st">"g2"</span>, n2)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Extract <em>p</em>-value from fitted Poisson regression object</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>GLM <span class="ot">=</span> <span class="fu">glm</span>(outcome <span class="sc">~</span> group, <span class="at">data =</span> data, <span class="at">family =</span> poisson)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">summary</span>(GLM))[<span class="dv">2</span>, <span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Complete simulation function</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># No standard deviation ratio any more because SD fixed at sqrt(lambda)</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># M_diff not necessary at this stage, but useful later</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>sim_ttest_glm <span class="ot">=</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">GR =</span> <span class="dv">1</span>, <span class="at">lambda1 =</span> <span class="dv">1</span>, <span class="at">M_diff =</span> <span class="dv">0</span>) {</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">=</span> <span class="fu">round</span>(n <span class="sc">/</span> (GR <span class="sc">+</span> <span class="dv">1</span>))</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  n2 <span class="ot">=</span> <span class="fu">round</span>(n1 <span class="sc">*</span> GR)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  lambda2 <span class="ot">=</span> lambda1 <span class="sc">+</span> M_diff</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  g1 <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n =</span> n1, <span class="at">lambda =</span> lambda1)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  g2 <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n =</span> n2, <span class="at">lambda =</span> lambda2)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  Welch <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2)<span class="sc">$</span>p.value</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  Student <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  GLM <span class="ot">=</span> <span class="fu">glm</span>(outcome <span class="sc">~</span> group,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">outcome =</span> <span class="fu">c</span>(g1, g2),</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>                              <span class="at">group =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"g1"</span>, n1), <span class="fu">rep</span>(<span class="st">"g2"</span>, n2))),</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> poisson)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">=</span> <span class="fu">lst</span>(Welch, Student, <span class="at">GLM =</span> <span class="fu">coef</span>(<span class="fu">summary</span>(GLM))[<span class="dv">2</span>, <span class="dv">4</span>])</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Conditions</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># It makes sense to vary group size ratio and lambda</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">expand_grid</span>(<span class="at">GR =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>), </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">n =</span> <span class="dv">600</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">lambda1 =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">20</span>),</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">M_diff =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"condition"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Run simulation</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use smaller i for now because additional glm() needs time</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">35</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">1000</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>sims <span class="ot">=</span> <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span>i, <span class="sc">~</span> conditions) <span class="sc">%&gt;%</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"sim"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p.value =</span> <span class="fu">list</span>(<span class="fu">sim_ttest_glm</span>(<span class="at">n =</span> n, <span class="at">M_diff =</span> M_diff,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">GR =</span> GR, <span class="at">lambda1 =</span> lambda1))) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_longer</span>(p.value, <span class="at">indices_to =</span> <span class="st">"method"</span>)</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Plots</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Histogram of p-values</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(p.value)) <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.1</span>, <span class="at">boundary =</span> <span class="dv">0</span>) <span class="sc">+</span> </span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(method <span class="sc">~</span> lambda1 <span class="sc">+</span> GR, <span class="at">labeller =</span> label_both) <span class="sc">+</span> </span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)<span class="sc">/</span><span class="dv">4</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># QQ-Plot of p-values</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> p.value, <span class="at">color =</span> method)) <span class="sc">+</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>(<span class="at">distribution =</span> stats<span class="sc">::</span>qunif, <span class="at">geom =</span> <span class="st">"line"</span>) <span class="sc">+</span> </span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(GR <span class="sc">~</span> lambda1, <span class="at">labeller =</span> label_both)</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Rates of p &lt; .05</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(GR, lambda1, method) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">P_p05 =</span> <span class="fu">mean</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">factor</span>(GR), P_p05, <span class="at">color =</span> method, <span class="at">group =</span> method)) <span class="sc">+</span> </span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> </span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.05</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(lambda1), <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Group size ratio"</span>, <span class="at">y =</span> <span class="st">"Proportion p &lt; 0.05"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 <div class="footer footer-default">
 
 </div>
@@ -927,19 +1051,19 @@ $Student
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <script src="04_1_errors_power_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="04_1_errors_power_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="04_1_errors_power_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="04_1_errors_power_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="04_1_errors_power_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="04_1_errors_power_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
-  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script src="04_1_errors_power_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="04_1_errors_power_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="04_1_errors_power_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="04_1_errors_power_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

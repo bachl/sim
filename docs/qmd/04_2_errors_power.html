@@ -497,10 +497,10 @@
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ttest</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">M_diff =</span> <span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Welch
-[1] 0.09194143
+[1] 0.1133727
 
 $Student
-[1] 0.09193348</code></pre>
+[1] 0.1131849</code></pre>
 </div>
 </div>
 </div>
@@ -636,7 +636,7 @@ NOTE: n is number in *each* group</code></pre>
 
 <section>
 <section id="a-priori-power-calculation-for-welchs-t-test" class="title-slide slide level1 center">
-<h1><em>a priori</em> Power calculation for Welch’s <em>t</em>-test</h1>
+<h1><em>A priori</em> power calculation for Welch’s <em>t</em>-test</h1>
 
 </section>
 <section id="a-priori-power-calculation-for-welchs-t-test-1" class="slide level2">
@@ -786,7 +786,7 @@ NOTE: n is number in *each* group</code></pre>
 <section id="calculator-predict-results-for-any-n" class="slide level2">
 <h2>Calculator: Predict results for any <code>n</code></h2>
 <div class="columns">
-<p>Fit (non-linear) model (here: <code>mgcv::gam</code>)</p><div class="cell">
+<p>Fit (non-linear) model (e.g., <code>mgcv::gam</code>)</p><div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>power_mod <span class="ot">=</span> sims <span class="sc">%&gt;%</span> </span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p05 =</span> <span class="fu">as.integer</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gam</span>(p05 <span class="sc">~</span> <span class="fu">s</span>(n, <span class="at">bs =</span> <span class="st">"cr"</span>), <span class="at">family =</span> binomial, <span class="at">data =</span> .)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -841,6 +841,16 @@ NOTE: n is number in *each* group</code></pre>
 <li>Not so helpful if discretized after the simulation.</li>
 </ul></li>
 </ul>
+</section></section>
+<section id="questions-1" class="title-slide slide level1 center">
+<h1>Questions?</h1>
+
+</section>
+
+<section>
+<section id="a-priori-power-calculation-for-welchs-t-test-2" class="title-slide slide level1 center">
+<h1><em>A priori</em> power calculation for Welch’s <em>t</em>-test</h1>
+
 </section>
 <section id="getting-started-some-preliminary-thoughts" class="slide level2">
 <h2>Getting started: Some preliminary thoughts</h2>
@@ -849,8 +859,8 @@ NOTE: n is number in *each* group</code></pre>
 <li><p>We know less about the role of group sample sizes and group standard deviations differences, so this is what we want to investigate in the simulation.</p></li>
 <li><p>We have to think more about how we define the effect size.</p>
 <ul>
-<li><p>This is generally one of the harder tasks in <em>a priori</em> power calculation</p></li>
-<li><p>and it becomes more complicated if simple “mean divided by SD” rules of thumb get more ambiguous.</p></li>
+<li>This is generally one of the harder tasks in <em>a priori</em> power calculation</li>
+<li>and it becomes more complicated if simple “mean divided by SD” rules of thumb get more ambiguous.</li>
 </ul></li>
 </ul>
 </section>
@@ -1171,7 +1181,7 @@ NOTE: n is number in *each* group</code></pre>
 <h2>Simulation for <em>a priori</em> power calculation: Summary</h2>
 <p>XXX</p>
 </section></section>
-<section id="questions-1" class="title-slide slide level1 center">
+<section id="questions-2" class="title-slide slide level1 center">
 <h1>Questions?</h1>
 
 </section>

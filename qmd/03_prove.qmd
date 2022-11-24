@@ -286,7 +286,9 @@ d_many_means %>%
 
 d_many_means %>% 
   ggplot(aes(sample = many_means)) +
-  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + 
+  geom_qq(distribution = qnorm,
+          dparams = c(mean = mu, sd = sigma / sqrt(n)), 
+          geom = "line") + 
   geom_abline(slope = 1)
 ```
 
@@ -357,7 +359,9 @@ d_many_means %>%
 
 d_many_means %>% 
   ggplot(aes(sample = many_means)) +
-  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + 
+  geom_qq(distribution = qnorm, 
+          dparams = c(mean = mu, sd = sigma / sqrt(n)),
+          geom = "line") + 
   geom_abline(slope = 1)
 ```
 
@@ -429,7 +433,9 @@ d_many_means %>%
 
 d_many_means %>% 
   ggplot(aes(sample = many_means)) +
-  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + 
+  geom_qq(distribution = qnorm, 
+          dparams = c(mean = mu, sd = sigma / sqrt(n)),
+          geom = "line") + 
   geom_abline(slope = 1)
 ```
 
@@ -548,7 +554,9 @@ d_many_means %>%
 
 d_many_means %>% 
   ggplot(aes(sample = many_means)) +
-  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + 
+  geom_qq(distribution = qnorm, 
+          dparams = c(mean = mu, sd = sigma / sqrt(n)), 
+          geom = "line") + 
   geom_abline(slope = 1)
 ```
 
@@ -608,6 +616,8 @@ d_many_means %>%
 
 d_many_means %>% 
   ggplot(aes(sample = many_means)) +
-  geom_qq(distribution = qnorm, dparams = c(mean = mu, sd = sigma / sqrt(n))) + 
+  geom_qq(distribution = qnorm, 
+          dparams = c(mean = mu, sd = sigma / sqrt(n)), 
+          geom = "line") + 
   geom_abline(slope = 1)
 ```
