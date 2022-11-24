@@ -576,9 +576,9 @@ sample estimates:
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  sd2 <span class="ot">=</span> sd1 <span class="sc">*</span> SDR</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  g1 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n1, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sd1)</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  g2 <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="at">n =</span> n2, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sd2)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  welch <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2)<span class="sc">$</span>p.value</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  student <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">=</span> <span class="fu">list</span>(<span class="st">"Welch"</span> <span class="ot">=</span> welch, <span class="st">"Student"</span> <span class="ot">=</span> student)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  Welch <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2)<span class="sc">$</span>p.value</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  Student <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2, <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">=</span> <span class="fu">lst</span>(Welch, Student)</span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

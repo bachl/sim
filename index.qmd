@@ -18,10 +18,16 @@ at the University of Zurich & ETH Zurich, Switzerland
 3)  Proof by simulation --- The Central Limit Theorem (CLT) 
     - [Slides](qmd/03_prove.html)
     - [Pure R Script](R/03_prove.R)
+    - [Solution Exercise 1 - Compiled](qmd/03_solution.html)
+    - [Solution Exercise 1 - Pure R Script](R/03_solutuin.R)
 
 4)  Errors and power --- Torturing the *t*-test
-    - [Slides 1](qmd/04_1_errors_power.html), [Slides 2](qmd/04_2_errors_power.html)
-    - [Pure R Script 1](R/04_1_errors_power.R), [Pure R Script 2](R/04_2_errors_power.R)
+    - [Slides 1](qmd/04_1_errors_power.html)
+    - [Pure R Script 1](R/04_1_errors_power.R)
+    - [Solution Exercise 2a - Compiled](qmd/04_1_solution.html)
+    - [Solution Exercise 2a - Pure R Script](R/04_1_solution.R)
+    - [Slides 2](qmd/04_2_errors_power.html)
+    - [Pure R Script 2](R/04_2_errors_power.R)
 
 5)  Misclassification and bias --- Messages mismeasured
     - [Slides](qmd/05_misclass_bias.html)

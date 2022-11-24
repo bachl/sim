@@ -164,9 +164,9 @@ sim_ttest = function(GR = 1, SDR = 1, n = 150) {
   sd2 = sd1 * SDR
   g1 = rnorm(n = n1, mean = 0, sd = sd1)
   g2 = rnorm(n = n2, mean = 0, sd = sd2)
-  welch = t.test(g1, g2)$p.value
-  student = t.test(g1, g2, var.equal = TRUE)$p.value
-  res = list("Welch" = welch, "Student" = student)
+  Welch = t.test(g1, g2)$p.value
+  Student = t.test(g1, g2, var.equal = TRUE)$p.value
+  res = lst(Welch, Student)
   return(res)
 }
 ```

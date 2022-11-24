@@ -60,7 +60,7 @@
     "href": "qmd/03_prove.html#rnorm---draw-random-numbers-from-a-normal-distribution",
     "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
     "section": "rnorm() - draw random numbers from a normal distribution",
-    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -0.3828791  0.8628313  1.7739935  0.4170618 -0.6089144  1.1549153\n [7]  0.3499363  0.1257045 -1.3150905 -0.5540941\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1]  0.6581709 -1.0137935 -1.1754614 -0.8097367 -1.1343982 -0.6183602\n [7]  1.0305854 -0.0106697 -1.3310140  0.9996059"
+    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -1.07327226 -0.56317631  0.01966228  0.68834542  0.59617284  0.87172074\n [7]  1.74279548  0.27639863  0.17916018  2.02025869\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1]  0.4798833 -0.9771245  0.3432327 -1.4342320 -0.9623215  0.6048969\n [7]  0.6404609 -1.6245319  0.6361636  0.7881241"
   },
   {
     "objectID": "qmd/03_prove.html#always-use-set.seed-to-make-simulation-results-reproducible",
@@ -193,7 +193,7 @@
     "href": "qmd/03_prove.html#proof-by-simulation-12",
     "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
     "section": "Proof by simulation",
-    "text": "Proof by simulation\n\nSimulation for a uniform distribution.\n\n\n# new function\nsim_CLT_binom = function(n, prob_one) {\n  sims = rbinom(n = n, size = 1, prob = prob_one)\n  mean(sims) # mean = prop(1)\n}\ni = 10000\nmany_means = map_dbl(1:i, .f = ~ sim_CLT_binom(n = n, prob_one = prob_one))"
+    "text": "Proof by simulation\n\nSimulation for a uniform distribution.\n\n\nsim_CLT_binom = function(n, prob_one) {\n  sims = rbinom(n = n, size = 1, prob = prob_one)\n  mean(sims) # mean = prop(1)\n}\ni = 10000\nmany_means = map_dbl(1:i, .f = ~ sim_CLT_binom(n = n, prob_one = prob_one))"
   },
   {
     "objectID": "qmd/03_prove.html#proof-by-simulation-13",
@@ -238,62 +238,6 @@
     "text": "Exercise 1b. Proving the CLT for any other suitable distribution\n\nSelect another suitable distribution from ?Distributions\n\nRead the documentation to understand which arguments must be provided.\nFind the definition of the population distribution’s standard deviation to calculate the analytical standard deviation of the sampling distribution.\nAdapt the simulation and analysis code accordingly."
   },
   {
-    "objectID": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution",
-    "href": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution",
-    "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
-    "section": "Solution 1a: Proving the CLT for a Poisson distribution",
-    "text": "Solution 1a: Proving the CLT for a Poisson distribution\n\n\n# Population distribution: Poisson\nset.seed(825) # make results reproducible \nlambda = 5\nn = 100\nmu = lambda\nsigma = sqrt(lambda)\nggplot() + \n  stat_function(fun = dpois,\n                n = 16,\n                xlim = c(0,15),\n                args = list(lambda = lambda),\n                geom = \"bar\") + \n  geom_vline(xintercept = mu) + labs(x = NULL)"
-  },
-  {
-    "objectID": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution-1",
-    "href": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution-1",
-    "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
-    "section": "Solution 1a: Proving the CLT for a Poisson distribution",
-    "text": "Solution 1a: Proving the CLT for a Poisson distribution\n\n# new function\nsim_CLT_pois = function(n, lambda) {\n  sims = rpois(n = n, lambda = lambda)\n  mean(sims)\n}\ni = 10000\nmany_means = map_dbl(1:i, .f = ~ sim_CLT_pois(n = n, lambda = lambda))"
-  },
-  {
-    "objectID": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution-2",
-    "href": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution-2",
-    "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
-    "section": "Solution 1a: Proving the CLT for a Poisson distribution",
-    "text": "Solution 1a: Proving the CLT for a Poisson distribution\n\nmu; mean(many_means)\n\n[1] 5\n\n\n[1] 4.997543\n\nsigma / sqrt(n); sd(many_means)\n\n[1] 0.2236068\n\n\n[1] 0.2214916"
-  },
-  {
-    "objectID": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution-3",
-    "href": "qmd/03_prove.html#solution-1a-proving-the-clt-for-a-poisson-distribution-3",
-    "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
-    "section": "Solution 1a: Proving the CLT for a Poisson distribution",
-    "text": "Solution 1a: Proving the CLT for a Poisson distribution\n\n\nShow the code\nd_many_means = tibble(sim = 1:i, mu_hat = many_means)\nd_many_means %>% \n  ggplot(aes(mu_hat)) + geom_histogram() + \n  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +\n  geom_vline(xintercept = c(mean(many_means)-sd(many_means),\n                            mean(many_means),\n                            mean(many_means)+sd(many_means)), \n             color = \"red\", linetype = 2)\nd_many_means %>% \n  ggplot(aes(sample = many_means)) +\n  geom_qq(distribution = qnorm, \n          dparams = c(mean = mu, sd = sigma / sqrt(n)), \n          geom = \"line\") + \n  geom_abline(slope = 1)\n\n\n\n\n\n\n\nHistogram of sample means\n\n\n\n\n\n\n\nQ-Q-Plot"
-  },
-  {
-    "objectID": "qmd/03_prove.html#one-possible-solution-for-1b.-proving-the-clt-for-a-student-t-distribution",
-    "href": "qmd/03_prove.html#one-possible-solution-for-1b.-proving-the-clt-for-a-student-t-distribution",
-    "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
-    "section": "One possible solution for 1b. Proving the CLT for a Student T distribution",
-    "text": "One possible solution for 1b. Proving the CLT for a Student T distribution\n\n\nset.seed(951) # make results reproducible \ndf = 5 # degrees of freedom\nn = 100\nmu = 0 # Central T\nsigma = sqrt(df/(df - 2)) # Standard deviation of a T distribution\nggplot() + \n  stat_function(fun = dt,\n                args = list(df = df),\n                xlim = c(-3,3)) + \n  geom_vline(xintercept = mu) + labs(x = NULL)"
-  },
-  {
-    "objectID": "qmd/03_prove.html#solution-1b.-proving-the-clt-for-a-student-t-distribution",
-    "href": "qmd/03_prove.html#solution-1b.-proving-the-clt-for-a-student-t-distribution",
-    "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
-    "section": "Solution 1b. Proving the CLT for a Student T distribution",
-    "text": "Solution 1b. Proving the CLT for a Student T distribution\n\n# new function\nsim_CLT_t = function(n, df) {\n  sims = rt(n = n, df = df)\n  mean(sims)\n}\ni = 10000\nmany_means = map_dbl(1:i, .f = ~ sim_CLT_t(n = n, df = df))"
-  },
-  {
-    "objectID": "qmd/03_prove.html#solution-1b.-proving-the-clt-for-a-student-t-distribution-1",
-    "href": "qmd/03_prove.html#solution-1b.-proving-the-clt-for-a-student-t-distribution-1",
-    "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
-    "section": "Solution 1b. Proving the CLT for a Student T distribution",
-    "text": "Solution 1b. Proving the CLT for a Student T distribution\n\nmu; mean(many_means)\n\n[1] 0\n\n\n[1] 0.0004013506\n\nsigma / sqrt(n); sd(many_means)\n\n[1] 0.1290994\n\n\n[1] 0.1288953"
-  },
-  {
-    "objectID": "qmd/03_prove.html#solution-1b.-proving-the-clt-for-a-student-t-distribution-2",
-    "href": "qmd/03_prove.html#solution-1b.-proving-the-clt-for-a-student-t-distribution-2",
-    "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
-    "section": "Solution 1b. Proving the CLT for a Student T distribution",
-    "text": "Solution 1b. Proving the CLT for a Student T distribution\n\n\nShow the code\nd_many_means = tibble(sim = 1:i, mu_hat = many_means)\nd_many_means %>% \n  ggplot(aes(mu_hat)) + geom_histogram() + \n  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +\n  geom_vline(xintercept = c(mean(many_means)-sd(many_means),\n                            mean(many_means),\n                            mean(many_means)+sd(many_means)), \n             color = \"red\", linetype = 2)\nd_many_means %>% \n  ggplot(aes(sample = many_means)) +\n  geom_qq(distribution = qnorm, \n          dparams = c(mean = mu, sd = sigma / sqrt(n)), \n          geom = \"line\") + \n  geom_abline(slope = 1)\n\n\n\n\n\n\n\nHistogram of sample means\n\n\n\n\n\n\n\nQ-Q-Plot"
-  },
-  {
     "objectID": "qmd/04_2_errors_power.html#traktandenliste",
     "href": "qmd/04_2_errors_power.html#traktandenliste",
     "title": "4b) Errors and power — Torturing the t-test",
@@ -333,7 +277,7 @@
     "href": "qmd/04_2_errors_power.html#adapt-the-simulation-function",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Adapt the simulation function",
-    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.3266367\n\n$Student\n[1] 0.3265895"
+    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.1790815\n\n$Student\n[1] 0.1790123"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#adapt-the-experimental-conditions",
@@ -704,14 +648,14 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.016 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.483 0.293 0.138 0.086"
+    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.02 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.483 0.293 0.138 0.086"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nSecond try\n\nLess computational costs at the at category level\n\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.003 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.496 0.299 0.128 0.077"
+    "text": "One simulation: Misclassification\nSecond try\n\nLess computational costs at the at category level\n\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.004 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.496 0.299 0.128 0.077"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-quantification-of-error",
@@ -865,7 +809,7 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-2",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nSame as before\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.003 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.476 0.287 0.142 0.095"
+    "text": "One simulation: Misclassification\nSame as before\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.004 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.476 0.287 0.142 0.095"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-measure-quantities-of-interest",
@@ -929,6 +873,83 @@
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "Group exercise 3",
     "text": "Group exercise 3\nTry one (or more) of the following adaptions of the Monte Carlo studies on misclassification:\n\nChange the misclassification probabilities to allow for different patterns accuracies and errors: varying difficulties of the categories, systematic confusion of some categories.\nChange the analysis to a cross-table of two categorical variables which were both measured with misclassification error.\nBased on the second simulation study, design an experiment to systematically investigate the role of group size, group means and variances, and accuracy. Also take their interactions into account."
+  },
+  {
+    "objectID": "qmd/04_1_solution.html#exercise-2-welchs-t-test-for-count-data",
+    "href": "qmd/04_1_solution.html#exercise-2-welchs-t-test-for-count-data",
+    "title": "Solution Exercise 2a",
+    "section": "Exercise 2: Welch’s t-test for count data",
+    "text": "Exercise 2: Welch’s t-test for count data\nPart 1: False discovery rates\n\nIt is generally recommended to model count outcomes (e.g., number of likes of social media posts) with Poisson models (or negative binomial models, but that’s for another simulation).\nHowever, if we only want to compare two groups on a count outcome, Welch’s t-test might be an easier option and should also do well:\n\nThe mean is a consistent estimator of the rate parameter (CLT; see exercise 1a).\nWelch’s t-test is robust if the group standard deviations are unequal, which, by definition, would be the case if the counted event occurred at different rates in the two groups."
+  },
+  {
+    "objectID": "qmd/04_1_solution.html#exercise-2a-false-discovery-rates",
+    "href": "qmd/04_1_solution.html#exercise-2a-false-discovery-rates",
+    "title": "Solution Exercise 2a",
+    "section": "Exercise 2a: False discovery rates",
+    "text": "Exercise 2a: False discovery rates\n\nWe can test this assumption by simulation, similar to the comparison of Student’s and Welch’s t-test. More specifically, we first want to compare the false discovery rates of\n\nStudent’s t-test,\nWelch’s t-test, and\nPoisson regression with a dummy predictor\n\nif the true data generating process is drawing from a Poisson distribution.\nExtend and adapt the previous simulation."
+  },
+  {
+    "objectID": "qmd/04_1_solution.html#simulation-function",
+    "href": "qmd/04_1_solution.html#simulation-function",
+    "title": "Solution Exercise 2a",
+    "section": "Simulation function",
+    "text": "Simulation function\n\n# No standard deviation ratio any more because SD fixed at sqrt(lambda)\n# M_diff not necessary at this stage, but useful later\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  Student = t.test(g1, g2, var.equal = TRUE)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, Student, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm()\n\n$Welch\n[1] 0.5558085\n\n$Student\n[1] 0.5557975\n\n$GLM\n[1] 0.6049261"
+  },
+  {
+    "objectID": "qmd/04_1_solution.html#conditions",
+    "href": "qmd/04_1_solution.html#conditions",
+    "title": "Solution Exercise 2a",
+    "section": "Conditions",
+    "text": "Conditions\n\n\n# It makes sense to vary group size ratio and lambda\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         n = 600,\n                         lambda1 = c(1, 10, 20),\n                         M_diff = 0) %>% \n  rowid_to_column(var = \"condition\")\nconditions\n\n\n# A tibble: 9 × 5\n  condition    GR     n lambda1 M_diff\n      <int> <dbl> <dbl>   <dbl>  <dbl>\n1         1   0.5   600       1      0\n2         2   0.5   600      10      0\n3         3   0.5   600      20      0\n4         4   1     600       1      0\n5         5   1     600      10      0\n6         6   1     600      20      0\n7         7   2     600       1      0\n8         8   2     600      10      0\n9         9   2     600      20      0"
+  },
+  {
+    "objectID": "qmd/04_1_solution.html#run-simulation",
+    "href": "qmd/04_1_solution.html#run-simulation",
+    "title": "Solution Exercise 2a",
+    "section": "Run simulation",
+    "text": "Run simulation\n\n# use smaller i for now because additional glm() needs time\nset.seed(35)\ni = 1000\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(p.value = list(sim_ttest_glm(n = n, M_diff = M_diff,\n                                 GR = GR, lambda1 = lambda1))) %>% \n  unnest_longer(p.value, indices_to = \"method\")\ntoc()\n\n29.318 sec elapsed"
+  },
+  {
+    "objectID": "qmd/04_1_solution.html#results-histogram-of-p-values",
+    "href": "qmd/04_1_solution.html#results-histogram-of-p-values",
+    "title": "Solution Exercise 2a",
+    "section": "Results: Histogram of p-values",
+    "text": "Results: Histogram of p-values\n\nsims %>% \n  ggplot(aes(p.value)) +\n  geom_histogram(binwidth = 0.1, boundary = 0) + \n  facet_grid(method ~ lambda1 + GR, labeller = label_both) + \n  scale_x_continuous(breaks = c(1, 3)/4)"
+  },
+  {
+    "objectID": "qmd/04_1_solution.html#results-histogram-of-p-values-output",
+    "href": "qmd/04_1_solution.html#results-histogram-of-p-values-output",
+    "title": "Solution Exercise 2a",
+    "section": "Results: Histogram of p-values",
+    "text": "Results: Histogram of p-values"
+  },
+  {
+    "objectID": "qmd/04_1_solution.html#results-qq-plot-of-p-values",
+    "href": "qmd/04_1_solution.html#results-qq-plot-of-p-values",
+    "title": "Solution Exercise 2a",
+    "section": "Results: QQ-Plot of p-values",
+    "text": "Results: QQ-Plot of p-values\n\nsims %>% \n  ggplot(aes(sample = p.value, color = method)) +\n  geom_qq(distribution = stats::qunif, geom = \"line\") + \n  geom_abline(slope = 1) + \n  facet_grid(GR ~ lambda1, labeller = label_both)"
+  },
+  {
+    "objectID": "qmd/04_1_solution.html#results-qq-plot-of-p-values-output",
+    "href": "qmd/04_1_solution.html#results-qq-plot-of-p-values-output",
+    "title": "Solution Exercise 2a",
+    "section": "Results: QQ-Plot of p-values",
+    "text": "Results: QQ-Plot of p-values"
+  },
+  {
+    "objectID": "qmd/04_1_solution.html#results-rates-of-p-.05",
+    "href": "qmd/04_1_solution.html#results-rates-of-p-.05",
+    "title": "Solution Exercise 2a",
+    "section": "Results: Rates of p < .05",
+    "text": "Results: Rates of p < .05\n\n\nCode\nsims %>% \n  group_by(GR, lambda1, method) %>% \n  summarise(P_p05 = mean(p.value < 0.05)) %>% \n  ggplot(aes(factor(GR), P_p05, color = method, group = method)) + \n  geom_point() + geom_line() + \n  geom_hline(yintercept = 0.05, linetype = 2) + \n  facet_wrap(vars(lambda1), labeller = label_both) +\n  labs(x = \"Group size ratio\", y = \"Proportion p < 0.05\")"
+  },
+  {
+    "objectID": "qmd/04_1_solution.html#summary",
+    "href": "qmd/04_1_solution.html#summary",
+    "title": "Solution Exercise 2a",
+    "section": "Summary",
+    "text": "Summary\n\nAll tests performed very similarly in terms of false discovery rates.\nNot surprising: Previous simulation study showed that Student’s t-test breaks if group sizes and group standard deviations are unequal. Group standard deviations were equal by definition of the data-generating process.\nt-tests and Poisson regression did also very similarly."
   },
   {
     "objectID": "qmd/02_monte_carlo.html#traktandenliste",
@@ -1036,6 +1057,76 @@
     "text": "Resources: Reporting simulation studies\n\n\nMcNeish, D., Lane, S., & Curran, P. (2018). Monte Carlo Simulation Methods. In G. R. Hancock, L. M. Stapleton, & R. O. Mueller (Eds.), The Reviewer’s Guide to Quantitative Methods in the Social Sciences (2nd ed.). Routledge."
   },
   {
+    "objectID": "qmd/03_solution.html#exercise-1a.-proving-the-clt-for-a-poisson-distribution",
+    "href": "qmd/03_solution.html#exercise-1a.-proving-the-clt-for-a-poisson-distribution",
+    "title": "Solution Exercise 1",
+    "section": "Exercise 1a. Proving the CLT for a Poisson distribution",
+    "text": "Exercise 1a. Proving the CLT for a Poisson distribution\n\nAdapt the code from the examples to check whether the CLT also holds for a Poisson distribution.\n\nRandom numbers are sampled with rpois(n, lambda), where n is the sample size and lambda is the mean (and also the variance) of the distribution.\nThe population standard deviation is \\(\\sqrt{\\lambda}\\)."
+  },
+  {
+    "objectID": "qmd/03_solution.html#solution-1a-proving-the-clt-for-a-poisson-distribution",
+    "href": "qmd/03_solution.html#solution-1a-proving-the-clt-for-a-poisson-distribution",
+    "title": "Solution Exercise 1",
+    "section": "Solution 1a: Proving the CLT for a Poisson distribution",
+    "text": "Solution 1a: Proving the CLT for a Poisson distribution\n\n\n# Population distribution: Poisson\nset.seed(825) # make results reproducible \nlambda = 5\nn = 100\nmu = lambda\nsigma = sqrt(lambda)\nggplot() + \n  stat_function(fun = dpois,\n                n = 16,\n                xlim = c(0,15),\n                args = list(lambda = lambda),\n                geom = \"bar\") + \n  geom_vline(xintercept = mu) + labs(x = NULL)"
+  },
+  {
+    "objectID": "qmd/03_solution.html#solution-1a-proving-the-clt-for-a-poisson-distribution-1",
+    "href": "qmd/03_solution.html#solution-1a-proving-the-clt-for-a-poisson-distribution-1",
+    "title": "Solution Exercise 1",
+    "section": "Solution 1a: Proving the CLT for a Poisson distribution",
+    "text": "Solution 1a: Proving the CLT for a Poisson distribution\n\n# new function\nsim_CLT_pois = function(n, lambda) {\n  sims = rpois(n = n, lambda = lambda)\n  mean(sims)\n}\ni = 10000\nmany_means = map_dbl(1:i, .f = ~ sim_CLT_pois(n = n, lambda = lambda))"
+  },
+  {
+    "objectID": "qmd/03_solution.html#solution-1a-proving-the-clt-for-a-poisson-distribution-2",
+    "href": "qmd/03_solution.html#solution-1a-proving-the-clt-for-a-poisson-distribution-2",
+    "title": "Solution Exercise 1",
+    "section": "Solution 1a: Proving the CLT for a Poisson distribution",
+    "text": "Solution 1a: Proving the CLT for a Poisson distribution\n\nmu; mean(many_means)\n\n[1] 5\n\n\n[1] 4.997543\n\nsigma / sqrt(n); sd(many_means)\n\n[1] 0.2236068\n\n\n[1] 0.2214916"
+  },
+  {
+    "objectID": "qmd/03_solution.html#solution-1a-proving-the-clt-for-a-poisson-distribution-3",
+    "href": "qmd/03_solution.html#solution-1a-proving-the-clt-for-a-poisson-distribution-3",
+    "title": "Solution Exercise 1",
+    "section": "Solution 1a: Proving the CLT for a Poisson distribution",
+    "text": "Solution 1a: Proving the CLT for a Poisson distribution\n\n\nShow the code\nd_many_means = tibble(sim = 1:i, mu_hat = many_means)\nd_many_means %>% \n  ggplot(aes(mu_hat)) + geom_histogram() + \n  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +\n  geom_vline(xintercept = c(mean(many_means)-sd(many_means),\n                            mean(many_means),\n                            mean(many_means)+sd(many_means)), \n             color = \"red\", linetype = 2)\nd_many_means %>% \n  ggplot(aes(sample = many_means)) +\n  geom_qq(distribution = qnorm, \n          dparams = c(mean = mu, sd = sigma / sqrt(n)), \n          geom = \"line\") + \n  geom_abline(slope = 1)\n\n\n\n\n\n\n\nHistogram of sample means\n\n\n\n\n\n\n\nQ-Q-Plot"
+  },
+  {
+    "objectID": "qmd/03_solution.html#exercise-1b.-proving-the-clt-for-any-other-suitable-distribution",
+    "href": "qmd/03_solution.html#exercise-1b.-proving-the-clt-for-any-other-suitable-distribution",
+    "title": "Solution Exercise 1",
+    "section": "Exercise 1b. Proving the CLT for any other suitable distribution",
+    "text": "Exercise 1b. Proving the CLT for any other suitable distribution\n\nSelect another suitable distribution from ?Distributions\n\nRead the documentation to understand which arguments must be provided.\nFind the definition of the population distribution’s standard deviation to calculate the analytical standard deviation of the sampling distribution.\nAdapt the simulation and analysis code accordingly."
+  },
+  {
+    "objectID": "qmd/03_solution.html#one-possible-solution-for-1b.-proving-the-clt-for-a-student-t-distribution",
+    "href": "qmd/03_solution.html#one-possible-solution-for-1b.-proving-the-clt-for-a-student-t-distribution",
+    "title": "Solution Exercise 1",
+    "section": "One possible solution for 1b. Proving the CLT for a Student T distribution",
+    "text": "One possible solution for 1b. Proving the CLT for a Student T distribution\n\n\nset.seed(951) # make results reproducible \ndf = 5 # degrees of freedom\nn = 100\nmu = 0 # Central T\nsigma = sqrt(df/(df - 2)) # Standard deviation of a T distribution\nggplot() + \n  stat_function(fun = dt,\n                args = list(df = df),\n                xlim = c(-3,3)) + \n  geom_vline(xintercept = mu) + labs(x = NULL)"
+  },
+  {
+    "objectID": "qmd/03_solution.html#solution-1b.-proving-the-clt-for-a-student-t-distribution",
+    "href": "qmd/03_solution.html#solution-1b.-proving-the-clt-for-a-student-t-distribution",
+    "title": "Solution Exercise 1",
+    "section": "Solution 1b. Proving the CLT for a Student T distribution",
+    "text": "Solution 1b. Proving the CLT for a Student T distribution\n\n# new function\nsim_CLT_t = function(n, df) {\n  sims = rt(n = n, df = df)\n  mean(sims)\n}\ni = 10000\nmany_means = map_dbl(1:i, .f = ~ sim_CLT_t(n = n, df = df))"
+  },
+  {
+    "objectID": "qmd/03_solution.html#solution-1b.-proving-the-clt-for-a-student-t-distribution-1",
+    "href": "qmd/03_solution.html#solution-1b.-proving-the-clt-for-a-student-t-distribution-1",
+    "title": "Solution Exercise 1",
+    "section": "Solution 1b. Proving the CLT for a Student T distribution",
+    "text": "Solution 1b. Proving the CLT for a Student T distribution\n\nmu; mean(many_means)\n\n[1] 0\n\n\n[1] 0.0004013506\n\nsigma / sqrt(n); sd(many_means)\n\n[1] 0.1290994\n\n\n[1] 0.1288953"
+  },
+  {
+    "objectID": "qmd/03_solution.html#solution-1b.-proving-the-clt-for-a-student-t-distribution-2",
+    "href": "qmd/03_solution.html#solution-1b.-proving-the-clt-for-a-student-t-distribution-2",
+    "title": "Solution Exercise 1",
+    "section": "Solution 1b. Proving the CLT for a Student T distribution",
+    "text": "Solution 1b. Proving the CLT for a Student T distribution\n\n\nShow the code\nd_many_means = tibble(sim = 1:i, mu_hat = many_means)\nd_many_means %>% \n  ggplot(aes(mu_hat)) + geom_histogram() + \n  geom_vline(xintercept = c(mu - sigma / sqrt(n), mu, mu + sigma / sqrt(n))) +\n  geom_vline(xintercept = c(mean(many_means)-sd(many_means),\n                            mean(many_means),\n                            mean(many_means)+sd(many_means)), \n             color = \"red\", linetype = 2)\nd_many_means %>% \n  ggplot(aes(sample = many_means)) +\n  geom_qq(distribution = qnorm, \n          dparams = c(mean = mu, sd = sigma / sqrt(n)), \n          geom = \"line\") + \n  geom_abline(slope = 1)\n\n\n\n\n\n\n\nHistogram of sample means\n\n\n\n\n\n\n\nQ-Q-Plot"
+  },
+  {
     "objectID": "qmd/04_1_errors_power.html#traktandenliste",
     "href": "qmd/04_1_errors_power.html#traktandenliste",
     "title": "4a) Errors and power — Torturing the t-test",
@@ -1103,7 +1194,7 @@
     "href": "qmd/04_1_errors_power.html#wrap-it-into-a-function",
     "title": "4a) Errors and power — Torturing the t-test",
     "section": "Wrap it into a function",
-    "text": "Wrap it into a function\n\nsim_ttest = function(GR = 1, SDR = 1, n = 150) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR\n  g1 = rnorm(n = n1, mean = 0, sd = sd1)\n  g2 = rnorm(n = n2, mean = 0, sd = sd2)\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  return(res)\n}"
+    "text": "Wrap it into a function\n\nsim_ttest = function(GR = 1, SDR = 1, n = 150) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR\n  g1 = rnorm(n = n1, mean = 0, sd = sd1)\n  g2 = rnorm(n = n2, mean = 0, sd = sd2)\n  Welch = t.test(g1, g2)$p.value\n  Student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = lst(Welch, Student)\n  return(res)\n}"
   },
   {
     "objectID": "qmd/04_1_errors_power.html#call-the-function-once",
@@ -1215,6 +1306,6 @@
     "href": "index.html#traktandenliste",
     "title": "Workshop Data Simulation with Monte Carlo Methods",
     "section": "Traktandenliste",
-    "text": "Traktandenliste\n\nIntroduction & overview\n\nSlides\n\nMonte Carlo Simulation?\n\nSlides\n\nProof by simulation — The Central Limit Theorem (CLT)\n\nSlides\nPure R Script\n\nErrors and power — Torturing the t-test\n\nSlides 1, Slides 2\nPure R Script 1, Pure R Script 2\n\nMisclassification and bias — Messages mismeasured\n\nSlides\nPure R Script\n\nOutlook: What’s next?\n\nSlides"
+    "text": "Traktandenliste\n\nIntroduction & overview\n\nSlides\n\nMonte Carlo Simulation?\n\nSlides\n\nProof by simulation — The Central Limit Theorem (CLT)\n\nSlides\nPure R Script\nSolution Exercise 1 - Compiled\nSolution Exercise 1 - Pure R Script\n\nErrors and power — Torturing the t-test\n\nSlides 1\nPure R Script 1\nSolution Exercise 2a - Compiled\nSolution Exercise 2a - Pure R Script\nSlides 2\nPure R Script 2\n\nMisclassification and bias — Messages mismeasured\n\nSlides\nPure R Script\n\nOutlook: What’s next?\n\nSlides"
   }
 ]

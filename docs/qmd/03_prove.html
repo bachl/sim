@@ -465,7 +465,7 @@
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(x, y)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="03_prove_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
+<img data-src="03_prove_files/figure-revealjs/dnorm%20plot-1.png" width="960" class="r-stretch"></section>
 <section id="pnorm---distribution-function-of-a-normal-distribution" class="slide level2">
 <h2><code>pnorm()</code> - distribution function of a normal distribution</h2>
 <div class="cell">
@@ -503,13 +503,13 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] -0.3828791  0.8628313  1.7739935  0.4170618 -0.6089144  1.1549153
- [7]  0.3499363  0.1257045 -1.3150905 -0.5540941</code></pre>
+<pre><code> [1] -1.07327226 -0.56317631  0.01966228  0.68834542  0.59617284  0.87172074
+ [7]  1.74279548  0.27639863  0.17916018  2.02025869</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1]  0.6581709 -1.0137935 -1.1754614 -0.8097367 -1.1343982 -0.6183602
- [7]  1.0305854 -0.0106697 -1.3310140  0.9996059</code></pre>
+<pre><code> [1]  0.4798833 -0.9771245  0.3432327 -1.4342320 -0.9623215  0.6048969
+ [7]  0.6404609 -1.6245319  0.6361636  0.7881241</code></pre>
 </div>
 </div>
 </section>
@@ -580,11 +580,6 @@
 <pre><code>[1] "D" "E" "E" "A" "B" "F"</code></pre>
 </div>
 </div>
-<!-- ## `dplyr::slice_sample()` is a convenient wrapper for sampling rows from data -->
-<!-- ```{r} -->
-<!-- LET_data = tibble(LETTERS = LETTERS[1:6]) -->
-<!-- slice_sample(.data = LET_data, n = 3, replace = FALSE) -->
-<!-- ``` -->
 </section></section>
 <section id="questions" class="title-slide slide level1 center">
 <h1>Questions?</h1>
@@ -637,7 +632,7 @@
 <span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlim =</span> <span class="fu">c</span>(mu<span class="dv">-3</span><span class="sc">*</span>sigma, mu<span class="sc">+</span><span class="dv">3</span><span class="sc">*</span>sigma))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+<p><img data-src="03_prove_files/figure-revealjs/normal%20distribution%20plot-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -756,7 +751,7 @@
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-20-1.png" width="960"></p>
+<p><img data-src="03_prove_files/figure-revealjs/normal%20histogram%20and%20Q-Q-plot-1.png" width="960"></p>
 <p></p><figcaption>Histogram of sample means</figcaption><p></p>
 </figure>
 </div>
@@ -764,7 +759,7 @@
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-20-2.png" width="960"></p>
+<p><img data-src="03_prove_files/figure-revealjs/normal%20histogram%20and%20Q-Q-plot-2.png" width="960"></p>
 <p></p><figcaption>Q-Q-Plot</figcaption><p></p>
 </figure>
 </div>
@@ -794,7 +789,7 @@
 <span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> mu) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
+<p><img data-src="03_prove_files/figure-revealjs/uniform%20distribution%20plot-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -864,7 +859,7 @@
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
+<p><img data-src="03_prove_files/figure-revealjs/uniform%20histogram%20and%20Q-Q-plot-1.png" width="960"></p>
 <p></p><figcaption>Histogram of sample means</figcaption><p></p>
 </figure>
 </div>
@@ -872,7 +867,7 @@
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-24-2.png" width="960"></p>
+<p><img data-src="03_prove_files/figure-revealjs/uniform%20histogram%20and%20Q-Q-plot-2.png" width="960"></p>
 <p></p><figcaption>Q-Q-Plot</figcaption><p></p>
 </figure>
 </div>
@@ -903,7 +898,7 @@
 <span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> mu) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-25-1.png" width="960"></p>
+<p><img data-src="03_prove_files/figure-revealjs/binomial%20distribution%20plot-1.png" width="960"></p>
 </div>
 </div>
 </div>
@@ -914,13 +909,12 @@
 <li>Simulation for a uniform distribution.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># new function</span></span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>sim_CLT_binom <span class="ot">=</span> <span class="cf">function</span>(n, prob_one) {</span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  sims <span class="ot">=</span> <span class="fu">rbinom</span>(<span class="at">n =</span> n, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> prob_one)</span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(sims) <span class="co"># mean = prop(1)</span></span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">10000</span></span>
-<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>many_means <span class="ot">=</span> <span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span>i, <span class="at">.f =</span> <span class="sc">~</span> <span class="fu">sim_CLT_binom</span>(<span class="at">n =</span> n, <span class="at">prob_one =</span> prob_one))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>sim_CLT_binom <span class="ot">=</span> <span class="cf">function</span>(n, prob_one) {</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  sims <span class="ot">=</span> <span class="fu">rbinom</span>(<span class="at">n =</span> n, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">prob =</span> prob_one)</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(sims) <span class="co"># mean = prop(1)</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">10000</span></span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>many_means <span class="ot">=</span> <span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span>i, <span class="at">.f =</span> <span class="sc">~</span> <span class="fu">sim_CLT_binom</span>(<span class="at">n =</span> n, <span class="at">prob_one =</span> prob_one))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="proof-by-simulation-13" class="slide level2">
@@ -973,7 +967,7 @@
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
+<p><img data-src="03_prove_files/figure-revealjs/binomial%20histogram%20and%20Q-Q-plot-1.png" width="960"></p>
 <p></p><figcaption>Histogram of sample means</figcaption><p></p>
 </figure>
 </div>
@@ -981,7 +975,7 @@
 <div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-28-2.png" width="960"></p>
+<p><img data-src="03_prove_files/figure-revealjs/binomial%20histogram%20and%20Q-Q-plot-2.png" width="960"></p>
 <p></p><figcaption>Q-Q-Plot</figcaption><p></p>
 </figure>
 </div>
@@ -1051,197 +1045,6 @@
 <li><p>Adapt the simulation and analysis code accordingly.</p></li>
 </ul></li>
 </ul>
-</section>
-<section id="solution-1a-proving-the-clt-for-a-poisson-distribution" class="slide level2">
-<h2>Solution 1a: Proving the CLT for a Poisson distribution</h2>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Population distribution: Poisson</span></span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">825</span>) <span class="co"># make results reproducible </span></span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">=</span> <span class="dv">5</span></span>
-<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">100</span></span>
-<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> lambda</span>
-<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">=</span> <span class="fu">sqrt</span>(lambda)</span>
-<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dpois,</span>
-<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">n =</span> <span class="dv">16</span>,</span>
-<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">15</span>),</span>
-<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">lambda =</span> lambda),</span>
-<span id="cb68-12"><a href="#cb68-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">geom =</span> <span class="st">"bar"</span>) <span class="sc">+</span> </span>
-<span id="cb68-13"><a href="#cb68-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> mu) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-<div class="cell-output-display">
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-29-1.png" width="960"></p>
-</div>
-</div>
-</div>
-</section>
-<section id="solution-1a-proving-the-clt-for-a-poisson-distribution-1" class="slide level2">
-<h2>Solution 1a: Proving the CLT for a Poisson distribution</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># new function</span></span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>sim_CLT_pois <span class="ot">=</span> <span class="cf">function</span>(n, lambda) {</span>
-<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  sims <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n =</span> n, <span class="at">lambda =</span> lambda)</span>
-<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(sims)</span>
-<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">10000</span></span>
-<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>many_means <span class="ot">=</span> <span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span>i, <span class="at">.f =</span> <span class="sc">~</span> <span class="fu">sim_CLT_pois</span>(<span class="at">n =</span> n, <span class="at">lambda =</span> lambda))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="solution-1a-proving-the-clt-for-a-poisson-distribution-2" class="slide level2">
-<h2>Solution 1a: Proving the CLT for a Poisson distribution</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>mu; <span class="fu">mean</span>(many_means)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 5</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 4.997543</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>sigma <span class="sc">/</span> <span class="fu">sqrt</span>(n); <span class="fu">sd</span>(many_means)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2236068</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2214916</code></pre>
-</div>
-</div>
-</section>
-<section id="solution-1a-proving-the-clt-for-a-poisson-distribution-3" class="slide level2">
-<h2>Solution 1a: Proving the CLT for a Poisson distribution</h2>
-<div>
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>d_many_means <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">sim =</span> <span class="dv">1</span><span class="sc">:</span>i, <span class="at">mu_hat =</span> many_means)</span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>d_many_means <span class="sc">%&gt;%</span> </span>
-<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(mu_hat)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> </span>
-<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(mu <span class="sc">-</span> sigma <span class="sc">/</span> <span class="fu">sqrt</span>(n), mu, mu <span class="sc">+</span> sigma <span class="sc">/</span> <span class="fu">sqrt</span>(n))) <span class="sc">+</span></span>
-<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="fu">mean</span>(many_means)<span class="sc">-</span><span class="fu">sd</span>(many_means),</span>
-<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">mean</span>(many_means),</span>
-<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">mean</span>(many_means)<span class="sc">+</span><span class="fu">sd</span>(many_means)), </span>
-<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span>
-<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>d_many_means <span class="sc">%&gt;%</span> </span>
-<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> many_means)) <span class="sc">+</span></span>
-<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>(<span class="at">distribution =</span> qnorm, </span>
-<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">dparams =</span> <span class="fu">c</span>(<span class="at">mean =</span> mu, <span class="at">sd =</span> sigma <span class="sc">/</span> <span class="fu">sqrt</span>(n)), </span>
-<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">geom =</span> <span class="st">"line"</span>) <span class="sc">+</span> </span>
-<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-32-1.png" width="960"></p>
-<p></p><figcaption>Histogram of sample means</figcaption><p></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-32-2.png" width="960"></p>
-<p></p><figcaption>Q-Q-Plot</figcaption><p></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="one-possible-solution-for-1b.-proving-the-clt-for-a-student-t-distribution" class="slide level2">
-<h2>One possible solution for 1b. Proving the CLT for a Student T distribution</h2>
-<div class="cell columns column-output-location">
-<div class="column">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">951</span>) <span class="co"># make results reproducible </span></span>
-<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">=</span> <span class="dv">5</span> <span class="co"># degrees of freedom</span></span>
-<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">100</span></span>
-<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">=</span> <span class="dv">0</span> <span class="co"># Central T</span></span>
-<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">=</span> <span class="fu">sqrt</span>(df<span class="sc">/</span>(df <span class="sc">-</span> <span class="dv">2</span>)) <span class="co"># Standard deviation of a T distribution</span></span>
-<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
-<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dt,</span>
-<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">df =</span> df),</span>
-<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="dv">3</span>)) <span class="sc">+</span> </span>
-<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> mu) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div><div class="column">
-<div class="cell-output-display">
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-33-1.png" width="960"></p>
-</div>
-</div>
-</div>
-</section>
-<section id="solution-1b.-proving-the-clt-for-a-student-t-distribution" class="slide level2">
-<h2>Solution 1b. Proving the CLT for a Student T distribution</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># new function</span></span>
-<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>sim_CLT_t <span class="ot">=</span> <span class="cf">function</span>(n, df) {</span>
-<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>  sims <span class="ot">=</span> <span class="fu">rt</span>(<span class="at">n =</span> n, <span class="at">df =</span> df)</span>
-<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(sims)</span>
-<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">10000</span></span>
-<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>many_means <span class="ot">=</span> <span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span>i, <span class="at">.f =</span> <span class="sc">~</span> <span class="fu">sim_CLT_t</span>(<span class="at">n =</span> n, <span class="at">df =</span> df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="solution-1b.-proving-the-clt-for-a-student-t-distribution-1" class="slide level2">
-<h2>Solution 1b. Proving the CLT for a Student T distribution</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>mu; <span class="fu">mean</span>(many_means)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0004013506</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>sigma <span class="sc">/</span> <span class="fu">sqrt</span>(n); <span class="fu">sd</span>(many_means)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1290994</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1288953</code></pre>
-</div>
-</div>
-</section>
-<section id="solution-1b.-proving-the-clt-for-a-student-t-distribution-2" class="slide level2">
-<h2>Solution 1b. Proving the CLT for a Student T distribution</h2>
-<div>
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>d_many_means <span class="ot">=</span> <span class="fu">tibble</span>(<span class="at">sim =</span> <span class="dv">1</span><span class="sc">:</span>i, <span class="at">mu_hat =</span> many_means)</span>
-<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>d_many_means <span class="sc">%&gt;%</span> </span>
-<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(mu_hat)) <span class="sc">+</span> <span class="fu">geom_histogram</span>() <span class="sc">+</span> </span>
-<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(mu <span class="sc">-</span> sigma <span class="sc">/</span> <span class="fu">sqrt</span>(n), mu, mu <span class="sc">+</span> sigma <span class="sc">/</span> <span class="fu">sqrt</span>(n))) <span class="sc">+</span></span>
-<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(<span class="fu">mean</span>(many_means)<span class="sc">-</span><span class="fu">sd</span>(many_means),</span>
-<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">mean</span>(many_means),</span>
-<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">mean</span>(many_means)<span class="sc">+</span><span class="fu">sd</span>(many_means)), </span>
-<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span>
-<span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a>d_many_means <span class="sc">%&gt;%</span> </span>
-<span id="cb85-10"><a href="#cb85-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> many_means)) <span class="sc">+</span></span>
-<span id="cb85-11"><a href="#cb85-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>(<span class="at">distribution =</span> qnorm, </span>
-<span id="cb85-12"><a href="#cb85-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">dparams =</span> <span class="fu">c</span>(<span class="at">mean =</span> mu, <span class="at">sd =</span> sigma <span class="sc">/</span> <span class="fu">sqrt</span>(n)), </span>
-<span id="cb85-13"><a href="#cb85-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">geom =</span> <span class="st">"line"</span>) <span class="sc">+</span> </span>
-<span id="cb85-14"><a href="#cb85-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell quarto-layout-panel">
-<div class="quarto-layout-row quarto-layout-valign-top">
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-36-1.png" width="960"></p>
-<p></p><figcaption>Histogram of sample means</figcaption><p></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="03_prove_files/figure-revealjs/unnamed-chunk-36-2.png" width="960"></p>
-<p></p><figcaption>Q-Q-Plot</figcaption><p></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
 
 <div class="footer footer-default">
 
