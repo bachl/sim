@@ -23,7 +23,8 @@ execute:
   echo: true
 ---
 
-```{r setup, include=FALSE}
+```{r setup}
+#| include: false
 pacman::p_load(knitr, mgcv, tictoc, tidyverse)
 theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
                                      axis_title_size = 25,
@@ -424,7 +425,7 @@ power.t.test(n = c(120, 256, 404)/2,
 
 5.  Data generating model: How are the data simulated?
 
-    -   Random draws from normal distributions with different euqal group sizes and standard deviations, but fixed group mean differences and overall sample size.
+    -   Random draws from normal distributions with different group sizes and standard deviations, but fixed group mean differences and overall sample size.
 
 ## First try: Adapt the simulation function
 
@@ -557,7 +558,11 @@ sims %>%
 
 ## First try: Summary
 
-- TODO
+- Larger *SD* in the treatment group reduces statistical power, smaller *SD* in the treatment group increases power.
+
+- Optimal sample size plan: Larger sample size for group with larger *SD*
+
+- If group *SD*s are equal, most power with equal group sample sizes.
 
 ## Second try: Bring back a pooled *SD* of 1
 
@@ -696,20 +701,45 @@ sims %>%
 
 ## Second try: Summary
 
-XXX
+- Fixing the pooled *SD* to 1 makes the patterns much clearer.
 
-## Simulation for *a priori* power calculation: Summary
+- If we assume different group *SD*s, we should allocate more observations in the group with more variation.
 
-XXX
+- If we assume similar group *SD*s, we should plan with similar group sample sizes.
+
+- For planing experimental designs, it is a decision under uncertainty about treatment effect heterogeneity.
+
+## Simulation for *a priori* power calculation
+
+### What's the power? Don't expect an easy answer! 
+
+- Simulation is a very flexible and powerful approach to *a priori* power calculation. We can, in principle, test many different design features and statistical methods.
+
+- However, a meaningful power calculation (not only, but in particular with simulation methods) requires deep understanding of all involved components.
+
+- Implementing simulation methods for *a priori* power calculation from scratch is very revealing, because they make it very obvious how much we need to know to arrive at a sensible answer.
 
 # Questions?
 
-# Group exercise 2b
+# Group exercise 2
 
-## Group exercise 2b.
+## Exercise 2: Welch's *t*-test for count data
 
-- Introduce Poisson
+### Part 2: Power
 
+- We have shown in Part 1 of the exercise that the false discovery rates of *t*-tests and Poisson regression are similar even if the true data generating process is drawing from a Poisson distribution.
 
+- In Part 2, we want to compare the statistical power of the methods across a range of plausible scenarios.
 
+## Exercise 2b: Power
 
+- We want to compare the statistical power of 
+    - Student's *t*-test,
+    - Welch's *t*-test, and
+    - Poisson regression with a dummy predictor
+
+- if the true data generating process is drawing from Poisson distributions.
+
+- If necessary: Adapt the simulation function from Exercise 2a.
+
+- Choose a sensible set of parameter combinations for the Monte Carlo experiment. 

@@ -47,13 +47,11 @@ theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
 
 6)  Outlook: What's next?
 
-
 ## 4. Errors and power --- Torturing the *t*-test
 
 a)  Comparison of Student's and Welch's *t*-tests
 
 b)  *A priori* power calculation for Welch's *t*-test
-
 
 ## Student's *t*-test & Welch's *t*-test
 
@@ -67,7 +65,11 @@ $t = \frac{\bar{X}_1 - \bar{X}_2}{s_{\bar\Delta}}$, where ${\bar\Delta} = \sqrt{
 
 ## Student's *t*-test & Welch's *t*-test
 
--   Old school advice: Student's *t*-test for equal variances, Welch's *t*-test for unequal variances.
+![](images/paste-C73B27FD.png)
+
+## Student's *t*-test & Welch's *t*-test
+
+-   Old school (AI) advice: Student's *t*-test for equal variances, Welch's *t*-test for unequal variances.
 
     -   Higher power of Student's *t*-test if assumptions hold.
 
@@ -230,7 +232,7 @@ sims
 
 ## Results: Histogram of *p*-values
 
-  -   Distribution of *p*-values under the Null hypothesis should be $\sf{Uniform}(0, 1)$.
+-   Distribution of *p*-values under the Null hypothesis should be $\sf{Uniform}(0, 1)$.
 
 ```{r Results: Histogram of p-values}
 #| output-location: slide
@@ -259,6 +261,7 @@ sims %>%
 ```
 
 ## Results: Looking at the relevant tail {.smaller}
+
 ```{r Results: Looking at the relevant tail}
 #| output-location: column
 sims %>% 
@@ -269,7 +272,6 @@ sims %>%
   kable(digits = 3)
 ```
 
-
 # Questions?
 
 # Group exercise 2
@@ -278,32 +280,35 @@ sims %>%
 
 ### Part 1: False discovery rates
 
-- It is generally recommended to model count outcomes (e.g., number of likes of social media posts) with *Poisson* models (or *negative binomial* models, but that's for another simulation).
+-   It is generally recommended to model count outcomes (e.g., number of likes of social media posts) with *Poisson* models (or *negative binomial* models, but that's for another simulation).
 
-- However, if we only want to compare two groups on a count outcome, Welch's *t*-test might be an easier option and should also do well:
-    - The mean is a consistent estimator of the rate parameter (CLT; see exercise 1a).
-    - Welch's *t*-test is robust if the group standard deviations are unequal, which, by definition, would be the case if the counted event occurred at different rates in the two groups.
+-   However, if we only want to compare two groups on a count outcome, Welch's *t*-test might be an easier option and should also do well:
+
+    -   The mean is a consistent estimator of the rate parameter (CLT; see exercise 1a).
+    -   Welch's *t*-test is robust if the group standard deviations are unequal, which, by definition, would be the case if the counted event occurred at different rates in the two groups.
 
 ## Exercise 2a: False discovery rates
 
-- We can test this assumption by simulation, similar to the comparison of Student's and Welch's *t*-test. More specifically, we first want to compare the false discovery rates of 
-    - Student's *t*-test,
-    - Welch's *t*-test, and
-    - Poisson regression with a dummy predictor
+-   We can test this assumption by simulation, similar to the comparison of Student's and Welch's *t*-test. More specifically, we first want to compare the false discovery rates of
 
-- if the true data generating process is drawing from a Poisson distribution.
+    -   Student's *t*-test,
+    -   Welch's *t*-test, and
+    -   Poisson regression with a dummy predictor
 
-- Extend and adapt the previous simulation.
+-   if the true data generating process is drawing from a Poisson distribution.
+
+-   Extend and adapt the previous simulation.
 
 ## Exercise 2a: Help {.scrollable}
 
 ### Expand if you need help.
 
-### Don't expand if you want to figure it out by yourself. 
+### Don't expand if you want to figure it out by yourself.
 
 ### Scroll down if you need more help on later steps.
 
 Sample from a Poisson distribution
+
 ```{r Sample from a Poisson distribution}
 #| eval: false
 #| code-fold: true
@@ -311,6 +316,7 @@ rpois(n = n1, lambda = lambda1)
 ```
 
 Poisson regression
+
 ```{r Poisson regression}
 #| eval: false
 #| code-fold: true
@@ -318,6 +324,7 @@ glm(outcome ~ group, data = data, family = poisson)
 ```
 
 Data format for Poisson regression
+
 ```{r Data format for Poisson regression}
 #| eval: false
 #| code-fold: true
@@ -326,6 +333,7 @@ data.frame(outcome = c(g1, g2),
 ```
 
 Extract *p*-value from fitted Poisson regression object
+
 ```{r Extract p-value from fitted Poisson regression object}
 #| eval: false
 #| code-fold: true
@@ -334,6 +342,7 @@ coef(summary(GLM))[2, 4]
 ```
 
 Complete simulation function
+
 ```{r Complete simulation function}
 #| eval: false
 #| code-fold: true
@@ -357,6 +366,7 @@ sim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {
 ```
 
 Conditions
+
 ```{r Conditions}
 #| eval: false
 #| code-fold: true
@@ -369,6 +379,7 @@ conditions = expand_grid(GR = c(0.5, 1, 2),
 ```
 
 Run simulation
+
 ```{r Run simulation}
 #| eval: false
 #| code-fold: true
@@ -386,6 +397,7 @@ toc()
 ```
 
 Plots
+
 ```{r Plots}
 #| eval: false
 #| code-fold: true

@@ -497,10 +497,10 @@
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ttest</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">M_diff =</span> <span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Welch
-[1] 0.1790815
+[1] 0.4229637
 
 $Student
-[1] 0.1790123</code></pre>
+[1] 0.4228214</code></pre>
 </div>
 </div>
 </div>
@@ -885,7 +885,7 @@ NOTE: n is number in *each* group</code></pre>
 </ul></li>
 <li><p>Data generating model: How are the data simulated?</p>
 <ul>
-<li>Random draws from normal distributions with different euqal group sizes and standard deviations, but fixed group mean differences and overall sample size.</li>
+<li>Random draws from normal distributions with different group sizes and standard deviations, but fixed group mean differences and overall sample size.</li>
 </ul></li>
 </ol>
 </section>
@@ -1031,7 +1031,9 @@ NOTE: n is number in *each* group</code></pre>
 <section id="first-try-summary" class="slide level2">
 <h2>First try: Summary</h2>
 <ul>
-<li>TODO</li>
+<li><p>Larger <em>SD</em> in the treatment group reduces statistical power, smaller <em>SD</em> in the treatment group increases power.</p></li>
+<li><p>Optimal sample size plan: Larger sample size for group with larger <em>SD</em></p></li>
+<li><p>If group <em>SD</em>s are equal, most power with equal group sample sizes.</p></li>
 </ul>
 </section>
 <section id="second-try-bring-back-a-pooled-sd-of-1" class="slide level2">
@@ -1175,11 +1177,21 @@ NOTE: n is number in *each* group</code></pre>
 <img data-src="04_2_errors_power_files/figure-revealjs/unnamed-chunk-24-1.png" width="1152" class="r-stretch"></section>
 <section id="second-try-summary" class="slide level2">
 <h2>Second try: Summary</h2>
-<p>XXX</p>
+<ul>
+<li><p>Fixing the pooled <em>SD</em> to 1 makes the patterns much clearer.</p></li>
+<li><p>If we assume different group <em>SD</em>s, we should allocate more observations in the group with more variation.</p></li>
+<li><p>If we assume similar group <em>SD</em>s, we should plan with similar group sample sizes.</p></li>
+<li><p>For planing experimental designs, it is a decision under uncertainty about treatment effect heterogeneity.</p></li>
+</ul>
 </section>
-<section id="simulation-for-a-priori-power-calculation-summary" class="slide level2">
-<h2>Simulation for <em>a priori</em> power calculation: Summary</h2>
-<p>XXX</p>
+<section id="simulation-for-a-priori-power-calculation" class="slide level2">
+<h2>Simulation for <em>a priori</em> power calculation</h2>
+<h3 id="whats-the-power-dont-expect-an-easy-answer">What’s the power? Don’t expect an easy answer!</h3>
+<ul>
+<li><p>Simulation is a very flexible and powerful approach to <em>a priori</em> power calculation. We can, in principle, test many different design features and statistical methods.</p></li>
+<li><p>However, a meaningful power calculation (not only, but in particular with simulation methods) requires deep understanding of all involved components.</p></li>
+<li><p>Implementing simulation methods for <em>a priori</em> power calculation from scratch is very revealing, because they make it very obvious how much we need to know to arrive at a sensible answer.</p></li>
+</ul>
 </section></section>
 <section id="questions-2" class="title-slide slide level1 center">
 <h1>Questions?</h1>
@@ -1187,14 +1199,30 @@ NOTE: n is number in *each* group</code></pre>
 </section>
 
 <section>
-<section id="group-exercise-2b" class="title-slide slide level1 center">
-<h1>Group exercise 2b</h1>
+<section id="group-exercise-2" class="title-slide slide level1 center">
+<h1>Group exercise 2</h1>
 
 </section>
-<section id="group-exercise-2b." class="slide level2">
-<h2>Group exercise 2b.</h2>
+<section id="exercise-2-welchs-t-test-for-count-data" class="slide level2">
+<h2>Exercise 2: Welch’s <em>t</em>-test for count data</h2>
+<h3 id="part-2-power">Part 2: Power</h3>
 <ul>
-<li>Introduce Poisson</li>
+<li><p>We have shown in Part 1 of the exercise that the false discovery rates of <em>t</em>-tests and Poisson regression are similar even if the true data generating process is drawing from a Poisson distribution.</p></li>
+<li><p>In Part 2, we want to compare the statistical power of the methods across a range of plausible scenarios.</p></li>
+</ul>
+</section>
+<section id="exercise-2b-power" class="slide level2">
+<h2>Exercise 2b: Power</h2>
+<ul>
+<li><p>We want to compare the statistical power of</p>
+<ul>
+<li>Student’s <em>t</em>-test,</li>
+<li>Welch’s <em>t</em>-test, and</li>
+<li>Poisson regression with a dummy predictor</li>
+</ul></li>
+<li><p>if the true data generating process is drawing from Poisson distributions.</p></li>
+<li><p>If necessary: Adapt the simulation function from Exercise 2a.</p></li>
+<li><p>Choose a sensible set of parameter combinations for the Monte Carlo experiment.</p></li>
 </ul>
 
 <div class="footer footer-default">

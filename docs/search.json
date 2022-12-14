@@ -60,7 +60,7 @@
     "href": "qmd/03_prove.html#rnorm---draw-random-numbers-from-a-normal-distribution",
     "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
     "section": "rnorm() - draw random numbers from a normal distribution",
-    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -1.07327226 -0.56317631  0.01966228  0.68834542  0.59617284  0.87172074\n [7]  1.74279548  0.27639863  0.17916018  2.02025869\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1]  0.4798833 -0.9771245  0.3432327 -1.4342320 -0.9623215  0.6048969\n [7]  0.6404609 -1.6245319  0.6361636  0.7881241"
+    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -0.4691907  0.8532748 -0.9637252  0.8364323  0.9916504 -0.3369129\n [7]  1.1051438  1.4432532 -0.9634241 -0.3825347\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -0.9588811  2.0387053  0.4102876 -0.4195608  1.5080691  0.7068901\n [7]  0.3368772 -0.3718402 -1.5331976  0.3859123"
   },
   {
     "objectID": "qmd/03_prove.html#always-use-set.seed-to-make-simulation-results-reproducible",
@@ -277,7 +277,7 @@
     "href": "qmd/04_2_errors_power.html#adapt-the-simulation-function",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Adapt the simulation function",
-    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.1790815\n\n$Student\n[1] 0.1790123"
+    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.4229637\n\n$Student\n[1] 0.4228214"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#adapt-the-experimental-conditions",
@@ -382,7 +382,7 @@
     "href": "qmd/04_2_errors_power.html#third-simulation-study-power-again",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Third Simulation study: Power (again)",
-    "text": "Third Simulation study: Power (again)\n\nQuestion: What is the goal of the simulation?\n\nUnderstand roles of group sample sizes and group standard deviations for statistical power\n\nQuantities of interest: What is measured in the simulation?\n\nPower (\\(1 - \\beta\\)) of the designs using Welch’s t-test\n\nEvaluation strategy: How are the quantities assessed?\n\nComparison of statistical power to reject the Null hypothesis if the alternative hypothesis is true\n\nConditions: Which characteristics of the data generating model will be varied?\n\nGroup sample sizes, group standard deviations\n\nData generating model: How are the data simulated?\n\nRandom draws from normal distributions with different euqal group sizes and standard deviations, but fixed group mean differences and overall sample size."
+    "text": "Third Simulation study: Power (again)\n\nQuestion: What is the goal of the simulation?\n\nUnderstand roles of group sample sizes and group standard deviations for statistical power\n\nQuantities of interest: What is measured in the simulation?\n\nPower (\\(1 - \\beta\\)) of the designs using Welch’s t-test\n\nEvaluation strategy: How are the quantities assessed?\n\nComparison of statistical power to reject the Null hypothesis if the alternative hypothesis is true\n\nConditions: Which characteristics of the data generating model will be varied?\n\nGroup sample sizes, group standard deviations\n\nData generating model: How are the data simulated?\n\nRandom draws from normal distributions with different group sizes and standard deviations, but fixed group mean differences and overall sample size."
   },
   {
     "objectID": "qmd/04_2_errors_power.html#first-try-adapt-the-simulation-function",
@@ -438,7 +438,7 @@
     "href": "qmd/04_2_errors_power.html#first-try-summary",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "First try: Summary",
-    "text": "First try: Summary\n\nTODO"
+    "text": "First try: Summary\n\nLarger SD in the treatment group reduces statistical power, smaller SD in the treatment group increases power.\nOptimal sample size plan: Larger sample size for group with larger SD\nIf group SDs are equal, most power with equal group sample sizes."
   },
   {
     "objectID": "qmd/04_2_errors_power.html#second-try-bring-back-a-pooled-sd-of-1",
@@ -494,21 +494,28 @@
     "href": "qmd/04_2_errors_power.html#second-try-summary",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Second try: Summary",
-    "text": "Second try: Summary\nXXX"
+    "text": "Second try: Summary\n\nFixing the pooled SD to 1 makes the patterns much clearer.\nIf we assume different group SDs, we should allocate more observations in the group with more variation.\nIf we assume similar group SDs, we should plan with similar group sample sizes.\nFor planing experimental designs, it is a decision under uncertainty about treatment effect heterogeneity."
   },
   {
-    "objectID": "qmd/04_2_errors_power.html#simulation-for-a-priori-power-calculation-summary",
-    "href": "qmd/04_2_errors_power.html#simulation-for-a-priori-power-calculation-summary",
+    "objectID": "qmd/04_2_errors_power.html#simulation-for-a-priori-power-calculation",
+    "href": "qmd/04_2_errors_power.html#simulation-for-a-priori-power-calculation",
     "title": "4b) Errors and power — Torturing the t-test",
-    "section": "Simulation for a priori power calculation: Summary",
-    "text": "Simulation for a priori power calculation: Summary\nXXX"
+    "section": "Simulation for a priori power calculation",
+    "text": "Simulation for a priori power calculation\nWhat’s the power? Don’t expect an easy answer!\n\nSimulation is a very flexible and powerful approach to a priori power calculation. We can, in principle, test many different design features and statistical methods.\nHowever, a meaningful power calculation (not only, but in particular with simulation methods) requires deep understanding of all involved components.\nImplementing simulation methods for a priori power calculation from scratch is very revealing, because they make it very obvious how much we need to know to arrive at a sensible answer."
   },
   {
-    "objectID": "qmd/04_2_errors_power.html#group-exercise-2b.",
-    "href": "qmd/04_2_errors_power.html#group-exercise-2b.",
+    "objectID": "qmd/04_2_errors_power.html#exercise-2-welchs-t-test-for-count-data",
+    "href": "qmd/04_2_errors_power.html#exercise-2-welchs-t-test-for-count-data",
     "title": "4b) Errors and power — Torturing the t-test",
-    "section": "Group exercise 2b.",
-    "text": "Group exercise 2b.\n\nIntroduce Poisson"
+    "section": "Exercise 2: Welch’s t-test for count data",
+    "text": "Exercise 2: Welch’s t-test for count data\nPart 2: Power\n\nWe have shown in Part 1 of the exercise that the false discovery rates of t-tests and Poisson regression are similar even if the true data generating process is drawing from a Poisson distribution.\nIn Part 2, we want to compare the statistical power of the methods across a range of plausible scenarios."
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#exercise-2b-power",
+    "href": "qmd/04_2_errors_power.html#exercise-2b-power",
+    "title": "4b) Errors and power — Torturing the t-test",
+    "section": "Exercise 2b: Power",
+    "text": "Exercise 2b: Power\n\nWe want to compare the statistical power of\n\nStudent’s t-test,\nWelch’s t-test, and\nPoisson regression with a dummy predictor\n\nif the true data generating process is drawing from Poisson distributions.\nIf necessary: Adapt the simulation function from Exercise 2a.\nChoose a sensible set of parameter combinations for the Monte Carlo experiment."
   },
   {
     "objectID": "qmd/01_intro.html#introduction-i",
@@ -648,14 +655,14 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.02 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.483 0.293 0.138 0.086"
+    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.017 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.483 0.293 0.138 0.086"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nSecond try\n\nLess computational costs at the at category level\n\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.004 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.496 0.299 0.128 0.077"
+    "text": "One simulation: Misclassification\nSecond try\n\nLess computational costs at the at category level\n\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.003 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.496 0.299 0.128 0.077"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-quantification-of-error",
@@ -809,7 +816,7 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-2",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nSame as before\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.004 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.476 0.287 0.142 0.095"
+    "text": "One simulation: Misclassification\nSame as before\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.003 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.476 0.287 0.142 0.095"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-measure-quantities-of-interest",
@@ -893,7 +900,7 @@
     "href": "qmd/04_1_solution.html#simulation-function",
     "title": "Solution Exercise 2a",
     "section": "Simulation function",
-    "text": "Simulation function\n\n# No standard deviation ratio any more because SD fixed at sqrt(lambda)\n# M_diff not necessary at this stage, but useful later\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  Student = t.test(g1, g2, var.equal = TRUE)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, Student, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm()\n\n$Welch\n[1] 0.5558085\n\n$Student\n[1] 0.5557975\n\n$GLM\n[1] 0.6049261"
+    "text": "Simulation function\n\n# No standard deviation ratio any more because SD fixed at sqrt(lambda)\n# M_diff not necessary at this stage, but useful later\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  Student = t.test(g1, g2, var.equal = TRUE)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, Student, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm()\n\n$Welch\n[1] 0.02500204\n\n$Student\n[1] 0.02486404\n\n$GLM\n[1] 0.0302189"
   },
   {
     "objectID": "qmd/04_1_solution.html#conditions",
@@ -1152,7 +1159,14 @@
     "href": "qmd/04_1_errors_power.html#students-t-test-welchs-t-test-1",
     "title": "4a) Errors and power — Torturing the t-test",
     "section": "Student’s t-test & Welch’s t-test",
-    "text": "Student’s t-test & Welch’s t-test\n\nOld school advice: Student’s t-test for equal variances, Welch’s t-test for unequal variances.\n\nHigher power of Student’s t-test if assumptions hold.\n\nModern advice: Always use Welch’s t-test.\n\nBetter if assumptions are violated; not worse if assumptions hold.\ne.g., Delacre, M., Lakens, D., & Leys, C. (2017). Why Psychologists Should by Default Use Welch’s t-test Instead of Student’s t-test. International Review of Social Psychology, 30(1). https://doi.org/10.5334/irsp.82\n\nFor those who don’t care about t-tests: Idea also applies to heteroskedasticity-consistent standard errors."
+    "text": "Student’s t-test & Welch’s t-test"
+  },
+  {
+    "objectID": "qmd/04_1_errors_power.html#students-t-test-welchs-t-test-2",
+    "href": "qmd/04_1_errors_power.html#students-t-test-welchs-t-test-2",
+    "title": "4a) Errors and power — Torturing the t-test",
+    "section": "Student’s t-test & Welch’s t-test",
+    "text": "Student’s t-test & Welch’s t-test\n\nOld school (AI) advice: Student’s t-test for equal variances, Welch’s t-test for unequal variances.\n\nHigher power of Student’s t-test if assumptions hold.\n\nModern advice: Always use Welch’s t-test.\n\nBetter if assumptions are violated; not worse if assumptions hold.\ne.g., Delacre, M., Lakens, D., & Leys, C. (2017). Why Psychologists Should by Default Use Welch’s t-test Instead of Student’s t-test. International Review of Social Psychology, 30(1). https://doi.org/10.5334/irsp.82\n\nFor those who don’t care about t-tests: Idea also applies to heteroskedasticity-consistent standard errors."
   },
   {
     "objectID": "qmd/04_1_errors_power.html#first-simulation-study-false-discoveries",
