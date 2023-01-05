@@ -1,0 +1,166 @@
+---
+title: "Solution Exercise 2b"
+subtitle: "Data Simulation with Monte Carlo Methods"
+author: "Marko Bachl"
+institute: "University of Hohenheim"
+format:
+  revealjs:
+      embed-resources: false
+      height: 900
+      width: 1600
+      theme: [theme.scss]
+      highlight-style: arrow-dark
+      slide-number: c
+      code-line-numbers: false
+      history: false
+      smaller: false
+      title-slide-attributes:
+        data-background-image: https://upload.wikimedia.org/wikipedia/commons/6/64/Uni_Hohenheim-Logo.svg
+        data-background-position: "top right"
+        data-background-size: auto
+css: colors.css
+execute:
+  echo: true
+---
+
+```{r setup}
+#| include: false
+pacman::p_load(knitr, tictoc, tidyverse)
+theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
+                                     axis_title_size = 25,
+                                     strip_text_size = 20))
+```
+
+# Group exercise 2b
+
+## Exercise 2: Welch's *t*-test for count data
+
+### Part 2: Power
+
+- We have shown in Part 1 of the exercise that the false discovery rates of *t*-tests and Poisson regression are similar even if the true data generating process is drawing from a Poisson distribution.
+
+- In Part 2, we want to compare the statistical power of the methods across a range of plausible scenarios.
+
+## Exercise 2b: Power
+
+- We want to compare the statistical power of 
+    - Welch's *t*-test and
+    - Poisson regression with a dummy predictor
+
+- if the true data generating process is drawing from Poisson distributions with different rate parameters.
+
+- If necessary: Adapt the simulation function from Exercise 2a.
+
+- Choose a sensible set of parameter combinations for the Monte Carlo experiment. 
+
+## Simulation function
+
+```{r Simulation function}
+# We use almost the same simulation function, 
+# but we omit Student's t-test, because we already showed its
+# problems with unequal group sizes and group SDs
+sim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {
+  n1 = round(n / (GR + 1))
+  n2 = round(n1 * GR)
+  lambda2 = lambda1 + M_diff
+  g1 = rpois(n = n1, lambda = lambda1)
+  g2 = rpois(n = n2, lambda = lambda2)
+  Welch = t.test(g1, g2)$p.value
+  GLM = glm(outcome ~ group,
+            data = data.frame(outcome = c(g1, g2),
+                              group = c(rep("g1", n1), rep("g2", n2))),
+            family = poisson)
+  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])
+  return(res)
+}
+sim_ttest_glm(n = 100, M_diff = 0.3)
+```
+
+## Conditions: First try
+```{r Conditions I}
+#| output-location: column
+# It makes sense to vary group size ratio, lambda, and M_diff
+# The positive relationship between n and power is trivial
+conditions = expand_grid(GR = c(0.5, 1, 2), 
+                         n = 200,
+                         lambda1 = c(1, 10, 20),
+                         M_diff = c(0.3, 0.5, 0.8)) %>% 
+  rowid_to_column(var = "condition")
+conditions
+```
+
+## Run simulation
+```{r Run simulation}
+#| cache: true
+# use smaller i for now because additional glm() needs time
+set.seed(89)
+i = 1000
+tic()
+sims = map_dfr(1:i, ~ conditions) %>%
+  rowid_to_column(var = "sim") %>%
+  rowwise() %>%
+  mutate(p.value = list(sim_ttest_glm(n = n, M_diff = M_diff,
+                                      GR = GR, lambda1 = lambda1))) %>% 
+  unnest_longer(p.value, indices_to = "method")
+toc()
+```
+
+## Results: Power
+```{r Power plot I}
+#| output-location: slide
+#| fig-width: 20
+#| fig-height: 10
+sims %>% 
+  group_by(GR, lambda1, M_diff, method) %>% 
+  summarise(P_p05 = mean(p.value < 0.05)) %>% 
+  ggplot(aes(factor(GR), P_p05, color = method, group = method)) + 
+  geom_point() + geom_line() +
+  facet_grid(M_diff ~ lambda1, labeller = label_both) +
+  labs(x = "Group size ratio", y = "Power")
+```
+
+## Summary: First try
+
+- (In hindsight) obvious result: Power strongly decreases as the rate parameter $\lambda$ in the reference group increases.
+
+- Obvious, because the group standard deviations are $\sqrt{\lambda_1}$ and $\sqrt{\lambda_1 + \sf{M\_diff}}$.
+
+- *t*-test and Poisson regression did very similarly, as far as this can be seen against the strong differences by the rate in the reference group.
+
+- Next, we want to vary a *standardized* mean difference, *d*.
+
+## Conditions: Second try {.smaller}
+
+- Recall the pooled population standard deviation from earlier:
+
+$$
+\sigma_{X\cup Y} = \sqrt{ \frac{N_X \sigma_X^2 + N_Y \sigma_Y^2}{N_X + N_Y} + \frac{N_X N_Y}{(N_X+N_Y)^2}(\mu_X - \mu_Y)^2 }
+$$
+- Insert $\sigma_X^2 = \lambda_1$, $\sigma_Y^2 = \lambda_1 + \sf{M\_diff}$, $\mu_X - \mu_Y = \sf{M\_diff}$, and $N_Y = N_X * \sf{GR}$
+
+- Define $d = \frac{\sf{M\_diff}}{\sigma_{X\cup Y}}$
+
+- Solve for $\sf{M\_diff}$
+
+$$
+\sf{M\_diff} = \frac{d^2 * (-\sf{GR}) * (\sf{GR} + 1) - d * (\sf{GR} + 1) * \sqrt{d^2 * \sf{GR}^2-4*d^2*\sf{GR}*\lambda_1 + 4 * \sf{GR}^2 * \lambda_1 + 8 * \sf{GR} * \lambda_1 + 4 * \lambda_1}}{2 * (d^2 * \sf{GR} - \sf{GR}^2 - 2 * GR - 1)}
+$$
+
+<!-- (d^2 * (-GR) * (GR + 1) - d * (GR + 1) * sqrt(d^2 * GR^2 - 4 * d^2 * GR * l1 + 4 * GR^2 * l1 + 8 * GR * l1 + 4 * l1))/(2 * (d^2 * GR - GR^2 - 2 * GR - 1)) -->
+
+<!-- (d (G + 1) (sqrt(d^2 G (G - 4 l) + 4 (G + 1)^2 l) + d G))/(2 G (-d^2 + G + 2) + 2) -->
+
+
+## Conditions: Second try
+```{r Conditions II}
+#| output-location: column
+# It makes sense to vary group size ratio, lambda, and M_diff
+# The positive relationship between n and power is trivial
+conditions = expand_grid(GR = c(0.5, 1, 2), 
+                         n = 200,
+                         lambda1 = c(1, 10, 20),
+                         M_diff = c(0.3, 0.5, 0.8)) %>% 
+  rowid_to_column(var = "condition")
+conditions
+```
+

@@ -7,7 +7,7 @@
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.251">
+  <meta name="generator" content="quarto-1.2.280">
 
   <meta name="author" content="Marko Bachl">
   <title>Workshop Data Simulation with Monte Carlo Methods - Solution Exercise 2a</title>
@@ -388,13 +388,22 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="https://upload.wikimedia.org/wikipedia/commons/6/64/Uni_Hohenheim-Logo.svg" data-background-position="top right" data-background-size="auto" class="center">
+<section id="title-slide" data-background-image="https://upload.wikimedia.org/wikipedia/commons/6/64/Uni_Hohenheim-Logo.svg" data-background-position="top right" data-background-size="auto" class="quarto-title-block center">
   <h1 class="title">Solution Exercise 2a</h1>
   <p class="subtitle">Data Simulation with Monte Carlo Methods</p>
-  <p class="author">Marko Bachl</p>
-  <p class="institute">University of Hohenheim</p>
-</section>
 
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Marko Bachl 
+</div>
+        <p class="quarto-title-affiliation">
+            University of Hohenheim
+          </p>
+    </div>
+</div>
+
+</section>
 <section>
 <section id="group-exercise-2" class="title-slide slide level1 center">
 <h1>Group exercise 2</h1>
@@ -448,13 +457,13 @@
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ttest_glm</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Welch
-[1] 0.02500204
+[1] 0.2752107
 
 $Student
-[1] 0.02486404
+[1] 0.2751787
 
 $GLM
-[1] 0.0302189</code></pre>
+[1] 0.2423785</code></pre>
 </div>
 </div>
 </section>
@@ -519,7 +528,7 @@ $GLM
 </section>
 <section id="results-histogram-of-p-values-output" class="slide level2 output-location-slide"><h2>Results: Histogram of <em>p</em>-values</h2><div class="cell output-location-slide">
 <div class="cell-output-display">
-<p><img data-src="04_1_solution_files/figure-revealjs/Histogram%20of%20p-values-1.png" width="1920"></p>
+<p><img data-src="04_1_solution_files/figure-revealjs/Histogram of p-values-1.png" width="1920"></p>
 </div>
 </div></section><section id="results-qq-plot-of-p-values" class="slide level2">
 <h2>Results: QQ-Plot of <em>p</em>-values</h2>
@@ -534,7 +543,7 @@ $GLM
 </section>
 <section id="results-qq-plot-of-p-values-output" class="slide level2 output-location-slide"><h2>Results: QQ-Plot of <em>p</em>-values</h2><div class="cell output-location-slide">
 <div class="cell-output-display">
-<p><img data-src="04_1_solution_files/figure-revealjs/QQ-Plot%20of%20p-values-1.png" width="1536"></p>
+<p><img data-src="04_1_solution_files/figure-revealjs/QQ-Plot of p-values-1.png" width="1536"></p>
 </div>
 </div></section><section id="results-rates-of-p-.05" class="slide level2">
 <h2>Results: Rates of <em>p</em> &lt; .05</h2>
@@ -552,7 +561,7 @@ $GLM
 </details>
 
 </div>
-<img data-src="04_1_solution_files/figure-revealjs/Rates%20of%20p%20%3C%20.05-1.png" width="960" class="r-stretch"></section>
+<img data-src="04_1_solution_files/figure-revealjs/Rates of p < .05-1.png" width="960" class="r-stretch"></section>
 <section id="summary" class="slide level2">
 <h2>Summary</h2>
 <ul>
@@ -782,12 +791,15 @@ $GLM
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
       // slide changes (different for each slide format).
       (function () {
-        function fireSlideChanged(previousSlide, currentSlide) {
-
-          // dispatch for htmlwidgets
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
           const event = window.document.createEvent("Event");
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
 
           // dispatch for shiny
           if (window.jQuery) {
@@ -798,13 +810,6 @@ $GLM
               window.jQuery(currentSlide).trigger("shown");
             }
           }
-        }
-
-        // hookup for reveal
-        if (window.Reveal) {
-          window.Reveal.addEventListener("slidechanged", function(event) {
-            fireSlideChanged(event.previousSlide, event.currentSlide);
-          });
         }
 
         // hookup for slidy
@@ -856,7 +861,24 @@ $GLM
         button.classList.add('code-copy-button-checked');
         var currentTitle = button.getAttribute("title");
         button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
         setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
           button.setAttribute("title", currentTitle);
           button.classList.remove('code-copy-button-checked');
         }, 1000);
@@ -894,24 +916,42 @@ $GLM
           return note.innerHTML;
         });
       }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
       var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
       for (var i=0; i<bibliorefs.length; i++) {
         const ref = bibliorefs[i];
-        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-        tippyHover(ref, function() {
-          var popup = window.document.createElement('div');
-          cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
-            }
-            popup.appendChild(citeDiv);
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
           });
-          return popup.innerHTML;
-        });
+        }
       }
     });
     </script>

@@ -7,7 +7,7 @@
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.251">
+  <meta name="generator" content="quarto-1.2.280">
 
   <meta name="author" content="Marko Bachl">
   <title>Workshop Data Simulation with Monte Carlo Methods - 4b) Errors and power — Torturing the t-test</title>
@@ -388,13 +388,22 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" data-background-image="https://upload.wikimedia.org/wikipedia/commons/6/64/Uni_Hohenheim-Logo.svg" data-background-position="top right" data-background-size="auto" class="center">
+<section id="title-slide" data-background-image="https://upload.wikimedia.org/wikipedia/commons/6/64/Uni_Hohenheim-Logo.svg" data-background-position="top right" data-background-size="auto" class="quarto-title-block center">
   <h1 class="title">4b) Errors and power — Torturing the <em>t</em>-test</h1>
   <p class="subtitle">Data Simulation with Monte Carlo Methods</p>
-  <p class="author">Marko Bachl</p>
-  <p class="institute">University of Hohenheim</p>
-</section>
 
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Marko Bachl 
+</div>
+        <p class="quarto-title-affiliation">
+            University of Hohenheim
+          </p>
+    </div>
+</div>
+
+</section>
 <section>
 <section id="errors-and-power-torturing-the-t-test-part-ii" class="title-slide slide level1 center">
 <h1>Errors and power — Torturing the <em>t</em>-test, part II</h1>
@@ -497,10 +506,10 @@
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ttest</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">M_diff =</span> <span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Welch
-[1] 0.4229637
+[1] 0.1878246
 
 $Student
-[1] 0.4228214</code></pre>
+[1] 0.1878221</code></pre>
 </div>
 </div>
 </div>
@@ -1190,7 +1199,7 @@ NOTE: n is number in *each* group</code></pre>
 <ul>
 <li><p>Simulation is a very flexible and powerful approach to <em>a priori</em> power calculation. We can, in principle, test many different design features and statistical methods.</p></li>
 <li><p>However, a meaningful power calculation (not only, but in particular with simulation methods) requires deep understanding of all involved components.</p></li>
-<li><p>Implementing simulation methods for <em>a priori</em> power calculation from scratch is very revealing, because they make it very obvious how much we need to know to arrive at a sensible answer.</p></li>
+<li><p>Implementing simulation methods for <em>a priori</em> power calculation from scratch is very revealing, because it makes it very obvious how much we need to know to arrive at a sensible answer.</p></li>
 </ul>
 </section></section>
 <section id="questions-2" class="title-slide slide level1 center">
@@ -1216,11 +1225,10 @@ NOTE: n is number in *each* group</code></pre>
 <ul>
 <li><p>We want to compare the statistical power of</p>
 <ul>
-<li>Student’s <em>t</em>-test,</li>
-<li>Welch’s <em>t</em>-test, and</li>
+<li>Welch’s <em>t</em>-test and</li>
 <li>Poisson regression with a dummy predictor</li>
 </ul></li>
-<li><p>if the true data generating process is drawing from Poisson distributions.</p></li>
+<li><p>if the true data generating process is drawing from Poisson distributions with different rate parameters.</p></li>
 <li><p>If necessary: Adapt the simulation function from Exercise 2a.</p></li>
 <li><p>Choose a sensible set of parameter combinations for the Monte Carlo experiment.</p></li>
 </ul>
@@ -1446,12 +1454,15 @@ NOTE: n is number in *each* group</code></pre>
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
       // slide changes (different for each slide format).
       (function () {
-        function fireSlideChanged(previousSlide, currentSlide) {
-
-          // dispatch for htmlwidgets
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
           const event = window.document.createEvent("Event");
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
 
           // dispatch for shiny
           if (window.jQuery) {
@@ -1462,13 +1473,6 @@ NOTE: n is number in *each* group</code></pre>
               window.jQuery(currentSlide).trigger("shown");
             }
           }
-        }
-
-        // hookup for reveal
-        if (window.Reveal) {
-          window.Reveal.addEventListener("slidechanged", function(event) {
-            fireSlideChanged(event.previousSlide, event.currentSlide);
-          });
         }
 
         // hookup for slidy
@@ -1520,7 +1524,24 @@ NOTE: n is number in *each* group</code></pre>
         button.classList.add('code-copy-button-checked');
         var currentTitle = button.getAttribute("title");
         button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
         setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
           button.setAttribute("title", currentTitle);
           button.classList.remove('code-copy-button-checked');
         }, 1000);
@@ -1558,24 +1579,42 @@ NOTE: n is number in *each* group</code></pre>
           return note.innerHTML;
         });
       }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
       var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
       for (var i=0; i<bibliorefs.length; i++) {
         const ref = bibliorefs[i];
-        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-        tippyHover(ref, function() {
-          var popup = window.document.createElement('div');
-          cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
-            }
-            popup.appendChild(citeDiv);
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
           });
-          return popup.innerHTML;
-        });
+        }
       }
     });
     </script>

@@ -717,7 +717,7 @@ sims %>%
 
 - However, a meaningful power calculation (not only, but in particular with simulation methods) requires deep understanding of all involved components.
 
-- Implementing simulation methods for *a priori* power calculation from scratch is very revealing, because they make it very obvious how much we need to know to arrive at a sensible answer.
+- Implementing simulation methods for *a priori* power calculation from scratch is very revealing, because it makes it very obvious how much we need to know to arrive at a sensible answer.
 
 # Questions?
 
@@ -734,11 +734,10 @@ sims %>%
 ## Exercise 2b: Power
 
 - We want to compare the statistical power of 
-    - Student's *t*-test,
-    - Welch's *t*-test, and
+    - Welch's *t*-test and
     - Poisson regression with a dummy predictor
 
-- if the true data generating process is drawing from Poisson distributions.
+- if the true data generating process is drawing from Poisson distributions with different rate parameters.
 
 - If necessary: Adapt the simulation function from Exercise 2a.
 
