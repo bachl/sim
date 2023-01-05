@@ -28,6 +28,8 @@ at the University of Zurich & ETH Zurich, Switzerland
     - [Solution Exercise 2a - Pure R Script](R/04_1_solution.R)
     - [Slides 2](qmd/04_2_errors_power.html)
     - [Pure R Script 2](R/04_2_errors_power.R)
+    - [Solution Exercise 2b - Compiled](qmd/04_2_solution.html)
+    - [Solution Exercise 2b - Pure R Script](R/04_2_solution.R)
 
 5)  Misclassification and bias --- Messages mismeasured
     - [Slides](qmd/05_misclass_bias.html)
