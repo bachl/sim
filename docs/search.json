@@ -277,7 +277,7 @@
     "href": "qmd/04_2_errors_power.html#adapt-the-simulation-function",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Adapt the simulation function",
-    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.08889273\n\n$Student\n[1] 0.08887273"
+    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.2515243\n\n$Student\n[1] 0.2515222"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#adapt-the-experimental-conditions",
@@ -613,7 +613,7 @@
     "href": "qmd/05_misclass_bias.html#first-simulation-study-univariate-analysis",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "First simulation study: Univariate analysis",
-    "text": "First simulation study: Univariate analysis\n\nQuestion: What is the goal of the simulation?\n\nUnderstand how misclassification error affects the estimated proportions of a misclassified variable\n\nQuantities of interest: What is measured in the simulation?\n\nDeviation of proportion estimates from known population proportions\n\nEvaluation strategy: How are the quantities assessed?\n\nInspection of the deviation for fixed population configurations; Root mean squared error (RMSE) for general analysis.\n\nConditions: Which characteristics of the data generating model will be varied?\n\nAccuracy of the classification; Population distributions.\n\nData generating model: How are the data simulated?\n\nRandom draws from a categorical distribution; subsequent misclassification of the sampled units."
+    "text": "First simulation study: Univariate analysis\n\nQuestion: What is the goal of the simulation?\n\nUnderstand how misclassification error affects the estimated proportions of a misclassified variable\n\nQuantities of interest: What is measured in the simulation?\n\nDeviation of proportion estimates from known population proportions\n\nEvaluation strategy: How are the quantities assessed?\n\nInspection of the deviation for fixed population configurations\nRoot mean squared error (RMSE) for general analysis.\n\nConditions: Which characteristics of the data generating model will be varied?\n\nAccuracy of the classification; Population distributions.\n\nData generating model: How are the data simulated?\n\nRandom draws from a categorical distribution; subsequent misclassification of the sampled units."
   },
   {
     "objectID": "qmd/05_misclass_bias.html#practical-considerations",
@@ -655,14 +655,14 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.017 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.483 0.293 0.138 0.086"
+    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.015 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.483 0.293 0.138 0.086"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nSecond try\n\nLess computational costs at the at category level\n\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.003 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.496 0.299 0.128 0.077"
+    "text": "One simulation: Misclassification\nSecond try\n\nLess computational costs at the at category level\n\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.004 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.496 0.299 0.128 0.077"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-quantification-of-error",
@@ -816,7 +816,7 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-2",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nSame as before\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.002 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.476 0.287 0.142 0.095"
+    "text": "One simulation: Misclassification\nSame as before\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.003 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.476 0.287 0.142 0.095"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-measure-quantities-of-interest",
@@ -1412,5 +1412,12 @@
     "title": "Workshop Data Simulation with Monte Carlo Methods",
     "section": "Traktandenliste",
     "text": "Traktandenliste\n\nIntroduction & overview\n\nSlides\n\nMonte Carlo Simulation?\n\nSlides\n\nProof by simulation — The Central Limit Theorem (CLT)\n\nSlides\nPure R Script\nSolution Exercise 1 - Compiled\nSolution Exercise 1 - Pure R Script\n\nErrors and power — Torturing the t-test\n\nSlides 1\nPure R Script 1\nSolution Exercise 2a - Compiled\nSolution Exercise 2a - Pure R Script\nSlides 2\nPure R Script 2\nSolution Exercise 2b - Compiled\nSolution Exercise 2b - Pure R Script\n\nMisclassification and bias — Messages mismeasured\n\nSlides\nPure R Script\n\nOutlook: What’s next?\n\nSlides"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#exercise-2b-help",
+    "href": "qmd/04_2_errors_power.html#exercise-2b-help",
+    "title": "4b) Errors and power — Torturing the t-test",
+    "section": "Exercise 2b: Help",
+    "text": "Exercise 2b: Help\nExpand if you need help.\nDon’t expand if you want to figure it out by yourself.\nScroll down if you need more help on later steps.\nSimulation function adapted from Exercise 2a\n\n\nCode\n# We use almost the same simulation function, \n# but we omit Student's t-test, because we already showed its\n# problems with unequal group sizes and group SDs\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\n\n\nConditions I: Simple variation of differences between rate parameters\n\n\nCode\n# It makes sense to vary group size ratio, lambda, and M_diff\n# The positive relationship between n and power is trivial\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         n = 200,\n                         lambda1 = c(1, 10, 20),\n                         M_diff = c(0.3, 0.5, 0.8)) %>% \n  rowid_to_column(var = \"condition\")\n\n\nConditions II: Variation of differences between rate parameters standardized by \\(\\sqrt{\\lambda_1}\\)\n\n\nCode\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         n = 200,\n                         lambda1 = c(1, 10, 20),\n                         d = c(0.2, 0.4, 0.6)) %>% # standardized mean difference.\n  mutate(M_diff = d * sqrt(lambda1)) %>% # absolute mean difference\n  rowid_to_column(var = \"condition\")\n\n\nResult plot: Power at \\(p < .05\\)\n\n\nCode\nsims %>% \n  group_by(GR, lambda1, M_diff, method) %>% \n  summarise(P_p05 = mean(p.value < 0.05)) %>% \n  ggplot(aes(factor(GR), P_p05, color = method, group = method)) + \n  geom_point() + geom_line() +\n  facet_grid(M_diff ~ lambda1, labeller = label_both) +\n  labs(x = \"Group size ratio\", y = \"Power\")"
   }
 ]

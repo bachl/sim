@@ -506,10 +506,10 @@ Marko Bachl
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ttest</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">M_diff =</span> <span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Welch
-[1] 0.08889273
+[1] 0.2515243
 
 $Student
-[1] 0.08887273</code></pre>
+[1] 0.2515222</code></pre>
 </div>
 </div>
 </div>
@@ -1232,6 +1232,73 @@ NOTE: n is number in *each* group</code></pre>
 <li><p>If necessary: Adapt the simulation function from Exercise 2a.</p></li>
 <li><p>Choose a sensible set of parameter combinations for the Monte Carlo experiment.</p></li>
 </ul>
+</section>
+<section id="exercise-2b-help" class="slide level2 scrollable">
+<h2>Exercise 2b: Help</h2>
+<h3 id="expand-if-you-need-help.">Expand if you need help.</h3>
+<h3 id="dont-expand-if-you-want-to-figure-it-out-by-yourself.">Don’t expand if you want to figure it out by yourself.</h3>
+<h3 id="scroll-down-if-you-need-more-help-on-later-steps.">Scroll down if you need more help on later steps.</h3>
+<p>Simulation function adapted from Exercise 2a</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We use almost the same simulation function, </span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but we omit Student's t-test, because we already showed its</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="co"># problems with unequal group sizes and group SDs</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>sim_ttest_glm <span class="ot">=</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">GR =</span> <span class="dv">1</span>, <span class="at">lambda1 =</span> <span class="dv">1</span>, <span class="at">M_diff =</span> <span class="dv">0</span>) {</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">=</span> <span class="fu">round</span>(n <span class="sc">/</span> (GR <span class="sc">+</span> <span class="dv">1</span>))</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  n2 <span class="ot">=</span> <span class="fu">round</span>(n1 <span class="sc">*</span> GR)</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  lambda2 <span class="ot">=</span> lambda1 <span class="sc">+</span> M_diff</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  g1 <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n =</span> n1, <span class="at">lambda =</span> lambda1)</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  g2 <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n =</span> n2, <span class="at">lambda =</span> lambda2)</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  Welch <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2)<span class="sc">$</span>p.value</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  GLM <span class="ot">=</span> <span class="fu">glm</span>(outcome <span class="sc">~</span> group,</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">outcome =</span> <span class="fu">c</span>(g1, g2),</span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>                              <span class="at">group =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"g1"</span>, n1), <span class="fu">rep</span>(<span class="st">"g2"</span>, n2))),</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> poisson)</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">=</span> <span class="fu">lst</span>(Welch, <span class="at">GLM =</span> <span class="fu">coef</span>(<span class="fu">summary</span>(GLM))[<span class="dv">2</span>, <span class="dv">4</span>])</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Conditions I: Simple variation of differences between rate parameters</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># It makes sense to vary group size ratio, lambda, and M_diff</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The positive relationship between n and power is trivial</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">expand_grid</span>(<span class="at">GR =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>), </span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">n =</span> <span class="dv">200</span>,</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">lambda1 =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">20</span>),</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">M_diff =</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"condition"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Conditions II: Variation of differences between rate parameters standardized by <span class="math inline">\(\sqrt{\lambda_1}\)</span></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">expand_grid</span>(<span class="at">GR =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>), </span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">n =</span> <span class="dv">200</span>,</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">lambda1 =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">20</span>),</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">d =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>)) <span class="sc">%&gt;%</span> <span class="co"># standardized mean difference.</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">M_diff =</span> d <span class="sc">*</span> <span class="fu">sqrt</span>(lambda1)) <span class="sc">%&gt;%</span> <span class="co"># absolute mean difference</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"condition"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Result plot: Power at <span class="math inline">\(p &lt; .05\)</span></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(GR, lambda1, M_diff, method) <span class="sc">%&gt;%</span> </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">P_p05 =</span> <span class="fu">mean</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">factor</span>(GR), P_p05, <span class="at">color =</span> method, <span class="at">group =</span> method)) <span class="sc">+</span> </span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(M_diff <span class="sc">~</span> lambda1, <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Group size ratio"</span>, <span class="at">y =</span> <span class="st">"Power"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 
 <div class="footer footer-default">
 
