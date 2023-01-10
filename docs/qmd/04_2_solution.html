@@ -453,10 +453,10 @@ Marko Bachl
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">sim_ttest_glm</span>(<span class="at">n =</span> <span class="dv">100</span>, <span class="at">M_diff =</span> <span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Welch
-[1] 0.1081768
+[1] 0.1918009
 
 $GLM
-[1] 0.1006226</code></pre>
+[1] 0.1842055</code></pre>
 </div>
 </div>
 </section>
@@ -532,67 +532,122 @@ $GLM
 </div></section><section id="summary-first-try" class="slide level2">
 <h2>Summary: First try</h2>
 <ul>
-<li><p>(In hindsight) obvious result: Power strongly decreases as the rate parameter <span class="math inline">\(\lambda\)</span> in the reference group increases.</p></li>
+<li><p>(In hindsight) obvious result: Power strongly decreases as the rate parameter <span class="math inline">\(\lambda\)</span> in the control group increases.</p></li>
 <li><p>Obvious, because the group standard deviations are <span class="math inline">\(\sqrt{\lambda_1}\)</span> and <span class="math inline">\(\sqrt{\lambda_1 + \sf{M\_diff}}\)</span>.</p></li>
-<li><p><em>t</em>-test and Poisson regression did very similarly, as far as this can be seen against the strong differences by the rate in the reference group.</p></li>
+<li><p><em>t</em>-test and Poisson regression did very similarly, as far as this can be seen against the strong differences by the rate in the control group.</p></li>
 <li><p>Next, we want to vary a <em>standardized</em> mean difference, <em>d</em>.</p></li>
 </ul>
+<!-- This seems to be too complicated for a short exercise -->
+<!-- ## Conditions: Second try {.smaller} -->
+<!-- - Recall the pooled population standard deviation from earlier: -->
+<!-- $$ -->
+<!-- \sigma_{X\cup Y} = \sqrt{ \frac{N_X \sigma_X^2 + N_Y \sigma_Y^2}{N_X + N_Y} + \frac{N_X N_Y}{(N_X+N_Y)^2}(\mu_X - \mu_Y)^2 } -->
+<!-- $$ -->
+<!-- - Insert $\sigma_X^2 = \lambda_1$, $\sigma_Y^2 = \lambda_1 + \sf{M\_diff}$, $\mu_X - \mu_Y = \sf{M\_diff}$, and $N_Y = N_X * \sf{GR}$ -->
+<!-- - Define $d = \frac{\sf{M\_diff}}{\sigma_{X\cup Y}}$ -->
+<!-- - Solve for $\sf{M\_diff}$ -->
+<!-- $$ -->
+<!-- \sf{M\_diff} = \frac{d^2 * (-\sf{GR}) * (\sf{GR} + 1) - d * (\sf{GR} + 1) * \sqrt{d^2 * \sf{GR}^2-4*d^2*\sf{GR}*\lambda_1 + 4 * \sf{GR}^2 * \lambda_1 + 8 * \sf{GR} * \lambda_1 + 4 * \lambda_1}}{2 * (d^2 * \sf{GR} - \sf{GR}^2 - 2 * GR - 1)} -->
+<!-- $$ -->
+<!-- ## Conditions: Second try -->
+<!-- ```{r Conditions II} -->
+<!-- #| output-location: column -->
+<!-- # It makes sense to vary group size ratio, lambda, and M_diff -->
+<!-- # The positive relationship between n and power is trivial -->
+<!-- conditions = expand_grid(GR = c(0.5, 1, 2),  -->
+<!--                          n = 200, -->
+<!--                          lambda1 = c(1, 10, 20), -->
+<!--                          M_diff = c(0.3, 0.5, 0.8)) %>%  -->
+<!--   rowid_to_column(var = "condition") -->
+<!-- conditions -->
+<!-- ``` -->
 </section>
-<section id="conditions-second-try" class="slide level2 smaller">
+<section id="conditions-second-try" class="slide level2">
 <h2>Conditions: Second try</h2>
 <ul>
-<li>Recall the pooled population standard deviation from earlier:</li>
+<li><p>It is not straightforward to vary the effect size as defined by the mean difference divided by the pooled population standard deviation.</p></li>
+<li><p>We opt for a simpler option: Standardization by the standard deviation in the control group, i.e., <span class="math inline">\(\sqrt{\lambda_1}\)</span>.</p></li>
 </ul>
-<p><span class="math display">\[
-\sigma_{X\cup Y} = \sqrt{ \frac{N_X \sigma_X^2 + N_Y \sigma_Y^2}{N_X + N_Y} + \frac{N_X N_Y}{(N_X+N_Y)^2}(\mu_X - \mu_Y)^2 }
-\]</span> - Insert <span class="math inline">\(\sigma_X^2 = \lambda_1\)</span>, <span class="math inline">\(\sigma_Y^2 = \lambda_1 + \sf{M\_diff}\)</span>, <span class="math inline">\(\mu_X - \mu_Y = \sf{M\_diff}\)</span>, and <span class="math inline">\(N_Y = N_X * \sf{GR}\)</span></p>
-<ul>
-<li><p>Define <span class="math inline">\(d = \frac{\sf{M\_diff}}{\sigma_{X\cup Y}}\)</span></p></li>
-<li><p>Solve for <span class="math inline">\(\sf{M\_diff}\)</span></p></li>
-</ul>
-<p><span class="math display">\[
-\sf{M\_diff} = \frac{d^2 * (-\sf{GR}) * (\sf{GR} + 1) - d * (\sf{GR} + 1) * \sqrt{d^2 * \sf{GR}^2-4*d^2*\sf{GR}*\lambda_1 + 4 * \sf{GR}^2 * \lambda_1 + 8 * \sf{GR} * \lambda_1 + 4 * \lambda_1}}{2 * (d^2 * \sf{GR} - \sf{GR}^2 - 2 * GR - 1)}
-\]</span></p>
-<!-- (d^2 * (-GR) * (GR + 1) - d * (GR + 1) * sqrt(d^2 * GR^2 - 4 * d^2 * GR * l1 + 4 * GR^2 * l1 + 8 * GR * l1 + 4 * l1))/(2 * (d^2 * GR - GR^2 - 2 * GR - 1)) -->
-<!-- (d (G + 1) (sqrt(d^2 G (G - 4 l) + 4 (G + 1)^2 l) + d G))/(2 G (-d^2 + G + 2) + 2) -->
-</section>
-<section id="conditions-second-try-1" class="slide level2">
-<h2>Conditions: Second try</h2>
 <div class="cell columns column-output-location">
 <div class="column">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># It makes sense to vary group size ratio, lambda, and M_diff</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The positive relationship between n and power is trivial</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">expand_grid</span>(<span class="at">GR =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>), </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">n =</span> <span class="dv">200</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">lambda1 =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">20</span>),</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">M_diff =</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"condition"</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>conditions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">expand_grid</span>(<span class="at">GR =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>), </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">n =</span> <span class="dv">200</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">lambda1 =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">20</span>),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">d =</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>)) <span class="sc">%&gt;%</span> <span class="co"># standardized mean difference.</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">M_diff =</span> d <span class="sc">*</span> <span class="fu">sqrt</span>(lambda1)) <span class="sc">%&gt;%</span> <span class="co"># absolute mean difference</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"condition"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>conditions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 27 × 5
-   condition    GR     n lambda1 M_diff
-       &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;
- 1         1   0.5   200       1    0.3
- 2         2   0.5   200       1    0.5
- 3         3   0.5   200       1    0.8
- 4         4   0.5   200      10    0.3
- 5         5   0.5   200      10    0.5
- 6         6   0.5   200      10    0.8
- 7         7   0.5   200      20    0.3
- 8         8   0.5   200      20    0.5
- 9         9   0.5   200      20    0.8
-10        10   1     200       1    0.3
+<pre><code># A tibble: 27 × 6
+   condition    GR     n lambda1     d M_diff
+       &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+ 1         1   0.5   200       1   0.2  0.2  
+ 2         2   0.5   200       1   0.4  0.4  
+ 3         3   0.5   200       1   0.6  0.6  
+ 4         4   0.5   200      10   0.2  0.632
+ 5         5   0.5   200      10   0.4  1.26 
+ 6         6   0.5   200      10   0.6  1.90 
+ 7         7   0.5   200      20   0.2  0.894
+ 8         8   0.5   200      20   0.4  1.79 
+ 9         9   0.5   200      20   0.6  2.68 
+10        10   1     200       1   0.2  0.2  
 # … with 17 more rows
 # ℹ Use `print(n = ...)` to see more rows</code></pre>
 </div>
 </div>
 </div>
+</section>
+<section id="run-simulation-1" class="slide level2">
+<h2>Run simulation</h2>
+<div class="cell" data-hash="04_2_solution_cache/revealjs/Run simulation II_808fc6ee8eb97a55a15c54051c134aa2">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use smaller i for now because additional glm() needs time</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">525</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">1000</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>sims <span class="ot">=</span> <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span>i, <span class="sc">~</span> conditions) <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"sim"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">p.value =</span> <span class="fu">list</span>(<span class="fu">sim_ttest_glm</span>(<span class="at">n =</span> n, <span class="at">M_diff =</span> M_diff,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">GR =</span> GR, <span class="at">lambda1 =</span> lambda1))) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_longer</span>(p.value, <span class="at">indices_to =</span> <span class="st">"method"</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>63.788 sec elapsed</code></pre>
+</div>
+</div>
+</section>
+<section id="results-power-1" class="slide level2">
+<h2>Results: Power</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(GR, lambda1, d, method) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">P_p05 =</span> <span class="fu">mean</span>(p.value <span class="sc">&lt;</span> <span class="fl">0.05</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="fu">factor</span>(GR), P_p05, <span class="at">color =</span> method, <span class="at">group =</span> method)) <span class="sc">+</span> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(d <span class="sc">~</span> lambda1, <span class="at">labeller =</span> label_both, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Group size ratio"</span>, <span class="at">y =</span> <span class="st">"Power"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+</section>
+<section id="results-power-1-output" class="slide level2 output-location-slide"><h2>Results: Power</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<p><img data-src="04_2_solution_files/figure-revealjs/Power plot II-1.png" width="1920"></p>
+</div>
+</div></section><section id="summary-second-try" class="slide level2">
+<h2>Summary: Second try</h2>
+<ul>
+<li><p>Welch’s <em>t</em>-test and Poisson regression perform very similarly in terms of statistical power.</p></li>
+<li><p>If the only goal is to compare some group means, the simpler <em>t</em>-test (or a linear model with heteroskedasticity-consistent standard errors) might be good enough.</p></li>
+</ul>
+</section></section>
+<section id="questions" class="title-slide slide level1 center">
+<h1>Questions?</h1>
 
 <div class="footer footer-default">
 
 </div>
-</section></section>
+</section>
     </div>
   </div>
 

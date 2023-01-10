@@ -47,7 +47,7 @@ set.seed(376)
 
 ## Introduction (II)
 
--   I am a trained social scientist / communication researcher with an interest in quantitative methods.
+-   I am a social (communication) scientist with an interest in quantitative methods.
 
 -   I use data simulation methods for teaching myself and others as well as in my applied and methods research.
 
@@ -114,9 +114,7 @@ sample(x = 30, size = 4)
 
 ### Slides, scripts, and exercises:
 
--   <https://github.com/bachl/sim> (Source)
-
--   <https://bachl.github.io/sim/> (Rendered)
+-   All materials are at <https://bachl.github.io/sim/>
 
 ### R & packages:
 ```{r}

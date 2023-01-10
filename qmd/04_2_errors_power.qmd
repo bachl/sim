@@ -742,3 +742,19 @@ sims %>%
 - If necessary: Adapt the simulation function from Exercise 2a.
 
 - Choose a sensible set of parameter combinations for the Monte Carlo experiment. 
+
+## Exercise 2b: Help {.scrollable}
+
+### Expand if you need help.
+
+### Don't expand if you want to figure it out by yourself.
+
+### Scroll down if you need more help on later steps.
+
+Sample from a Poisson distribution
+
+```{r Sample from a Poisson distribution}
+#| eval: false
+#| code-fold: true
+rpois(n = n1, lambda = lambda1)
+```

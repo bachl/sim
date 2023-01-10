@@ -45,7 +45,6 @@ theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25, axis_title_size = 25))
 
 6)  Outlook: What's next?
 
-
 ## 3. Proof by simulation --- The CLT
 
 a)  Short intro (refresher): Getting Started with Randomness (in *R*)
@@ -62,7 +61,7 @@ b)  "Proving" the Central Limit Theorem by simulation
 
 -   Long tradition of research in Computer Science, including work by [John von Neumann](https://en.wikipedia.org/wiki/John_von_Neumann).
 
--   Pseudo-randomness is mostly considered a problem. But there is one advantage for simulation studies: Pseudo-random numbers are reproducible (*R*: `set.seed()`).
+-   Pseudo-randomness is mostly considered a problem. But one advantage for simulation studies: Pseudo-random numbers are reproducible.
 
 -   For details in *R*, see [`?RNG`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/Random.html).
 
@@ -217,6 +216,7 @@ ggplot() +
 ## Proof by simulation
 
 -   We repeatedly draw samples of size $n$ from the population.
+
 ```{r one simulation}
 n = 100
 (one_sim = rnorm(n = n, mean = mu, sd = sigma)) %>% round(2)
@@ -225,6 +225,7 @@ n = 100
 ## Proof by simulation
 
 -   We compute the sample mean $\hat{\mu}$ of the quantity for each sample.
+
 ```{r mean of one simulation}
 mean(one_sim)
 ```
@@ -232,6 +233,7 @@ mean(one_sim)
 ## Proof by simulation
 
 -   If we want to do stuff repeatedly in *R*, we should use a function.
+
 ```{r normal CLT simulation function}
 sim_CLT_normal = function(n, mu, sigma) {
   sims = rnorm(n = n, mean = mu, sd = sigma) # Draw sample
@@ -253,6 +255,7 @@ many_means[1:20] %>% round(2)
 ## Proof by simulation
 
 -   The means will have a normal distribution, $\sf{Normal}(\mu, \frac{\sigma}{\sqrt{n}})$.
+
 ```{r normal mean and standard error}
 mu; mean(many_means)
 sigma / sqrt(n); sd(many_means)
@@ -261,6 +264,7 @@ sigma / sqrt(n); sd(many_means)
 ## Proof by simulation
 
 -   The means will have a normal distribution, $\sf{Normal}(\mu, \frac{\sigma}{\sqrt{n}})$.
+
 ```{r normal histogram and Q-Q-plot}
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -436,25 +440,25 @@ d_many_means %>%
 
 ### Conceptual points: 5 questions for Monte Carlo simulation studies
 
-1. Question: What is the goal of the simulation?
+1.  Question: What is the goal of the simulation?
 
-    - Will the CLT hold for different population distributions?
-    
-2. Quantities of interest: What is measured in the simulation?    
+    -   Will the CLT hold for different population distributions?
 
-    - Mean and standard deviation of the sampling distribution
+2.  Quantities of interest: What is measured in the simulation?
 
-3. Evaluation strategy: How are the quantities assessed?    
+    -   Mean and standard deviation of the sampling distribution
 
-    - Comparison with population mean and analytical sampling distribution
+3.  Evaluation strategy: How are the quantities assessed?
 
-4. Conditions: Which characteristics of the data generating model will be varied?
+    -   Comparison with population mean and analytical sampling distribution
 
-    - Different (types of) population distributions.
+4.  Conditions: Which characteristics of the data generating model will be varied?
 
-5. Data generating model: How are the data simulated?
+    -   Different (types of) population distributions.
 
-    - Random draws from different distribtions with fixed sample sizes and moments.
+5.  Data generating model: How are the data simulated?
+
+    -   Random draws from different distribtions with fixed sample sizes and moments.
 
 ## General lessons for simulation studies
 
@@ -462,7 +466,7 @@ d_many_means %>%
 
 -   How to generate pseudo-random data
 
--   How to use functions for things we want to do repeatedly. 
+-   How to use functions for things we want to do repeatedly.
 
 -   How to use `purrr:map()` to do things repeatedly.
 
@@ -474,17 +478,16 @@ d_many_means %>%
 
 -   Adapt the code from the examples to check whether the CLT also holds for a Poisson distribution.
 
-    - Random numbers are sampled with `rpois(n, lambda)`, where `n` is the sample size and `lambda` is the mean (and also the variance) of the distribution.
-    
-    - The population standard deviation is $\sqrt{\lambda}$.
+    -   Random numbers are sampled with `rpois(n, lambda)`, where `n` is the sample size and `lambda` is the mean (and also the variance) of the distribution.
+
+    -   The population standard deviation is $\sqrt{\lambda}$.
 
 ## Exercise 1b. Proving the CLT for any other suitable distribution
 
 -   Select another suitable distribution from [`?Distributions`](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Distributions.html)
 
-    - Read the documentation to understand which arguments must be provided.
-    
-    - Find the definition of the population distribution's standard deviation to calculate the analytical standard deviation of the sampling distribution.
-    
-    - Adapt the simulation and analysis code accordingly.
+    -   Read the documentation to understand which arguments must be provided.
 
+    -   Find the definition of the population distribution's standard deviation to calculate the analytical standard deviation of the sampling distribution.
+
+    -   Adapt the simulation and analysis code accordingly.

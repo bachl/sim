@@ -18,7 +18,7 @@
     "href": "qmd/03_prove.html#how-to-generate-pseudo-random-numbers",
     "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
     "section": "How to generate pseudo-random numbers",
-    "text": "How to generate pseudo-random numbers\n\nComputers are deterministic machines and, by themselves alone, cannot create true random numbers.\nPseudo-random number generators are used to create numbers which appear random according to a set of criteria.\nLong tradition of research in Computer Science, including work by John von Neumann.\nPseudo-randomness is mostly considered a problem. But there is one advantage for simulation studies: Pseudo-random numbers are reproducible (R: set.seed()).\nFor details in R, see ?RNG."
+    "text": "How to generate pseudo-random numbers\n\nComputers are deterministic machines and, by themselves alone, cannot create true random numbers.\nPseudo-random number generators are used to create numbers which appear random according to a set of criteria.\nLong tradition of research in Computer Science, including work by John von Neumann.\nPseudo-randomness is mostly considered a problem. But one advantage for simulation studies: Pseudo-random numbers are reproducible.\nFor details in R, see ?RNG."
   },
   {
     "objectID": "qmd/03_prove.html#how-to-generate-random-numbers-in-r",
@@ -60,7 +60,7 @@
     "href": "qmd/03_prove.html#rnorm---draw-random-numbers-from-a-normal-distribution",
     "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
     "section": "rnorm() - draw random numbers from a normal distribution",
-    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -0.40001564  0.25815699 -0.79663030 -0.09074479 -1.14313624  0.16080833\n [7]  0.78542670  0.49220341 -1.13851269  0.08935831\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -0.09112791 -1.92671530 -0.31376081  0.08216938  0.88614221  0.14814361\n [7] -0.84615885  1.17799373 -0.97062875  2.27919815"
+    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -0.2794863  1.7442905 -1.8819165 -2.3403547 -0.0853755 -0.7437104\n [7] -1.2379153  1.8169151 -0.6983954  0.0947813\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -1.7580538  0.5461973  1.6123918  0.2317794  0.6530641  1.1038529\n [7] -0.2276882  0.5599899  0.8319290 -1.2742905"
   },
   {
     "objectID": "qmd/03_prove.html#always-use-set.seed-to-make-simulation-results-reproducible",
@@ -277,7 +277,7 @@
     "href": "qmd/04_2_errors_power.html#adapt-the-simulation-function",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Adapt the simulation function",
-    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.1878246\n\n$Student\n[1] 0.1878221"
+    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.08889273\n\n$Student\n[1] 0.08887273"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#adapt-the-experimental-conditions",
@@ -529,7 +529,7 @@
     "href": "qmd/01_intro.html#introduction-ii",
     "title": "Data Simulation with Monte Carlo Methods",
     "section": "Introduction (II)",
-    "text": "Introduction (II)\n\nI am a trained social scientist / communication researcher with an interest in quantitative methods.\nI use data simulation methods for teaching myself and others as well as in my applied and methods research."
+    "text": "Introduction (II)\n\nI am a social (communication) scientist with an interest in quantitative methods.\nI use data simulation methods for teaching myself and others as well as in my applied and methods research."
   },
   {
     "objectID": "qmd/01_intro.html#introduction-iii",
@@ -578,7 +578,7 @@
     "href": "qmd/01_intro.html#resources",
     "title": "Data Simulation with Monte Carlo Methods",
     "section": "Resources",
-    "text": "Resources\nSlides, scripts, and exercises:\n\nhttps://github.com/bachl/sim (Source)\nhttps://bachl.github.io/sim/ (Rendered)\n\nR & packages:\nR (Vers. 4.2.1), dplyr (Vers. 1.0.9), extraDistr (Vers. 1.9.1), forcats (Vers. 0.5.1), ggplot2 (Vers. 3.3.6), hrbrthemes (Vers. 0.8.0), knitr (Vers. 1.39), mgcv (Vers. 1.8.40), nlme (Vers. 3.1.157), purrr (Vers. 0.3.4), readr (Vers. 2.1.2), stringr (Vers. 1.4.0), tibble (Vers. 3.1.8), tictoc (Vers. 1.1), tidyr (Vers. 1.2.0), tidyverse (Vers. 1.3.2)"
+    "text": "Resources\nSlides, scripts, and exercises:\n\nAll materials are at https://bachl.github.io/sim/\n\nR & packages:\nR (Vers. 4.2.1), dplyr (Vers. 1.0.9), extraDistr (Vers. 1.9.1), forcats (Vers. 0.5.1), ggplot2 (Vers. 3.3.6), hrbrthemes (Vers. 0.8.0), knitr (Vers. 1.39), mgcv (Vers. 1.8.40), nlme (Vers. 3.1.157), purrr (Vers. 0.3.4), readr (Vers. 2.1.2), stringr (Vers. 1.4.0), tibble (Vers. 3.1.8), tictoc (Vers. 1.1), tidyr (Vers. 1.2.0), tidyverse (Vers. 1.3.2)"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#traktandenliste",
@@ -655,14 +655,14 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.018 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.483 0.293 0.138 0.086"
+    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.017 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.483 0.293 0.138 0.086"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nSecond try\n\nLess computational costs at the at category level\n\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.002 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.496 0.299 0.128 0.077"
+    "text": "One simulation: Misclassification\nSecond try\n\nLess computational costs at the at category level\n\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.003 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.496 0.299 0.128 0.077"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-quantification-of-error",
@@ -900,7 +900,7 @@
     "href": "qmd/04_1_solution.html#simulation-function",
     "title": "Solution Exercise 2a",
     "section": "Simulation function",
-    "text": "Simulation function\n\n# No standard deviation ratio any more because SD fixed at sqrt(lambda)\n# M_diff not necessary at this stage, but useful later\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  Student = t.test(g1, g2, var.equal = TRUE)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, Student, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm()\n\n$Welch\n[1] 0.2752107\n\n$Student\n[1] 0.2751787\n\n$GLM\n[1] 0.2423785"
+    "text": "Simulation function\n\n# No standard deviation ratio any more because SD fixed at sqrt(lambda)\n# M_diff not necessary at this stage, but useful later\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  Student = t.test(g1, g2, var.equal = TRUE)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, Student, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm()\n\n$Welch\n[1] 0.1806069\n\n$Student\n[1] 0.1805957\n\n$GLM\n[1] 0.1260424"
   },
   {
     "objectID": "qmd/04_1_solution.html#conditions",
@@ -984,7 +984,7 @@
     "href": "qmd/02_monte_carlo.html#monte-carlo-simulation-workflow",
     "title": "2) Monte Carlo Simulation?",
     "section": "Monte Carlo Simulation Workflow",
-    "text": "Monte Carlo Simulation Workflow\n\nRandomly generate data set with known properties\nAnalyse data with a statistical method\nRepeat 1. and 2. many times\nCollect and aggregate results\nCompare results to expectation under the known data-generating process\n\nMake it an experiment\n\nSystematically vary parameters in Step 1 (between factor) and compare different ways to do Step 2 (within factor)."
+    "text": "Monte Carlo Simulation Workflow\n\nRandomly generate data set with known properties\nAnalyse data with a statistical method\nRepeat 1. and 2. many times\nCollect and aggregate results\nCompare results to expectation under the known data-generating process\n\n\n\nMake it an experiment\n\nSystematically vary parameters in Step 1 (between factor) and compare different ways to do Step 2 (within factor)."
   },
   {
     "objectID": "qmd/02_monte_carlo.html#example-simple-demonstrations",
@@ -1082,7 +1082,7 @@
     "href": "qmd/04_2_solution.html#simulation-function",
     "title": "Solution Exercise 2b",
     "section": "Simulation function",
-    "text": "Simulation function\n\n# We use almost the same simulation function, \n# but we omit Student's t-test, because we already showed its\n# problems with unequal group sizes and group SDs\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.1081768\n\n$GLM\n[1] 0.1006226"
+    "text": "Simulation function\n\n# We use almost the same simulation function, \n# but we omit Student's t-test, because we already showed its\n# problems with unequal group sizes and group SDs\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.1918009\n\n$GLM\n[1] 0.1842055"
   },
   {
     "objectID": "qmd/04_2_solution.html#conditions-first-try",
@@ -1117,21 +1117,42 @@
     "href": "qmd/04_2_solution.html#summary-first-try",
     "title": "Solution Exercise 2b",
     "section": "Summary: First try",
-    "text": "Summary: First try\n\n(In hindsight) obvious result: Power strongly decreases as the rate parameter \\(\\lambda\\) in the reference group increases.\nObvious, because the group standard deviations are \\(\\sqrt{\\lambda_1}\\) and \\(\\sqrt{\\lambda_1 + \\sf{M\\_diff}}\\).\nt-test and Poisson regression did very similarly, as far as this can be seen against the strong differences by the rate in the reference group.\nNext, we want to vary a standardized mean difference, d."
+    "text": "Summary: First try\n\n(In hindsight) obvious result: Power strongly decreases as the rate parameter \\(\\lambda\\) in the control group increases.\nObvious, because the group standard deviations are \\(\\sqrt{\\lambda_1}\\) and \\(\\sqrt{\\lambda_1 + \\sf{M\\_diff}}\\).\nt-test and Poisson regression did very similarly, as far as this can be seen against the strong differences by the rate in the control group.\nNext, we want to vary a standardized mean difference, d."
   },
   {
     "objectID": "qmd/04_2_solution.html#conditions-second-try",
     "href": "qmd/04_2_solution.html#conditions-second-try",
     "title": "Solution Exercise 2b",
     "section": "Conditions: Second try",
-    "text": "Conditions: Second try\n\nRecall the pooled population standard deviation from earlier:\n\n\\[\n\\sigma_{X\\cup Y} = \\sqrt{ \\frac{N_X \\sigma_X^2 + N_Y \\sigma_Y^2}{N_X + N_Y} + \\frac{N_X N_Y}{(N_X+N_Y)^2}(\\mu_X - \\mu_Y)^2 }\n\\] - Insert \\(\\sigma_X^2 = \\lambda_1\\), \\(\\sigma_Y^2 = \\lambda_1 + \\sf{M\\_diff}\\), \\(\\mu_X - \\mu_Y = \\sf{M\\_diff}\\), and \\(N_Y = N_X * \\sf{GR}\\)\n\nDefine \\(d = \\frac{\\sf{M\\_diff}}{\\sigma_{X\\cup Y}}\\)\nSolve for \\(\\sf{M\\_diff}\\)\n\n\\[\n\\sf{M\\_diff} = \\frac{d^2 * (-\\sf{GR}) * (\\sf{GR} + 1) - d * (\\sf{GR} + 1) * \\sqrt{d^2 * \\sf{GR}^2-4*d^2*\\sf{GR}*\\lambda_1 + 4 * \\sf{GR}^2 * \\lambda_1 + 8 * \\sf{GR} * \\lambda_1 + 4 * \\lambda_1}}{2 * (d^2 * \\sf{GR} - \\sf{GR}^2 - 2 * GR - 1)}\n\\]"
+    "text": "Conditions: Second try\n\nIt is not straightforward to vary the effect size as defined by the mean difference divided by the pooled population standard deviation.\nWe opt for a simpler option: Standardization by the standard deviation in the control group, i.e., \\(\\sqrt{\\lambda_1}\\).\n\n\n\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         n = 200,\n                         lambda1 = c(1, 10, 20),\n                         d = c(0.2, 0.4, 0.6)) %>% # standardized mean difference.\n  mutate(M_diff = d * sqrt(lambda1)) %>% # absolute mean difference\n  rowid_to_column(var = \"condition\")\nconditions\n\n\n# A tibble: 27 × 6\n   condition    GR     n lambda1     d M_diff\n       <int> <dbl> <dbl>   <dbl> <dbl>  <dbl>\n 1         1   0.5   200       1   0.2  0.2  \n 2         2   0.5   200       1   0.4  0.4  \n 3         3   0.5   200       1   0.6  0.6  \n 4         4   0.5   200      10   0.2  0.632\n 5         5   0.5   200      10   0.4  1.26 \n 6         6   0.5   200      10   0.6  1.90 \n 7         7   0.5   200      20   0.2  0.894\n 8         8   0.5   200      20   0.4  1.79 \n 9         9   0.5   200      20   0.6  2.68 \n10        10   1     200       1   0.2  0.2  \n# … with 17 more rows\n# ℹ Use `print(n = ...)` to see more rows"
   },
   {
-    "objectID": "qmd/04_2_solution.html#conditions-second-try-1",
-    "href": "qmd/04_2_solution.html#conditions-second-try-1",
+    "objectID": "qmd/04_2_solution.html#run-simulation-1",
+    "href": "qmd/04_2_solution.html#run-simulation-1",
     "title": "Solution Exercise 2b",
-    "section": "Conditions: Second try",
-    "text": "Conditions: Second try\n\n\n# It makes sense to vary group size ratio, lambda, and M_diff\n# The positive relationship between n and power is trivial\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         n = 200,\n                         lambda1 = c(1, 10, 20),\n                         M_diff = c(0.3, 0.5, 0.8)) %>% \n  rowid_to_column(var = \"condition\")\nconditions\n\n\n# A tibble: 27 × 5\n   condition    GR     n lambda1 M_diff\n       <int> <dbl> <dbl>   <dbl>  <dbl>\n 1         1   0.5   200       1    0.3\n 2         2   0.5   200       1    0.5\n 3         3   0.5   200       1    0.8\n 4         4   0.5   200      10    0.3\n 5         5   0.5   200      10    0.5\n 6         6   0.5   200      10    0.8\n 7         7   0.5   200      20    0.3\n 8         8   0.5   200      20    0.5\n 9         9   0.5   200      20    0.8\n10        10   1     200       1    0.3\n# … with 17 more rows\n# ℹ Use `print(n = ...)` to see more rows"
+    "section": "Run simulation",
+    "text": "Run simulation\n\n# use smaller i for now because additional glm() needs time\nset.seed(525)\ni = 1000\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(p.value = list(sim_ttest_glm(n = n, M_diff = M_diff,\n                                      GR = GR, lambda1 = lambda1))) %>% \n  unnest_longer(p.value, indices_to = \"method\")\ntoc()\n\n63.788 sec elapsed"
+  },
+  {
+    "objectID": "qmd/04_2_solution.html#results-power-1",
+    "href": "qmd/04_2_solution.html#results-power-1",
+    "title": "Solution Exercise 2b",
+    "section": "Results: Power",
+    "text": "Results: Power\n\nsims %>% \n  group_by(GR, lambda1, d, method) %>% \n  summarise(P_p05 = mean(p.value < 0.05)) %>% \n  ggplot(aes(factor(GR), P_p05, color = method, group = method)) + \n  geom_point() + geom_line() +\n  facet_grid(d ~ lambda1, labeller = label_both, scales = \"free_y\") +\n  labs(x = \"Group size ratio\", y = \"Power\")"
+  },
+  {
+    "objectID": "qmd/04_2_solution.html#results-power-1-output",
+    "href": "qmd/04_2_solution.html#results-power-1-output",
+    "title": "Solution Exercise 2b",
+    "section": "Results: Power",
+    "text": "Results: Power"
+  },
+  {
+    "objectID": "qmd/04_2_solution.html#summary-second-try",
+    "href": "qmd/04_2_solution.html#summary-second-try",
+    "title": "Solution Exercise 2b",
+    "section": "Summary: Second try",
+    "text": "Summary: Second try\n\nWelch’s t-test and Poisson regression perform very similarly in terms of statistical power.\nIf the only goal is to compare some group means, the simpler t-test (or a linear model with heteroskedasticity-consistent standard errors) might be good enough."
   },
   {
     "objectID": "qmd/03_solution.html#exercise-1a.-proving-the-clt-for-a-poisson-distribution",

@@ -79,9 +79,11 @@ McNeish, D., Lane, S., & Curran, P. (2018). Monte Carlo Simulation Methods. In G
 
 5)  Compare results to expectation under the known data-generating process
 
+::: {.fragment}
 ### Make it an experiment
 
 -   Systematically vary parameters in Step 1 (between factor) and compare different ways to do Step 2 (within factor).
+:::
 
 ## Example: Simple demonstrations
 

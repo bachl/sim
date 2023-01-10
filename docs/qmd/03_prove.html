@@ -438,7 +438,7 @@ Marko Bachl
 <li><p>Computers are deterministic machines and, by themselves alone, cannot create <em>true</em> random numbers.</p></li>
 <li><p><em>Pseudo-random number generators</em> are used to create numbers which appear random according to a set of criteria.</p></li>
 <li><p>Long tradition of research in Computer Science, including work by <a href="https://en.wikipedia.org/wiki/John_von_Neumann">John von Neumann</a>.</p></li>
-<li><p>Pseudo-randomness is mostly considered a problem. But there is one advantage for simulation studies: Pseudo-random numbers are reproducible (<em>R</em>: <code>set.seed()</code>).</p></li>
+<li><p>Pseudo-randomness is mostly considered a problem. But one advantage for simulation studies: Pseudo-random numbers are reproducible.</p></li>
 <li><p>For details in <em>R</em>, see <a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Random.html"><code>?RNG</code></a>.</p></li>
 </ul>
 </section>
@@ -512,13 +512,13 @@ Marko Bachl
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] -0.40001564  0.25815699 -0.79663030 -0.09074479 -1.14313624  0.16080833
- [7]  0.78542670  0.49220341 -1.13851269  0.08935831</code></pre>
+<pre><code> [1] -0.2794863  1.7442905 -1.8819165 -2.3403547 -0.0853755 -0.7437104
+ [7] -1.2379153  1.8169151 -0.6983954  0.0947813</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] -0.09112791 -1.92671530 -0.31376081  0.08216938  0.88614221  0.14814361
- [7] -0.84615885  1.17799373 -0.97062875  2.27919815</code></pre>
+<pre><code> [1] -1.7580538  0.5461973  1.6123918  0.2317794  0.6530641  1.1038529
+ [7] -0.2276882  0.5599899  0.8319290 -1.2742905</code></pre>
 </div>
 </div>
 </section>
