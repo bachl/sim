@@ -1,11 +1,11 @@
-## ----setup------------------------------------------------------------------------------------------------------
+## ----setup---------------------------------------------------------------------------------------------------
 pacman::p_load(knitr, tictoc, tidyverse)
 theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
                                      axis_title_size = 25,
                                      strip_text_size = 20))
 
 
-## ----Simulation function----------------------------------------------------------------------------------------
+## ----Simulation function-------------------------------------------------------------------------------------
 # No standard deviation ratio any more because SD fixed at sqrt(lambda)
 # M_diff not necessary at this stage, but useful later
 sim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {
@@ -26,7 +26,7 @@ sim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {
 sim_ttest_glm()
 
 
-## ----Conditions-------------------------------------------------------------------------------------------------
+## ----Conditions----------------------------------------------------------------------------------------------
 # It makes sense to vary group size ratio and lambda
 conditions = expand_grid(GR = c(0.5, 1, 2), 
                          n = 600,
@@ -36,7 +36,7 @@ conditions = expand_grid(GR = c(0.5, 1, 2),
 conditions
 
 
-## ----Run simulation---------------------------------------------------------------------------------------------
+## ----Run simulation------------------------------------------------------------------------------------------
 # use smaller i for now because additional glm() needs time
 set.seed(35)
 i = 1000
@@ -50,7 +50,7 @@ sims = map_dfr(1:i, ~ conditions) %>%
 toc()
 
 
-## ----Histogram of p-values--------------------------------------------------------------------------------------
+## ----Histogram of p-values-----------------------------------------------------------------------------------
 sims %>% 
   ggplot(aes(p.value)) +
   geom_histogram(binwidth = 0.1, boundary = 0) + 
@@ -58,7 +58,7 @@ sims %>%
   scale_x_continuous(breaks = c(1, 3)/4)
 
 
-## ----QQ-Plot of p-values----------------------------------------------------------------------------------------
+## ----QQ-Plot of p-values-------------------------------------------------------------------------------------
 sims %>% 
   ggplot(aes(sample = p.value, color = method)) +
   geom_qq(distribution = stats::qunif, geom = "line") + 
@@ -66,7 +66,7 @@ sims %>%
   facet_grid(GR ~ lambda1, labeller = label_both)
 
 
-## ----Rates of p < .05-------------------------------------------------------------------------------------------
+## ----Rates of p < .05----------------------------------------------------------------------------------------
 sims %>% 
   group_by(GR, lambda1, method) %>% 
   summarise(P_p05 = mean(p.value < 0.05)) %>% 

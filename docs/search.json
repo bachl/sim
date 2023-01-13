@@ -60,7 +60,7 @@
     "href": "qmd/03_prove.html#rnorm---draw-random-numbers-from-a-normal-distribution",
     "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
     "section": "rnorm() - draw random numbers from a normal distribution",
-    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -0.2794863  1.7442905 -1.8819165 -2.3403547 -0.0853755 -0.7437104\n [7] -1.2379153  1.8169151 -0.6983954  0.0947813\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -1.7580538  0.5461973  1.6123918  0.2317794  0.6530641  1.1038529\n [7] -0.2276882  0.5599899  0.8319290 -1.2742905"
+    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -1.03055321 -0.28432688 -0.06291055  1.22291155  0.95734605 -0.02277307\n [7] -1.19980264  0.96870076  0.67167791 -0.99023315\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1]  0.2855208 -1.8441579 -0.5693141 -0.9883291 -0.1294559 -0.3942873\n [7] -0.5022851 -2.5105479  0.9658372 -1.7491421"
   },
   {
     "objectID": "qmd/03_prove.html#always-use-set.seed-to-make-simulation-results-reproducible",
@@ -277,7 +277,7 @@
     "href": "qmd/04_2_errors_power.html#adapt-the-simulation-function",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Adapt the simulation function",
-    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.2515243\n\n$Student\n[1] 0.2515222"
+    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.5257641\n\n$Student\n[1] 0.5257555"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#adapt-the-experimental-conditions",
@@ -518,6 +518,13 @@
     "text": "Exercise 2b: Power\n\nWe want to compare the statistical power of\n\nWelch’s t-test and\nPoisson regression with a dummy predictor\n\nif the true data generating process is drawing from Poisson distributions with different rate parameters.\nIf necessary: Adapt the simulation function from Exercise 2a.\nChoose a sensible set of parameter combinations for the Monte Carlo experiment."
   },
   {
+    "objectID": "qmd/04_2_errors_power.html#exercise-2b-help",
+    "href": "qmd/04_2_errors_power.html#exercise-2b-help",
+    "title": "4b) Errors and power — Torturing the t-test",
+    "section": "Exercise 2b: Help",
+    "text": "Exercise 2b: Help\nExpand if you need help.\nDon’t expand if you want to figure it out by yourself.\nScroll down if you need more help on later steps.\nSimulation function adapted from Exercise 2a\n\n\nCode\n# We use almost the same simulation function, \n# but we omit Student's t-test, because we already showed its\n# problems with unequal group sizes and group SDs\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\n\n\nConditions I: Simple variation of differences between rate parameters\n\n\nCode\n# It makes sense to vary group size ratio, lambda, and M_diff\n# The positive relationship between n and power is trivial\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         n = 200,\n                         lambda1 = c(1, 10, 20),\n                         M_diff = c(0.3, 0.5, 0.8)) %>% \n  rowid_to_column(var = \"condition\")\n\n\nConditions II: Variation of differences between rate parameters standardized by \\(\\sqrt{\\lambda_1}\\)\n\n\nCode\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         n = 200,\n                         lambda1 = c(1, 10, 20),\n                         d = c(0.2, 0.4, 0.6)) %>% # standardized mean difference.\n  mutate(M_diff = d * sqrt(lambda1)) %>% # absolute mean difference\n  rowid_to_column(var = \"condition\")\n\n\nResult plot: Power at \\(p < .05\\)\n\n\nCode\nsims %>% \n  group_by(GR, lambda1, M_diff, method) %>% \n  summarise(P_p05 = mean(p.value < 0.05)) %>% \n  ggplot(aes(factor(GR), P_p05, color = method, group = method)) + \n  geom_point() + geom_line() +\n  facet_grid(M_diff ~ lambda1, labeller = label_both) +\n  labs(x = \"Group size ratio\", y = \"Power\")"
+  },
+  {
     "objectID": "qmd/01_intro.html#introduction-i",
     "href": "qmd/01_intro.html#introduction-i",
     "title": "Data Simulation with Monte Carlo Methods",
@@ -655,14 +662,14 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.015 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.483 0.293 0.138 0.086"
+    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.017 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.483 0.293 0.138 0.086"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nSecond try\n\nLess computational costs at the at category level\n\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.004 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.496 0.299 0.128 0.077"
+    "text": "One simulation: Misclassification\nSecond try\n\nLess computational costs at the at category level\n\n\ntic()\nsample_obs = table(sample_true) %>%  # k samples\n  imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n  table() %>% \n    prop.table()\ntoc()\n\n0.003 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.496 0.299 0.128 0.077"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-quantification-of-error",
@@ -690,21 +697,21 @@
     "href": "qmd/05_misclass_bias.html#run-simulation-experiment",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "Run simulation experiment",
-    "text": "Run simulation experiment\n\ni = 1000 # less simulations to save some workshop time \nset.seed(39)\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(res = list(sim_misclass(pop_dist = pop_dist, \n                                 n = n, accuracy = accuracy)))\ntoc()\n\n5.302 sec elapsed"
+    "text": "Run simulation experiment\n\ni = 1000 # less simulations to save some workshop time \nset.seed(39)\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(res = list(sim_misclass(pop_dist = pop_dist, \n                                 n = n, accuracy = accuracy)))\ntoc()\n\n5.099 sec elapsed"
   },
   {
-    "objectID": "qmd/05_misclass_bias.html#results",
-    "href": "qmd/05_misclass_bias.html#results",
+    "objectID": "qmd/05_misclass_bias.html#results-proportion-estimates",
+    "href": "qmd/05_misclass_bias.html#results-proportion-estimates",
     "title": "5) Misclassification and bias — Messages mismeasured",
-    "section": "Results",
-    "text": "Results\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  unnest_longer(freq_obs, indices_to = \"category\") %>% \n  group_by(accuracy, category) %>% \n  summarise(Q = list(quantile(freq_obs, probs = c(0.25, 0.5, 0.75)))) %>% \n  unnest_wider(Q) %>% \n  ggplot(aes(`50%`, factor(accuracy), \n             xmin = `25%`, xmax = `75%`, color = category)) +\n  geom_pointrange() +\n  labs(x = str_glue(\"Median and IQR of the proportions from {i} simulation runs per condition.\"),\n       y = \"accuracy\")"
+    "section": "Results: Proportion estimates",
+    "text": "Results: Proportion estimates\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  unnest_longer(freq_obs, indices_to = \"category\") %>% \n  group_by(accuracy, category) %>% \n  summarise(Q = list(quantile(freq_obs, probs = c(0.25, 0.5, 0.75)))) %>% \n  unnest_wider(Q) %>% \n  ggplot(aes(`50%`, factor(accuracy), \n             xmin = `25%`, xmax = `75%`, color = category)) +\n  geom_pointrange() +\n  labs(x = str_glue(\"Median and IQR of the proportions from {i} simulation runs per condition.\"),\n       y = \"accuracy\")"
   },
   {
-    "objectID": "qmd/05_misclass_bias.html#results-1",
-    "href": "qmd/05_misclass_bias.html#results-1",
+    "objectID": "qmd/05_misclass_bias.html#results-rmse",
+    "href": "qmd/05_misclass_bias.html#results-rmse",
     "title": "5) Misclassification and bias — Messages mismeasured",
-    "section": "Results",
-    "text": "Results\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  group_by(accuracy) %>% \n  summarise(Q = list(quantile(rmse, probs = c(0.25, 0.5, 0.75)))) %>% \n  unnest_wider(Q) %>% \n  ggplot(aes(accuracy, `50%`, ymin = `25%`, ymax = `75%`)) + \n  geom_pointrange() + \n  geom_line() +\n  labs(y = \"RMSE (Mdn & IQR)\",\n       x = \"accuracy\")"
+    "section": "Results: RMSE",
+    "text": "Results: RMSE\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  group_by(accuracy) %>% \n  summarise(Q = list(quantile(rmse, probs = c(0.25, 0.5, 0.75)))) %>% \n  unnest_wider(Q) %>% \n  ggplot(aes(accuracy, `50%`, ymin = `25%`, ymax = `75%`)) + \n  geom_pointrange() + \n  geom_line() +\n  labs(y = \"RMSE (Mdn & IQR)\",\n       x = \"accuracy\")"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#summary",
@@ -732,7 +739,7 @@
     "href": "qmd/05_misclass_bias.html#run-simulation-experiment-1",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "Run simulation experiment",
-    "text": "Run simulation experiment\n\ntic()\nsims = conditions %>% \n  rowwise() %>%\n  mutate(res = list(sim_misclass(pop_dist = pop_dist, n = n, accuracy = accuracy)))\ntoc()\n\n15.232 sec elapsed"
+    "text": "Run simulation experiment\n\ntic()\nsims = conditions %>% \n  rowwise() %>%\n  mutate(res = list(sim_misclass(pop_dist = pop_dist, n = n, accuracy = accuracy)))\ntoc()\n\n14.592 sec elapsed"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#measure-for-population-distribution-variation",
@@ -742,8 +749,8 @@
     "text": "Measure for population distribution variation\n\n\\(\\chi^2\\) value of the standardized (proportions * 100, independent from n) distribution.\n\n\n\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  mutate(chi2_pop_dist = map_dbl(pop_dist, ~ chisq.test(.x*100)$statistic)) %>% \n  ggplot(aes(chi2_pop_dist)) +\n  geom_histogram()"
   },
   {
-    "objectID": "qmd/05_misclass_bias.html#results-2",
-    "href": "qmd/05_misclass_bias.html#results-2",
+    "objectID": "qmd/05_misclass_bias.html#results",
+    "href": "qmd/05_misclass_bias.html#results",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "Results",
     "text": "Results\n\n\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  mutate(chi2_pop_dist = map_dbl(pop_dist, ~ chisq.test(.x*100)$statistic)) %>% \n  ggplot(aes(chi2_pop_dist, rmse, color = factor(accuracy))) +\n  geom_smooth() +\n  xlim(0, 155) +\n  labs(x = \"chi2_pop_dist\",\n       color = \"accuracy\",\n       y = \"RMSE\",\n       caption = \"method = 'gam' and formula 'y ~ s(x, bs = 'cs')\")\n\n\n\n\n\n\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  mutate(chi2_pop_dist = map_dbl(pop_dist, ~ chisq.test(.x*100)$statistic)) %>% \n  filter(round(chi2_pop_dist) %in% c(0, 25, 50, 75, 100, 125, 150)) %>% \n  group_by(round(chi2_pop_dist)) %>% \n  slice(1) %>% \n  ungroup() %>% \n  arrange(chi2_pop_dist) %>% \n  select(chi2_pop_dist, pop_dist) %>% \n  mutate(pop_dist = map(pop_dist, sort, decreasing = TRUE)) %>% \n  unnest_wider(pop_dist) %>% \n  kable(digits = 2, col.names = c(\"chi2_pop_dist\", LETTERS[1:4]))\n\n\n\n\n\nchi2_pop_dist\nA\nB\nC\nD\n\n\n\n\n0.11\n0.26\n0.26\n0.25\n0.24\n\n\n24.58\n0.40\n0.34\n0.14\n0.12\n\n\n50.27\n0.53\n0.25\n0.15\n0.06\n\n\n74.82\n0.62\n0.17\n0.12\n0.09\n\n\n99.68\n0.68\n0.16\n0.10\n0.06\n\n\n124.52\n0.73\n0.13\n0.07\n0.06\n\n\n150.11\n0.77\n0.16\n0.04\n0.03"
@@ -844,28 +851,28 @@
     "href": "qmd/05_misclass_bias.html#run-simulation-experiment-2",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "Run simulation experiment",
-    "text": "Run simulation experiment\n\ni = 1000\nset.seed(39)\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(res = list(sim_misclass_test(\n    pop_dist = pop_dist,\n    lambdas = lambdas, \n    n = n, accuracy = accuracy)))\ntoc()\n\n13.353 sec elapsed"
+    "text": "Run simulation experiment\n\ni = 1000\nset.seed(39)\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(res = list(sim_misclass_test(\n    pop_dist = pop_dist,\n    lambdas = lambdas, \n    n = n, accuracy = accuracy)))\ntoc()\n\n13.79 sec elapsed"
   },
   {
-    "objectID": "qmd/05_misclass_bias.html#results-3",
-    "href": "qmd/05_misclass_bias.html#results-3",
+    "objectID": "qmd/05_misclass_bias.html#results-estimated-differences",
+    "href": "qmd/05_misclass_bias.html#results-estimated-differences",
     "title": "5) Misclassification and bias — Messages mismeasured",
-    "section": "Results",
-    "text": "Results\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  unnest_longer(diff_obs, indices_to = \"difference\") %>% \n  mutate(lambdas = names(lambdas)) %>% \n  group_by(accuracy, difference, lambdas) %>% \n  summarise(Q = list(quantile(diff_obs, probs = c(0.25, 0.5, 0.75)))) %>% \n  unnest_wider(Q) %>% \n  ggplot(aes(`50%`, factor(accuracy),\n             xmin = `25%`, xmax = `75%`, color = difference)) +\n  geom_pointrange() +\n  facet_wrap(vars(lambdas)) + \n  labs(y = \"accuracy\",\n       x = str_glue(\"Median and IQR of the mean differences from {i} simulation runs per condition.\"))"
+    "section": "Results: Estimated differences",
+    "text": "Results: Estimated differences\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  unnest_longer(diff_obs, indices_to = \"difference\") %>% \n  mutate(lambdas = names(lambdas)) %>% \n  group_by(accuracy, difference, lambdas) %>% \n  summarise(Q = list(quantile(diff_obs, probs = c(0.25, 0.5, 0.75)))) %>% \n  unnest_wider(Q) %>% \n  ggplot(aes(`50%`, factor(accuracy),\n             xmin = `25%`, xmax = `75%`, color = difference)) +\n  geom_pointrange() +\n  facet_wrap(vars(lambdas)) + \n  labs(y = \"accuracy\",\n       x = str_glue(\"Median and IQR of the mean differences from {i} simulation runs per condition.\"))"
   },
   {
-    "objectID": "qmd/05_misclass_bias.html#results-4",
-    "href": "qmd/05_misclass_bias.html#results-4",
+    "objectID": "qmd/05_misclass_bias.html#results-ratio-estimated-to-true-differences",
+    "href": "qmd/05_misclass_bias.html#results-ratio-estimated-to-true-differences",
     "title": "5) Misclassification and bias — Messages mismeasured",
-    "section": "Results",
-    "text": "Results\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  unnest_longer(diff_obs, indices_to = \"difference\") %>% \n  mutate(\n    diff_true = case_when(\n      difference == \"A_B\" ~ 1L,\n      difference == \"A_C\" ~ 2L,\n      difference == \"A_D\" ~ 3L\n    ),\n    recovered = diff_obs / diff_true,\n    lambdas = names(lambdas)\n    ) %>% \n  select(accuracy, difference, lambdas, diff_obs, diff_true, recovered) %>% \n  group_by(accuracy, difference, lambdas) %>% \n  summarise(Q = list(quantile(recovered, probs = c(0.25, 0.5, 0.75)))) %>% \n  unnest_wider(Q) %>% \n  ggplot(aes(`50%`, factor(accuracy),\n             xmin = `25%`, xmax = `75%`, color = difference)) +\n  geom_pointrange() +\n  facet_wrap(vars(lambdas)) + \n  labs(y = \"accuracy\",\n       x = str_glue(\"Median and IQR of the ratio true by observed difference\\nfrom {i} simulation runs per condition.\"))"
+    "section": "Results: Ratio estimated to true differences",
+    "text": "Results: Ratio estimated to true differences\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  unnest_longer(diff_obs, indices_to = \"difference\") %>% \n  mutate(\n    diff_true = case_when(\n      difference == \"A_B\" ~ 1L,\n      difference == \"A_C\" ~ 2L,\n      difference == \"A_D\" ~ 3L\n    ),\n    recovered = diff_obs / diff_true,\n    lambdas = names(lambdas)\n    ) %>% \n  select(accuracy, difference, lambdas, diff_obs, diff_true, recovered) %>% \n  group_by(accuracy, difference, lambdas) %>% \n  summarise(Q = list(quantile(recovered, probs = c(0.25, 0.5, 0.75)))) %>% \n  unnest_wider(Q) %>% \n  ggplot(aes(`50%`, factor(accuracy),\n             xmin = `25%`, xmax = `75%`, color = difference)) +\n  geom_pointrange() +\n  facet_wrap(vars(lambdas)) + \n  labs(y = \"accuracy\",\n       x = str_glue(\"Median and IQR of the ratio true by observed difference\\nfrom {i} simulation runs per condition.\"))"
   },
   {
-    "objectID": "qmd/05_misclass_bias.html#results-5",
-    "href": "qmd/05_misclass_bias.html#results-5",
+    "objectID": "qmd/05_misclass_bias.html#results-power",
+    "href": "qmd/05_misclass_bias.html#results-power",
     "title": "5) Misclassification and bias — Messages mismeasured",
-    "section": "Results",
-    "text": "Results\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  mutate(lambdas = names(lambdas)) %>% \n  unnest_wider(res) %>% \n  unnest_longer(p_obs, indices_to = \"difference\") %>% \n  group_by(accuracy, difference, lambdas) %>% \n  summarise(P_p05 = mean(p_obs < 0.05)) %>% \n  ggplot(aes(accuracy, P_p05, color = difference)) + \n  geom_point() + geom_line() +\n  facet_wrap(vars(lambdas)) + \n  labs(y = \"Power at p < .05\")"
+    "section": "Results: Power",
+    "text": "Results: Power\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  mutate(lambdas = names(lambdas)) %>% \n  unnest_wider(res) %>% \n  unnest_longer(p_obs, indices_to = \"difference\") %>% \n  group_by(accuracy, difference, lambdas) %>% \n  summarise(P_p05 = mean(p_obs < 0.05)) %>% \n  ggplot(aes(accuracy, P_p05, color = difference)) + \n  geom_point() + geom_line() +\n  facet_wrap(vars(lambdas)) + \n  labs(y = \"Power at p < .05\")"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#summary-1",
@@ -879,7 +886,14 @@
     "href": "qmd/05_misclass_bias.html#group-exercise-3-1",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "Group exercise 3",
-    "text": "Group exercise 3\nTry one (or more) of the following adaptions of the Monte Carlo studies on misclassification:\n\nChange the misclassification probabilities to allow for different patterns accuracies and errors: varying difficulties of the categories, systematic confusion of some categories.\nChange the analysis to a cross-table of two categorical variables which were both measured with misclassification error.\nBased on the second simulation study, design an experiment to systematically investigate the role of group size, group means and variances, and accuracy. Also take their interactions into account."
+    "text": "Group exercise 3\nTry one (or more) of the following adaptions of the Monte Carlo studies on misclassification:\n\nChange the first simulation so that the misclassification probabilities to allow for different patterns accuracies and errors: varying difficulties of the categories, systematic confusion of some categories.\nInvestigate the consequences of misclassification error for an analysis of two binary variables which were both measured with misclassification error."
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#exercise-3-help",
+    "href": "qmd/05_misclass_bias.html#exercise-3-help",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Exercise 3: Help",
+    "text": "Exercise 3: Help\nExpand if you need help.\nDon’t expand if you want to figure it out by yourself.\nScroll down if you need more help on later steps.\nSimulation function adapted from Exercise 2a\n\n\nCode\n# We use almost the same simulation function, \n# but we omit Student's t-test, because we already showed its\n# problems with unequal group sizes and group SDs\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}"
   },
   {
     "objectID": "qmd/04_1_solution.html#exercise-2-welchs-t-test-for-count-data",
@@ -900,7 +914,7 @@
     "href": "qmd/04_1_solution.html#simulation-function",
     "title": "Solution Exercise 2a",
     "section": "Simulation function",
-    "text": "Simulation function\n\n# No standard deviation ratio any more because SD fixed at sqrt(lambda)\n# M_diff not necessary at this stage, but useful later\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  Student = t.test(g1, g2, var.equal = TRUE)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, Student, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm()\n\n$Welch\n[1] 0.1806069\n\n$Student\n[1] 0.1805957\n\n$GLM\n[1] 0.1260424"
+    "text": "Simulation function\n\n# No standard deviation ratio any more because SD fixed at sqrt(lambda)\n# M_diff not necessary at this stage, but useful later\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  Student = t.test(g1, g2, var.equal = TRUE)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, Student, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm()\n\n$Welch\n[1] 0.01227352\n\n$Student\n[1] 0.01227155\n\n$GLM\n[1] 0.02638729"
   },
   {
     "objectID": "qmd/04_1_solution.html#conditions",
@@ -1064,6 +1078,118 @@
     "text": "Resources: Reporting simulation studies\n\n\nMcNeish, D., Lane, S., & Curran, P. (2018). Monte Carlo Simulation Methods. In G. R. Hancock, L. M. Stapleton, & R. O. Mueller (Eds.), The Reviewer’s Guide to Quantitative Methods in the Social Sciences (2nd ed.). Routledge."
   },
   {
+    "objectID": "qmd/05_solution.html#group-exercise-3-1",
+    "href": "qmd/05_solution.html#group-exercise-3-1",
+    "title": "Solution Exercise 3",
+    "section": "Group exercise 3",
+    "text": "Group exercise 3\nTry one (or more) of the following adaptions of the Monte Carlo studies on misclassification:\n\nChange the first simulation so that the misclassification probabilities to allow for different patterns accuracies and errors: varying difficulties of the categories, systematic confusion of some categories.\nInvestigate the consequences of misclassification error for an analysis of two binary variables which were both measured with misclassification error."
+  },
+  {
+    "objectID": "qmd/05_solution.html#a-different-misclassification-probabilities",
+    "href": "qmd/05_solution.html#a-different-misclassification-probabilities",
+    "title": "Solution Exercise 3",
+    "section": "A) Different misclassification probabilities",
+    "text": "A) Different misclassification probabilities\n\n\nA simple example with systematic confusion for illustrative purposes\n\nOnly one fixed confusion matrix\n\nTrue A more likely to be confused with B\nC less accurate\n\n\n\n\nmisclass_prop = matrix(c(\n  .80, .10, .15,\n  .15, .80, .15,\n  .05, .10, .70\n), nrow = 3, byrow = TRUE,\ndimnames = list(LETTERS[1:3], LETTERS[1:3]))\nmisclass_prop\n\n     A   B    C\nA 0.80 0.1 0.15\nB 0.15 0.8 0.15\nC 0.05 0.1 0.70"
+  },
+  {
+    "objectID": "qmd/05_solution.html#adapted-simulation-function",
+    "href": "qmd/05_solution.html#adapted-simulation-function",
+    "title": "Solution Exercise 3",
+    "section": "Adapted simulation function",
+    "text": "Adapted simulation function\nMisclassification matrix as argument\n\nsim_misclass = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),\n                        n = 1000,\n                        misclass_prop = misclass_prop) {\n  # Population\n  k = length(pop_dist)\n  categories = LETTERS[1:k]\n  \n  # Sample\n  sample_true = sample(x = categories, \n                       size = n, \n                       replace = TRUE, \n                       prob = pop_dist) %>% \n    factor(levels = categories) %>% \n    sort()\n  freq_true = sample_true %>% \n    table() %>% \n    prop.table()\n  \n  # Misclassification\n  sample_obs = table(sample_true) %>%  \n    imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prop[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\n  freq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\n  \n  # Error summary\n  rmse = sqrt(mean((pop_dist - freq_obs)^2))\n  \n  # Output\n  out = lst(freq_true, freq_obs, rmse)\n  out\n}"
+  },
+  {
+    "objectID": "qmd/05_solution.html#condition",
+    "href": "qmd/05_solution.html#condition",
+    "title": "Solution Exercise 3",
+    "section": "Condition",
+    "text": "Condition\n\n\n\nNo experiment, just one condition for illustration\n\n\n\nconditions = expand_grid(\n  pop_dist = list(c(0.55, 0.3, 0.15)),\n  n = 1000,\n  misclass_prop = list(misclass_prop)\n) %>% \n  rowid_to_column(var = \"condition\")\nconditions\n\n# A tibble: 1 × 4\n  condition pop_dist      n misclass_prop\n      <int> <list>    <dbl> <list>       \n1         1 <dbl [3]>  1000 <dbl [3 × 3]>"
+  },
+  {
+    "objectID": "qmd/05_solution.html#run-simulation",
+    "href": "qmd/05_solution.html#run-simulation",
+    "title": "Solution Exercise 3",
+    "section": "Run simulation",
+    "text": "Run simulation\n\ni = 1000 # less simulations to save some workshop time \nset.seed(40)\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(res = list(sim_misclass(pop_dist = pop_dist, \n                                 n = n, misclass_prop = misclass_prop)))\ntoc()\n\n0.733 sec elapsed"
+  },
+  {
+    "objectID": "qmd/05_solution.html#results",
+    "href": "qmd/05_solution.html#results",
+    "title": "Solution Exercise 3",
+    "section": "Results",
+    "text": "Results\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  unnest_longer(freq_obs, indices_to = \"category\") %>% \n  group_by(category) %>%\n  summarise(Q = list(quantile(freq_obs, probs = c(0.25, 0.5, 0.75)))) %>%\n  unnest_wider(Q) %>%\n  ggplot(aes(`50%`, fct_rev(category),\n             xmin = `25%`, xmax = `75%`)) +\n  geom_pointrange() +\n  geom_vline(xintercept = unlist(conditions$pop_dist), color = \"red\", linetype = 2) + \n  labs(x = str_glue(\"Median and IQR of the proportions from {i} simulation runs per condition.\\nRed lines are shares in the population.\"),\n       y = \"Category\")"
+  },
+  {
+    "objectID": "qmd/05_solution.html#b-two-misclassified-binary-variables",
+    "href": "qmd/05_solution.html#b-two-misclassified-binary-variables",
+    "title": "Solution Exercise 3",
+    "section": "b) Two misclassified binary variables",
+    "text": "b) Two misclassified binary variables\n\nThis could be done with a close adaption of the second simulation, i.e., using the sample() function for data generation and misclassification.\nHowever, simulation with binary variables is much simpler and more efficient with rbinom().\nThe following solution shows the latter option."
+  },
+  {
+    "objectID": "qmd/05_solution.html#one-simulation-misclassification-free-sample-of-the-independent-variable",
+    "href": "qmd/05_solution.html#one-simulation-misclassification-free-sample-of-the-independent-variable",
+    "title": "Solution Exercise 3",
+    "section": "One simulation: Misclassification-free sample of the independent variable",
+    "text": "One simulation: Misclassification-free sample of the independent variable\n\n\n\nDraw a sample of size n of the independent variable with population prevalence pop_dist_x.\n\n\n\nset.seed(91)\nn = 1000\npop_dist_x = 0.5\nsample_x_true = rbinom(n = n, \n                         size = 1, \n                         prob = pop_dist_x)\nprop.table(table(sample_x_true))\n\nsample_x_true\n    0     1 \n0.507 0.493"
+  },
+  {
+    "objectID": "qmd/05_solution.html#one-simulation-misclassification-free-sample-of-the-outcome",
+    "href": "qmd/05_solution.html#one-simulation-misclassification-free-sample-of-the-outcome",
+    "title": "Solution Exercise 3",
+    "section": "One simulation: Misclassification-free sample of the outcome",
+    "text": "One simulation: Misclassification-free sample of the outcome\n\n\n\npop_baseline: Probability of the outcome in the baseline group, i.e., sample_x_true == 0\npop_difference: Difference between probabilities of the outcome in the baseline and treatment groups\nlogit_pop_baseline: logit (i.e., \\(log(x / (1 - x)\\)) of the baseline probability\npop_oddsratio: Odds ratio of the outcome in the baseline and treatment groups\npop_logodds: log(odds)\noutcomes_true: Draw outcome n times from a binomial distribution, where the success probability is a function of the baseline probability and the log odds of the probabilities in the baseline and treatment groups\n\n\n\npop_baseline = 0.5\npop_difference = 0.1\nlogit_pop_baseline = log(pop_baseline / (1 - pop_baseline))\npop_oddsratio = ((pop_baseline + pop_difference) / (1 - (pop_baseline + pop_difference))) /\n  (pop_baseline / (1 - pop_baseline))\npop_logodds = log(pop_oddsratio)\noutcomes_true = rbinom(n = n, size = 1,\n                         prob = 1 / (1 + exp(- (logit_pop_baseline + pop_logodds * sample_x_true))))\nprop.table(table(outcomes_true, sample_x_true), margin = 2) %>% round(2)\n\n             sample_x_true\noutcomes_true    0    1\n            0 0.53 0.40\n            1 0.47 0.60"
+  },
+  {
+    "objectID": "qmd/05_solution.html#one-simulation-misclassification-of-the-variables",
+    "href": "qmd/05_solution.html#one-simulation-misclassification-of-the-variables",
+    "title": "Solution Exercise 3",
+    "section": "One simulation: Misclassification of the variables",
+    "text": "One simulation: Misclassification of the variables\n\n\n\nEach observation is classified correctly with probability of accuracy, regardless of its true value.\ncorrect_ are vectors of length n which record whether an observation was misclassified (1) or not (0).\nabs(_true - correct_) switches the values for all observations which are noted as misclassified, correct_ == 1.\n\n\n\n# Misclassification probabilities\naccuracy = 0.8\ncorrect_x = rbinom(n = n, size = 1, \n                   prob = (1 - accuracy))\ncorrect_outcome = rbinom(n = n, size = 1, \n                         prob = (1 - accuracy))\n\n# Misclassification\nsample_x_obs = abs(sample_x_true - correct_x)\noutcomes_obs = abs(outcomes_true - correct_outcome)\nmean(sample_x_obs == sample_x_true); mean(outcomes_obs == outcomes_true)\n\n[1] 0.797\n\n\n[1] 0.801"
+  },
+  {
+    "objectID": "qmd/05_solution.html#one-simulation-quantities-for-evaluation",
+    "href": "qmd/05_solution.html#one-simulation-quantities-for-evaluation",
+    "title": "Solution Exercise 3",
+    "section": "One simulation: Quantities for evaluation",
+    "text": "One simulation: Quantities for evaluation\n\n\n\nWe use Welch’s t-test to estimate the differences in the observed outcome between the observed groups.\nWe extract the p-value, p_obs, for computing statistical power.\nWe extract the estimated absolute difference, diff_obs, and its ratio to the true population difference, diff_obs_rel.\n\n\n\n  t_res = t.test(outcomes_obs ~ sample_x_obs)\n  (p_obs = t_res$p.value)\n\n[1] 0.06787792\n\n  (diff_obs = unname(diff(t_res$estimate)))\n\n[1] 0.05773169\n\n  (diff_obs_rel = diff_obs / pop_difference)\n\n[1] 0.5773169"
+  },
+  {
+    "objectID": "qmd/05_solution.html#wrap-it-into-a-function",
+    "href": "qmd/05_solution.html#wrap-it-into-a-function",
+    "title": "Solution Exercise 3",
+    "section": "Wrap it into a function",
+    "text": "Wrap it into a function\n\nsim_misclass_binary = function(pop_dist_x = 0.5,\n                               pop_baseline = 0.5,\n                               pop_difference = 0.1,\n                               n = 1000,\n                               accuracy = 0.8) {\n  # Population\n  logit_pop_baseline = log(pop_baseline / (1 - pop_baseline))\n  pop_oddsratio = ((pop_baseline + pop_difference) / (1 - (pop_baseline + pop_difference))) /\n    (pop_baseline / (1 - pop_baseline))\n  pop_logodds = log(pop_oddsratio)\n  \n  # True sample\n  sample_x_true = rbinom(n = n, \n                         size = 1, \n                         prob = pop_dist_x)\n  outcomes_true = rbinom(n = n, size = 1,\n                         prob = 1 / (1 + exp(- (logit_pop_baseline + pop_logodds * sample_x_true))))\n  \n  # Misclassification probabilities\n  correct_x = rbinom(n = n, size = 1, prob = (1 - accuracy))\n  correct_outcome = rbinom(n = n, size = 1, prob = (1 - accuracy))\n  \n  # Misclassification\n  sample_x_obs = abs(sample_x_true - correct_x)\n  outcomes_obs = abs(outcomes_true - correct_outcome)\n\n  # Model\n  t_res = t.test(outcomes_obs ~ sample_x_obs)\n  p_obs = t_res$p.value\n  diff_obs = unname(diff(t_res$estimate))\n  diff_obs_rel = diff_obs / pop_difference\n  \n  \n  # Output\n  out = lst(p_obs, diff_obs, diff_obs_rel)\n  return(out)\n}"
+  },
+  {
+    "objectID": "qmd/05_solution.html#conditions",
+    "href": "qmd/05_solution.html#conditions",
+    "title": "Solution Exercise 3",
+    "section": "Conditions",
+    "text": "Conditions\n\n\n\nWe vary the prevalence of the treatment in the population, pop_dist_x, the prevalence of the outcome in the baseline group, pop_baseline, and, most importantly, the accuracy of the measurements.\n\n\n\nconditions = expand_grid(\n  pop_dist_x = c(.1, .3, .5),\n  pop_baseline = c(.1, .3, .5),\n  pop_difference = 0.15,\n  n = 1000,\n  accuracy = seq(from = 0.6, to = 1, by = 0.1)\n) %>% \n  rowid_to_column(var = \"condition\")\nconditions\n\n# A tibble: 45 × 6\n   condition pop_dist_x pop_baseline pop_difference     n accuracy\n       <int>      <dbl>        <dbl>          <dbl> <dbl>    <dbl>\n 1         1        0.1          0.1           0.15  1000      0.6\n 2         2        0.1          0.1           0.15  1000      0.7\n 3         3        0.1          0.1           0.15  1000      0.8\n 4         4        0.1          0.1           0.15  1000      0.9\n 5         5        0.1          0.1           0.15  1000      1  \n 6         6        0.1          0.3           0.15  1000      0.6\n 7         7        0.1          0.3           0.15  1000      0.7\n 8         8        0.1          0.3           0.15  1000      0.8\n 9         9        0.1          0.3           0.15  1000      0.9\n10        10        0.1          0.3           0.15  1000      1  \n# … with 35 more rows\n# ℹ Use `print(n = ...)` to see more rows"
+  },
+  {
+    "objectID": "qmd/05_solution.html#run-simulation-1",
+    "href": "qmd/05_solution.html#run-simulation-1",
+    "title": "Solution Exercise 3",
+    "section": "Run simulation",
+    "text": "Run simulation\n\ni = 1000 # less simulations to save some workshop time \nset.seed(40)\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(res = list(sim_misclass_binary(pop_dist_x = pop_dist_x, \n                                        pop_baseline = pop_baseline,\n                                        pop_difference = pop_difference,\n                                        n = n, accuracy = accuracy)))\ntoc()\n\n43.462 sec elapsed"
+  },
+  {
+    "objectID": "qmd/05_solution.html#results-recovered-difference",
+    "href": "qmd/05_solution.html#results-recovered-difference",
+    "title": "Solution Exercise 3",
+    "section": "Results: Recovered difference",
+    "text": "Results: Recovered difference\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  group_by(accuracy, pop_baseline, pop_dist_x) %>% \n  summarise(Q = list(quantile(diff_obs_rel, probs = c(0.25, 0.5, 0.75)))) %>% \n  unnest_wider(Q) %>% \n  ggplot(aes(`50%`, factor(accuracy), color = factor(pop_dist_x),\n             xmin = `25%`, xmax = `75%`)) +\n  geom_pointrange(position = position_dodge(width = -.2)) +\n  facet_wrap(vars(pop_baseline), labeller = \"label_both\") + \n  labs(y = \"accuracy\",\n       x = str_glue(\"Median and IQR of the ratio true by observed difference\\nfrom {i} simulation runs per condition.\"),\n       color = \"Population\\ntreatment\\nprevalence\")"
+  },
+  {
+    "objectID": "qmd/05_solution.html#results-power",
+    "href": "qmd/05_solution.html#results-power",
+    "title": "Solution Exercise 3",
+    "section": "Results: Power",
+    "text": "Results: Power\n\n\nShow the code\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  group_by(accuracy, pop_baseline, pop_dist_x) %>% \n  summarise(P_p05 = mean(p_obs < 0.05)) %>% \n  ggplot(aes(accuracy, P_p05, color = factor(pop_dist_x))) + \n  geom_point() + geom_line() +\n  facet_wrap(vars(pop_baseline), labeller = \"label_both\") + \n  labs(y = \"Power at p < .05\", color = \"Population\\ntreatment\\nprevalence\")"
+  },
+  {
     "objectID": "qmd/04_2_solution.html#exercise-2-welchs-t-test-for-count-data",
     "href": "qmd/04_2_solution.html#exercise-2-welchs-t-test-for-count-data",
     "title": "Solution Exercise 2b",
@@ -1082,7 +1208,7 @@
     "href": "qmd/04_2_solution.html#simulation-function",
     "title": "Solution Exercise 2b",
     "section": "Simulation function",
-    "text": "Simulation function\n\n# We use almost the same simulation function, \n# but we omit Student's t-test, because we already showed its\n# problems with unequal group sizes and group SDs\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.1918009\n\n$GLM\n[1] 0.1842055"
+    "text": "Simulation function\n\n# We use almost the same simulation function, \n# but we omit Student's t-test, because we already showed its\n# problems with unequal group sizes and group SDs\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.6997966\n\n$GLM\n[1] 0.7257625"
   },
   {
     "objectID": "qmd/04_2_solution.html#conditions-first-try",
@@ -1412,12 +1538,5 @@
     "title": "Workshop Data Simulation with Monte Carlo Methods",
     "section": "Traktandenliste",
     "text": "Traktandenliste\n\nIntroduction & overview\n\nSlides\n\nMonte Carlo Simulation?\n\nSlides\n\nProof by simulation — The Central Limit Theorem (CLT)\n\nSlides\nPure R Script\nSolution Exercise 1 - Compiled\nSolution Exercise 1 - Pure R Script\n\nErrors and power — Torturing the t-test\n\nSlides 1\nPure R Script 1\nSolution Exercise 2a - Compiled\nSolution Exercise 2a - Pure R Script\nSlides 2\nPure R Script 2\nSolution Exercise 2b - Compiled\nSolution Exercise 2b - Pure R Script\n\nMisclassification and bias — Messages mismeasured\n\nSlides\nPure R Script\n\nOutlook: What’s next?\n\nSlides"
-  },
-  {
-    "objectID": "qmd/04_2_errors_power.html#exercise-2b-help",
-    "href": "qmd/04_2_errors_power.html#exercise-2b-help",
-    "title": "4b) Errors and power — Torturing the t-test",
-    "section": "Exercise 2b: Help",
-    "text": "Exercise 2b: Help\nExpand if you need help.\nDon’t expand if you want to figure it out by yourself.\nScroll down if you need more help on later steps.\nSimulation function adapted from Exercise 2a\n\n\nCode\n# We use almost the same simulation function, \n# but we omit Student's t-test, because we already showed its\n# problems with unequal group sizes and group SDs\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\n\n\nConditions I: Simple variation of differences between rate parameters\n\n\nCode\n# It makes sense to vary group size ratio, lambda, and M_diff\n# The positive relationship between n and power is trivial\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         n = 200,\n                         lambda1 = c(1, 10, 20),\n                         M_diff = c(0.3, 0.5, 0.8)) %>% \n  rowid_to_column(var = \"condition\")\n\n\nConditions II: Variation of differences between rate parameters standardized by \\(\\sqrt{\\lambda_1}\\)\n\n\nCode\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         n = 200,\n                         lambda1 = c(1, 10, 20),\n                         d = c(0.2, 0.4, 0.6)) %>% # standardized mean difference.\n  mutate(M_diff = d * sqrt(lambda1)) %>% # absolute mean difference\n  rowid_to_column(var = \"condition\")\n\n\nResult plot: Power at \\(p < .05\\)\n\n\nCode\nsims %>% \n  group_by(GR, lambda1, M_diff, method) %>% \n  summarise(P_p05 = mean(p.value < 0.05)) %>% \n  ggplot(aes(factor(GR), P_p05, color = method, group = method)) + \n  geom_point() + geom_line() +\n  facet_grid(M_diff ~ lambda1, labeller = label_both) +\n  labs(x = \"Group size ratio\", y = \"Power\")"
   }
 ]

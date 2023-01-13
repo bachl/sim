@@ -126,7 +126,7 @@ $$
 
 ## One simulation: Population
 
-```{r}
+```{r One simulation: Population}
 set.seed(28)
 pop_dist = c(0.55, 0.3, 0.1, 0.05)
 k = length(pop_dist) # number of categories
@@ -137,7 +137,7 @@ pop_dist
 
 ## One simulation: Sample
 
-```{r}
+```{r One simulation: Sample}
 n = 1000 # sample size
 sample_true = sample(x = categories, 
                      size = n, 
@@ -153,7 +153,7 @@ freq_true
 
 ## One simulation: Misclassification matrix
 
-```{r}
+```{r One simulation: Misclassification matrix}
 # Simple: Equal error rates, equal difficulties, one process
 accuracy = 0.8
 equal_error = (1 - accuracy) / (k - 1)
@@ -169,7 +169,7 @@ misclass_prop
 
 - Mimic empirical classification process at unit level
 
-```{r}
+```{r One simulation: Misclassification}
 tic()
 sample_obs = sample_true %>%  # n samples
   map_chr(~ sample(categories,
@@ -190,7 +190,7 @@ freq_obs
 
 - Less computational costs at the at category level
 
-```{r}
+```{r One simulation: Misclassification II}
 tic()
 sample_obs = table(sample_true) %>%  # k samples
   imap(~ sample(categories,
@@ -211,25 +211,25 @@ freq_obs
 
 - Error due to sampling and misclassification compared to population
 
-```{r}
+```{r RMSE 1}
 sqrt(mean((pop_dist - freq_obs)^2)) %>% round(2)
 ```
 
 - Error due to misclassification compared to true values in sample
 
-```{r}
+```{r RMSE 2}
 sqrt(mean((freq_true - freq_obs)^2)) %>% round(2)
 ```
 
 - (Error due to sampling compared to population)
 
-```{r}
+```{r RMSE 3}
 sqrt(mean((pop_dist - freq_true)^2)) %>% round(2)
 ```
 
 ## Wrap it into a function
 
-```{r}
+```{r Simulation function}
 sim_misclass = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),
                         n = 1000,
                         accuracy = 0.8) {
@@ -286,7 +286,7 @@ sim_misclass = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),
 :::
 
 ::: {.column width="50%"}
-```{r}
+```{r Conditions}
 conditions = expand_grid(
   pop_dist = list(c(0.55, 0.3, 0.1, 0.05)),
   n = 1000,
@@ -302,7 +302,7 @@ conditions
 
 ## Run simulation experiment
 
-```{r}
+```{r Run simulation}
 #| cache: true
 i = 1000 # less simulations to save some workshop time 
 set.seed(39)
@@ -315,9 +315,9 @@ sims = map_dfr(1:i, ~ conditions) %>%
 toc()
 ```
 
-## Results
+## Results: Proportion estimates
 
-```{r}
+```{r Results: Proportion estimates}
 #| cache: true
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -337,9 +337,9 @@ sims %>%
        y = "accuracy")
 ```
 
-## Results
+## Results: RMSE
 
-```{r}
+```{r Results: RMSE}
 #| cache: true
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -401,7 +401,7 @@ rdirichlet(n = 3, alpha = c(1,1,1,1)) %>% round(2)
 :::
 
 ::: {.column width="50%"}
-```{r}
+```{r Conditions 2}
 #| cache: true
 i = 5000
 set.seed(39)
@@ -422,7 +422,7 @@ conditions
 
 ## Run simulation experiment
 
-```{r}
+```{r Run simulation experiment 2}
 #| cache: true
 tic()
 sims = conditions %>% 
@@ -435,7 +435,7 @@ toc()
 
 - $\chi^2$ value of the standardized (proportions * 100, independent from `n`) distribution.
 
-```{r}
+```{r Measure for population distribution variation}
 #| output-location: column
 sims %>% 
   ungroup() %>% 
@@ -451,7 +451,7 @@ sims %>%
 
 ::: {.column width="60%"}
 
-```{r}
+```{r Results Chi2 X RMSE}
 #| cache: true
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -473,7 +473,7 @@ sims %>%
 :::
 
 ::: {.column width="40%"}
-```{r}
+```{r Chi2 examples}
 #| cache: true
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -562,7 +562,7 @@ b)  *Misclassified variables as predictors*
 
 ### Same as before
 
-```{r}
+```{r One simulation: Population 2}
 set.seed(4026)
 pop_dist = c(0.55, 0.3, 0.1, 0.05)
 k = length(pop_dist) # number of categories
@@ -575,7 +575,7 @@ pop_dist
 
 ### Same as before
 
-```{r}
+```{r One simulation: Sample grouping variable}
 n = 1000 # sample size
 sample_true = sample(x = categories, 
                      size = n, 
@@ -591,7 +591,7 @@ freq_true
 
 ## One simulation: Sample outcome
 
-```{r}
+```{r One simulation: Sample outcome}
 lambdas = c(21:24)
 names(lambdas) = categories
 outcomes = table(sample_true) %>% 
@@ -604,7 +604,7 @@ table(sample_true, outcomes)
 
 ### Same as before
 
-```{r}
+```{r One simulation: Misclassification matrix 2}
 # Simple: Equal error rates, equal difficulties, one process
 accuracy = 0.8
 equal_error = (1 - accuracy) / (k - 1)
@@ -618,7 +618,7 @@ misclass_prop
 
 ### Same as before
 
-```{r}
+```{r One simulation: Misclassification 2}
 tic()
 sample_obs = table(sample_true) %>%  # k samples
   imap(~ sample(categories,
@@ -637,7 +637,7 @@ freq_obs
 
 - Test means of outcome in categories B, C, and D against A (the default)
 
-```{r}
+```{r One simulation: Measure quantities of interest 1}
 t_res = categories[2:k] %>% 
   map(~ t.test(outcomes[sample_true == "A"],
                outcomes[sample_true == .x])) %>% 
@@ -648,7 +648,7 @@ t_res = categories[2:k] %>%
 
 - Extract group mean differences
 
-```{r}
+```{r One simulation: Measure quantities of interest 2}
 #| output-location: column
 t_res %>% 
   map_dbl(~ diff(.x$estimate)) %>% round(2)
@@ -656,7 +656,7 @@ t_res %>%
 
 - Extract *p*-values
 
-```{r}
+```{r One simulation: Measure quantities of interest 3}
 #| output-location: column
 t_res %>% 
   map_dbl(~ .x$p.value) %>% round(5)
@@ -664,7 +664,7 @@ t_res %>%
 
 ## Wrap it into a function
 
-```{r}
+```{r Simulation function 2}
 sim_misclass_test = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),
                         lambdas = c(3:6),
                         n = 1000,
@@ -739,7 +739,7 @@ sim_misclass_test = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),
 :::
 
 ::: {.column width="50%"}
-```{r}
+```{r Conditions 3}
 conditions = expand_grid(
   pop_dist = list(c(0.55, 0.3, 0.1, 0.05)),
   lambdas = list(start_1 = c(1:4),
@@ -757,7 +757,7 @@ conditions
 
 ## Run simulation experiment
 
-```{r}
+```{r Run simulation experiment 3}
 #| cache: true
 i = 1000
 set.seed(39)
@@ -772,9 +772,9 @@ sims = map_dfr(1:i, ~ conditions) %>%
 toc()
 ```
 
-## Results
+## Results: Estimated differences
 
-```{r}
+```{r Results: Estimated differences}
 #| cache: true
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -796,9 +796,9 @@ sims %>%
        x = str_glue("Median and IQR of the mean differences from {i} simulation runs per condition."))
 ```
 
-## Results
+## Results: Ratio estimated to true differences
 
-```{r}
+```{r Results: Ratio estimated to true differences}
 #| cache: true
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -829,9 +829,9 @@ sims %>%
        x = str_glue("Median and IQR of the ratio true by observed difference\nfrom {i} simulation runs per condition."))
 ```
 
-## Results
+## Results: Power
 
-```{r}
+```{r Results: Power}
 #| cache: true
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -866,10 +866,38 @@ sims %>%
 
 ### Try one (or more) of the following adaptions of the Monte Carlo studies on misclassification:
 
-a) Change the misclassification probabilities to allow for different patterns accuracies and errors: varying difficulties of the categories, systematic confusion of some categories.
+a) Change the first simulation so that the misclassification probabilities to allow for different patterns accuracies and errors: varying difficulties of the categories, systematic confusion of some categories.
 
-b) Change the analysis to a cross-table of two categorical variables which were both measured with misclassification error.
+b) Investigate the consequences of misclassification error for an analysis of two binary variables which were both measured with misclassification error.
 
-c) Based on the second simulation study, design an experiment to systematically investigate the role of group size, group means and variances, and accuracy. Also take their interactions into account.
+## Exercise 3: Help {.scrollable}
 
+### Expand if you need help.
+
+### Don't expand if you want to figure it out by yourself.
+
+### Scroll down if you need more help on later steps.
+
+Simulation function adapted from Exercise 2a
+```{r Simulation function adapted from Exercise 2a}
+#| eval: false
+#| code-fold: true
+# We use almost the same simulation function, 
+# but we omit Student's t-test, because we already showed its
+# problems with unequal group sizes and group SDs
+sim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {
+  n1 = round(n / (GR + 1))
+  n2 = round(n1 * GR)
+  lambda2 = lambda1 + M_diff
+  g1 = rpois(n = n1, lambda = lambda1)
+  g2 = rpois(n = n2, lambda = lambda2)
+  Welch = t.test(g1, g2)$p.value
+  GLM = glm(outcome ~ group,
+            data = data.frame(outcome = c(g1, g2),
+                              group = c(rep("g1", n1), rep("g2", n2))),
+            family = poisson)
+  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])
+  return(res)
+}
+```
 

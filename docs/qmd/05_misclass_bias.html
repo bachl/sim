@@ -573,7 +573,7 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 <span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prop.table</span>()</span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.015 sec elapsed</code></pre>
+<pre><code>0.017 sec elapsed</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>freq_obs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -602,7 +602,7 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prop.table</span>()</span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.004 sec elapsed</code></pre>
+<pre><code>0.003 sec elapsed</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>freq_obs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -725,7 +725,7 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 </section>
 <section id="run-simulation-experiment" class="slide level2">
 <h2>Run simulation experiment</h2>
-<div class="cell" data-hash="05_misclass_bias_cache/revealjs/unnamed-chunk-11_d570e9d5426f2186711ffdb71d9bdccd">
+<div class="cell" data-hash="05_misclass_bias_cache/revealjs/Run simulation_04de7d80d40eaeb440f751806f9a403b">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">1000</span> <span class="co"># less simulations to save some workshop time </span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">39</span>)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
@@ -736,13 +736,13 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 <span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">n =</span> n, <span class="at">accuracy =</span> accuracy)))</span>
 <span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>5.302 sec elapsed</code></pre>
+<pre><code>5.099 sec elapsed</code></pre>
 </div>
 </div>
 </section>
-<section id="results" class="slide level2">
-<h2>Results</h2>
-<div class="cell" data-hash="05_misclass_bias_cache/revealjs/unnamed-chunk-12_20a15b0a52571cf438a94b062e74a32f">
+<section id="results-proportion-estimates" class="slide level2">
+<h2>Results: Proportion estimates</h2>
+<div class="cell" data-hash="05_misclass_bias_cache/revealjs/Results- Proportion estimates_ee3d4bb78b96b22486ce702d8f192350">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
@@ -760,10 +760,10 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 </details>
 
 </div>
-<img data-src="05_misclass_bias_files/figure-revealjs/unnamed-chunk-12-1.png" width="1344" class="r-stretch"></section>
-<section id="results-1" class="slide level2">
-<h2>Results</h2>
-<div class="cell" data-hash="05_misclass_bias_cache/revealjs/unnamed-chunk-13_828b584ddadd0e9df8b3244708bcdfd2">
+<img data-src="05_misclass_bias_files/figure-revealjs/Results- Proportion estimates-1.png" width="1344" class="r-stretch"></section>
+<section id="results-rmse" class="slide level2">
+<h2>Results: RMSE</h2>
+<div class="cell" data-hash="05_misclass_bias_cache/revealjs/Results- RMSE_4df9b59a59dc00c6c8848192b938c2cd">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
@@ -780,7 +780,7 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 </details>
 
 </div>
-<img data-src="05_misclass_bias_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
+<img data-src="05_misclass_bias_files/figure-revealjs/Results- RMSE-1.png" width="960" class="r-stretch"></section>
 <section id="summary" class="slide level2">
 <h2>Summary</h2>
 <ul>
@@ -823,7 +823,7 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 <li><p><code>i</code> (number of simulations) and <code>set.seed()</code> required for building conditions.</p></li>
 </ul>
 </div><div class="column" style="width:50%;">
-<div class="cell" data-hash="05_misclass_bias_cache/revealjs/unnamed-chunk-16_e509460f4119364736a3bc88629b0f3b">
+<div class="cell" data-hash="05_misclass_bias_cache/revealjs/Conditions 2_abe96d8e2e81c79207da5c9d7b4742ca">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">5000</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">39</span>)</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">expand_grid</span>(</span>
@@ -858,14 +858,14 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 </section>
 <section id="run-simulation-experiment-1" class="slide level2">
 <h2>Run simulation experiment</h2>
-<div class="cell" data-hash="05_misclass_bias_cache/revealjs/unnamed-chunk-17_9b3f00c085f892e6b27256f91dac1ba6">
+<div class="cell" data-hash="05_misclass_bias_cache/revealjs/Run simulation experiment 2_a29dd9e835dec93cab74f1e80bfbc038">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>sims <span class="ot">=</span> conditions <span class="sc">%&gt;%</span> </span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">res =</span> <span class="fu">list</span>(<span class="fu">sim_misclass</span>(<span class="at">pop_dist =</span> pop_dist, <span class="at">n =</span> n, <span class="at">accuracy =</span> accuracy)))</span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>15.232 sec elapsed</code></pre>
+<pre><code>14.592 sec elapsed</code></pre>
 </div>
 </div>
 </section>
@@ -884,16 +884,16 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 <span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div><div class="column">
 <div class="cell-output-display">
-<p><img data-src="05_misclass_bias_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
+<p><img data-src="05_misclass_bias_files/figure-revealjs/Measure for population distribution variation-1.png" width="960"></p>
 </div>
 </div>
 </div>
 </section>
-<section id="results-2" class="slide level2 smaller">
+<section id="results" class="slide level2 smaller">
 <h2>Results</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
-<div class="cell" data-hash="05_misclass_bias_cache/revealjs/unnamed-chunk-19_2a930f50a48dcc323c78a53be5fe7de3">
+<div class="cell" data-hash="05_misclass_bias_cache/revealjs/Results Chi2 X RMSE_1151acac07e3480f1fe6df985c0bc332">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
@@ -909,11 +909,11 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 <span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"method = 'gam' and formula 'y ~ s(x, bs = 'cs')"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<p><img data-src="05_misclass_bias_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
+<p><img data-src="05_misclass_bias_files/figure-revealjs/Results Chi2 X RMSE-1.png" width="960"></p>
 </div>
 </div>
 </div><div class="column" style="width:40%;">
-<div class="cell" data-hash="05_misclass_bias_cache/revealjs/unnamed-chunk-20_471e28830f4f4aa84558a95a66241218">
+<div class="cell" data-hash="05_misclass_bias_cache/revealjs/Chi2 examples_a534f7a9ced5ef8eaafb9c1b58442e2e">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
@@ -1318,7 +1318,7 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 </section>
 <section id="run-simulation-experiment-2" class="slide level2">
 <h2>Run simulation experiment</h2>
-<div class="cell" data-hash="05_misclass_bias_cache/revealjs/unnamed-chunk-31_8e917c39777eb15d5b2cabcc04d51518">
+<div class="cell" data-hash="05_misclass_bias_cache/revealjs/Run simulation experiment 3_467ff81a90ea16f2e96a846eff335872">
 <div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">1000</span></span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">39</span>)</span>
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
@@ -1331,13 +1331,13 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 <span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> n, <span class="at">accuracy =</span> accuracy)))</span>
 <span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>13.353 sec elapsed</code></pre>
+<pre><code>13.79 sec elapsed</code></pre>
 </div>
 </div>
 </section>
-<section id="results-3" class="slide level2">
-<h2>Results</h2>
-<div class="cell" data-hash="05_misclass_bias_cache/revealjs/unnamed-chunk-32_f23f0a7d5181450e51ceea16a0bd987d">
+<section id="results-estimated-differences" class="slide level2">
+<h2>Results: Estimated differences</h2>
+<div class="cell" data-hash="05_misclass_bias_cache/revealjs/Results- Estimated differences_9d4943b033a5b485d5e850cc44607158">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
@@ -1357,10 +1357,10 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 </details>
 
 </div>
-<img data-src="05_misclass_bias_files/figure-revealjs/unnamed-chunk-32-1.png" width="1344" class="r-stretch"></section>
-<section id="results-4" class="slide level2">
-<h2>Results</h2>
-<div class="cell" data-hash="05_misclass_bias_cache/revealjs/unnamed-chunk-33_e19538fef1a36b511ebad304a5135c8e">
+<img data-src="05_misclass_bias_files/figure-revealjs/Results- Estimated differences-1.png" width="1344" class="r-stretch"></section>
+<section id="results-ratio-estimated-to-true-differences" class="slide level2">
+<h2>Results: Ratio estimated to true differences</h2>
+<div class="cell" data-hash="05_misclass_bias_cache/revealjs/Results- Ratio estimated to true differences_c34bce1063e40f30ff399efd4bf344a8">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
@@ -1389,10 +1389,10 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 </details>
 
 </div>
-<img data-src="05_misclass_bias_files/figure-revealjs/unnamed-chunk-33-1.png" width="1344" class="r-stretch"></section>
-<section id="results-5" class="slide level2">
-<h2>Results</h2>
-<div class="cell" data-hash="05_misclass_bias_cache/revealjs/unnamed-chunk-34_43716a7fefd6fd24cdcde3ba77477086">
+<img data-src="05_misclass_bias_files/figure-revealjs/Results- Ratio estimated to true differences-1.png" width="1344" class="r-stretch"></section>
+<section id="results-power" class="slide level2">
+<h2>Results: Power</h2>
+<div class="cell" data-hash="05_misclass_bias_cache/revealjs/Results- Power_2fcce0addc209c29013d51fb79ab1b78">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
@@ -1409,7 +1409,7 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 </details>
 
 </div>
-<img data-src="05_misclass_bias_files/figure-revealjs/unnamed-chunk-34-1.png" width="1344" class="r-stretch"></section>
+<img data-src="05_misclass_bias_files/figure-revealjs/Results- Power-1.png" width="1344" class="r-stretch"></section>
 <section id="summary-1" class="slide level2">
 <h2>Summary</h2>
 <ul>
@@ -1432,10 +1432,38 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 <h2>Group exercise 3</h2>
 <h3 id="try-one-or-more-of-the-following-adaptions-of-the-monte-carlo-studies-on-misclassification">Try one (or more) of the following adaptions of the Monte Carlo studies on misclassification:</h3>
 <ol type="a">
-<li><p>Change the misclassification probabilities to allow for different patterns accuracies and errors: varying difficulties of the categories, systematic confusion of some categories.</p></li>
-<li><p>Change the analysis to a cross-table of two categorical variables which were both measured with misclassification error.</p></li>
-<li><p>Based on the second simulation study, design an experiment to systematically investigate the role of group size, group means and variances, and accuracy. Also take their interactions into account.</p></li>
+<li><p>Change the first simulation so that the misclassification probabilities to allow for different patterns accuracies and errors: varying difficulties of the categories, systematic confusion of some categories.</p></li>
+<li><p>Investigate the consequences of misclassification error for an analysis of two binary variables which were both measured with misclassification error.</p></li>
 </ol>
+</section>
+<section id="exercise-3-help" class="slide level2 scrollable">
+<h2>Exercise 3: Help</h2>
+<h3 id="expand-if-you-need-help.">Expand if you need help.</h3>
+<h3 id="dont-expand-if-you-want-to-figure-it-out-by-yourself.">Don’t expand if you want to figure it out by yourself.</h3>
+<h3 id="scroll-down-if-you-need-more-help-on-later-steps.">Scroll down if you need more help on later steps.</h3>
+<p>Simulation function adapted from Exercise 2a</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We use almost the same simulation function, </span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but we omit Student's t-test, because we already showed its</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="co"># problems with unequal group sizes and group SDs</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>sim_ttest_glm <span class="ot">=</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">GR =</span> <span class="dv">1</span>, <span class="at">lambda1 =</span> <span class="dv">1</span>, <span class="at">M_diff =</span> <span class="dv">0</span>) {</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">=</span> <span class="fu">round</span>(n <span class="sc">/</span> (GR <span class="sc">+</span> <span class="dv">1</span>))</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>  n2 <span class="ot">=</span> <span class="fu">round</span>(n1 <span class="sc">*</span> GR)</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>  lambda2 <span class="ot">=</span> lambda1 <span class="sc">+</span> M_diff</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>  g1 <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n =</span> n1, <span class="at">lambda =</span> lambda1)</span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>  g2 <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n =</span> n2, <span class="at">lambda =</span> lambda2)</span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>  Welch <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2)<span class="sc">$</span>p.value</span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a>  GLM <span class="ot">=</span> <span class="fu">glm</span>(outcome <span class="sc">~</span> group,</span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">outcome =</span> <span class="fu">c</span>(g1, g2),</span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a>                              <span class="at">group =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"g1"</span>, n1), <span class="fu">rep</span>(<span class="st">"g2"</span>, n2))),</span>
+<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> poisson)</span>
+<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">=</span> <span class="fu">lst</span>(Welch, <span class="at">GLM =</span> <span class="fu">coef</span>(<span class="fu">summary</span>(GLM))[<span class="dv">2</span>, <span class="dv">4</span>])</span>
+<span id="cb63-16"><a href="#cb63-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
+<span id="cb63-17"><a href="#cb63-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 
 <div class="footer footer-default">
 
