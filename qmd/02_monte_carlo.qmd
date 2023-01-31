@@ -51,7 +51,7 @@ theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25, axis_title_size = 25))
 
 :   There is no consensus on how Monte Carlo should be defined.
 
--   Monte Carlo methods as part of data analysis (e.g., Sampling from a posterior distribution in Bayesian data analysis, cross tables with small cell counts)
+-   Monte Carlo methods as part of data analysis (e.g., *MCMC* in Bayesian data analysis, cross tables with small cell counts)
 
 -   Monte Carlo methods for the solution of general numerical problems (e.g., [Monte Carlo integration](https://en.wikipedia.org/wiki/Monte_Carlo_integration))
 

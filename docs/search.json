@@ -60,7 +60,7 @@
     "href": "qmd/03_prove.html#rnorm---draw-random-numbers-from-a-normal-distribution",
     "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
     "section": "rnorm() - draw random numbers from a normal distribution",
-    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -1.03055321 -0.28432688 -0.06291055  1.22291155  0.95734605 -0.02277307\n [7] -1.19980264  0.96870076  0.67167791 -0.99023315\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1]  0.2855208 -1.8441579 -0.5693141 -0.9883291 -0.1294559 -0.3942873\n [7] -0.5022851 -2.5105479  0.9658372 -1.7491421"
+    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -0.2927776  0.9411315 -0.9109352  0.6598433  0.3450257  1.1132317\n [7]  0.4414990  1.9874262  0.3019148 -0.7785469\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1]  0.29896324  0.89335169  0.11955442 -0.09437532 -1.08622944  0.72933779\n [7] -0.63319668  0.26832540 -1.20227236  0.87301688"
   },
   {
     "objectID": "qmd/03_prove.html#always-use-set.seed-to-make-simulation-results-reproducible",
@@ -193,7 +193,7 @@
     "href": "qmd/03_prove.html#proof-by-simulation-12",
     "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
     "section": "Proof by simulation",
-    "text": "Proof by simulation\n\nSimulation for a uniform distribution.\n\n\nsim_CLT_binom = function(n, prob_one) {\n  sims = rbinom(n = n, size = 1, prob = prob_one)\n  mean(sims) # mean = prop(1)\n}\ni = 10000\nmany_means = map_dbl(1:i, .f = ~ sim_CLT_binom(n = n, prob_one = prob_one))"
+    "text": "Proof by simulation\n\nSimulation for a binomial distribution.\n\n\nsim_CLT_binom = function(n, prob_one) {\n  sims = rbinom(n = n, size = 1, prob = prob_one)\n  mean(sims) # mean = prop(1)\n}\ni = 10000\nmany_means = map_dbl(1:i, .f = ~ sim_CLT_binom(n = n, prob_one = prob_one))"
   },
   {
     "objectID": "qmd/03_prove.html#proof-by-simulation-13",
@@ -277,7 +277,7 @@
     "href": "qmd/04_2_errors_power.html#adapt-the-simulation-function",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Adapt the simulation function",
-    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.5257641\n\n$Student\n[1] 0.5257555"
+    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.08892433\n\n$Student\n[1] 0.08892426"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#adapt-the-experimental-conditions",
@@ -291,14 +291,14 @@
     "href": "qmd/04_2_errors_power.html#run-simulation-experiment",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Run simulation experiment",
-    "text": "Run simulation experiment\n\nset.seed(326)\ni = 10000\ntic()\nsims = map_dfr(1:i, ~ conditions) %>% # each condition i times\n  rowid_to_column(var = \"sim\") %>% # within simulation comparison\n  rowwise() %>%\n  mutate(p.value = list(sim_ttest(n = n, M_diff = M_diff))) %>% \n  unnest_longer(p.value, indices_to = \"method\")\ntoc()\n\n22.822 sec elapsed"
+    "text": "Run simulation experiment\n\nset.seed(326)\ni = 10000\ntic()\nsims = map_dfr(1:i, ~ conditions) %>% # each condition i times\n  rowid_to_column(var = \"sim\") %>% # within simulation comparison\n  rowwise() %>%\n  mutate(p.value = list(sim_ttest(n = n, M_diff = M_diff))) %>% \n  unnest_longer(p.value, indices_to = \"method\")\ntoc()\n\n22.864 sec elapsed"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#check-results-simulation-v-analytical-solution",
     "href": "qmd/04_2_errors_power.html#check-results-simulation-v-analytical-solution",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Check results: Simulation v analytical solution",
-    "text": "Check results: Simulation v analytical solution\n\n\n\nsims %>% \n  filter(M_diff == 0.4 & method == \"Student\") %>% \n  group_by(n, M_diff, method) %>% \n  summarise(P_p05 = mean(p.value < 0.05)) %>% \n  ungroup() %>% \n  mutate(across(where(is.numeric), round, 3))\n\n# A tibble: 3 × 4\n      n M_diff method  P_p05\n  <dbl>  <dbl> <chr>   <dbl>\n1   100    0.4 Student 0.505\n2   200    0.4 Student 0.802\n3   300    0.4 Student 0.928\n\n\n\n\npower.t.test(n = c(100, 200, 300)/2,\n             delta = 0.4, sd = 1,\n             sig.level = 0.05)\n\n\n     Two-sample t test power calculation \n\n              n = 50, 100, 150\n          delta = 0.4\n             sd = 1\n      sig.level = 0.05\n          power = 0.5081451, 0.8036466, 0.9322752\n    alternative = two.sided\n\nNOTE: n is number in *each* group\n\n\n\n\n\nClose enough for government work"
+    "text": "Check results: Simulation v analytical solution\n\n\n\nsims %>% \n  filter(M_diff == 0.4 & method == \"Student\") %>% \n  group_by(n) %>% \n  summarise(P_p05 = mean(p.value < 0.05)) %>% \n  ungroup() %>% \n  mutate(across(where(is.numeric), round, 3))\n\n# A tibble: 3 × 2\n      n P_p05\n  <dbl> <dbl>\n1   100 0.505\n2   200 0.802\n3   300 0.928\n\n\n\n\npower.t.test(n = c(100, 200, 300)/2,\n             delta = 0.4, sd = 1,\n             sig.level = 0.05)\n\n\n     Two-sample t test power calculation \n\n              n = 50, 100, 150\n          delta = 0.4\n             sd = 1\n      sig.level = 0.05\n          power = 0.5081451, 0.8036466, 0.9322752\n    alternative = two.sided\n\nNOTE: n is number in *each* group\n\n\n\n\n\nClose enough for government work"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#results-power-comparison",
@@ -340,14 +340,14 @@
     "href": "qmd/04_2_errors_power.html#calculator-adapt-the-experimental-conditions",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Calculator: Adapt the experimental conditions",
-    "text": "Calculator: Adapt the experimental conditions\n\n\nOption 1: more fine-grained factor n\n\nconditions = expand_grid(GR = 1, \n                         SDR = 1,\n                         n = seq(from = 50, to = 500, by = 10),\n                         M_diff = 0.4) %>% \n  rowid_to_column(var = \"condition\")\ni = 250\nconditions = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\")\nconditions\n\n# A tibble: 11,500 × 6\n     sim condition    GR   SDR     n M_diff\n   <int>     <int> <dbl> <dbl> <dbl>  <dbl>\n 1     1         1     1     1    50    0.4\n 2     2         2     1     1    60    0.4\n 3     3         3     1     1    70    0.4\n 4     4         4     1     1    80    0.4\n 5     5         5     1     1    90    0.4\n 6     6         6     1     1   100    0.4\n 7     7         7     1     1   110    0.4\n 8     8         8     1     1   120    0.4\n 9     9         9     1     1   130    0.4\n10    10        10     1     1   140    0.4\n# … with 11,490 more rows\n# ℹ Use `print(n = ...)` to see more rows\n\n\n\nOption 2: many random draws of n from a distribution\n\ni = 250*46 # same total number of simulations\nset.seed(86)\nconditions = tibble(sim = 1:i,\n                    GR = 1, \n                    SDR = 1,\n                    n = sample(x = 50:500, size = i, replace = TRUE),\n                    M_diff = 0.4)\nconditions\n\n# A tibble: 11,500 × 5\n     sim    GR   SDR     n M_diff\n   <int> <dbl> <dbl> <int>  <dbl>\n 1     1     1     1   244    0.4\n 2     2     1     1   462    0.4\n 3     3     1     1   306    0.4\n 4     4     1     1    78    0.4\n 5     5     1     1   285    0.4\n 6     6     1     1   396    0.4\n 7     7     1     1   419    0.4\n 8     8     1     1   392    0.4\n 9     9     1     1   226    0.4\n10    10     1     1   278    0.4\n# … with 11,490 more rows\n# ℹ Use `print(n = ...)` to see more rows"
+    "text": "Calculator: Adapt the experimental conditions\n\n\nOption 1: more fine-grained factor n\n\nconditions = expand_grid(GR = 1, \n                         SDR = 1,\n                         n = seq(from = 50, to = 500, by = 10),\n                         M_diff = 0.4) %>% \n  rowid_to_column(var = \"condition\")\ni = 250\nconditions = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\")\nconditions\n\n# A tibble: 11,500 × 6\n     sim condition    GR   SDR     n M_diff\n   <int>     <int> <dbl> <dbl> <dbl>  <dbl>\n 1     1         1     1     1    50    0.4\n 2     2         2     1     1    60    0.4\n 3     3         3     1     1    70    0.4\n 4     4         4     1     1    80    0.4\n 5     5         5     1     1    90    0.4\n 6     6         6     1     1   100    0.4\n 7     7         7     1     1   110    0.4\n 8     8         8     1     1   120    0.4\n 9     9         9     1     1   130    0.4\n10    10        10     1     1   140    0.4\n# … with 11,490 more rows\n\n\n\nOption 2: many random draws of n from a distribution\n\ni = 250*46 # same total number of simulations\nset.seed(86)\nconditions = tibble(sim = 1:i,\n                    GR = 1, \n                    SDR = 1,\n                    n = sample(x = 50:500, size = i, replace = TRUE),\n                    M_diff = 0.4)\nconditions\n\n# A tibble: 11,500 × 5\n     sim    GR   SDR     n M_diff\n   <int> <dbl> <dbl> <int>  <dbl>\n 1     1     1     1   244    0.4\n 2     2     1     1   462    0.4\n 3     3     1     1   306    0.4\n 4     4     1     1    78    0.4\n 5     5     1     1   285    0.4\n 6     6     1     1   396    0.4\n 7     7     1     1   419    0.4\n 8     8     1     1   392    0.4\n 9     9     1     1   226    0.4\n10    10     1     1   278    0.4\n# … with 11,490 more rows"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#calculator-run-simulation",
     "href": "qmd/04_2_errors_power.html#calculator-run-simulation",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Calculator: Run simulation",
-    "text": "Calculator: Run simulation\n\ntic()\nsims = conditions %>% \n  rowwise() %>%\n  mutate(p.value = sim_ttest(n = n, M_diff = M_diff, GR = GR, SDR = SDR))\ntoc()\n\n1.562 sec elapsed"
+    "text": "Calculator: Run simulation\n\ntic()\nsims = conditions %>% \n  rowwise() %>%\n  mutate(p.value = sim_ttest(n = n, M_diff = M_diff, GR = GR, SDR = SDR))\ntoc()\n\n1.482 sec elapsed"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#calculator-visual-results",
@@ -361,7 +361,7 @@
     "href": "qmd/04_2_errors_power.html#calculator-predict-results-for-any-n",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Calculator: Predict results for any n",
-    "text": "Calculator: Predict results for any n\n\nFit (non-linear) model (e.g., mgcv::gam)\npower_mod = sims %>% \n  mutate(p05 = as.integer(p.value < 0.05)) %>%\n  gam(p05 ~ s(n, bs = \"cr\"), family = binomial, data = .)\n\nPredict power for any n (within range of simulated values!)\n\ntibble(n = c(120, 256, 404)) %>% \n  mutate(power = predict(power_mod, newdata = .,\n                         type = \"response\"))\n\n# A tibble: 3 × 2\n      n power\n  <dbl> <dbl>\n1   120 0.587\n2   256 0.884\n3   404 0.978\n\n\n\nCheck against analytical solution\n\npower.t.test(n = c(120, 256, 404)/2,\n             delta = 0.4, sd = 1, \n             sig.level = 0.05)\n\n\n     Two-sample t test power calculation \n\n              n = 60, 128, 202\n          delta = 0.4\n             sd = 1\n      sig.level = 0.05\n          power = 0.5843645, 0.8902603, 0.9798356\n    alternative = two.sided\n\nNOTE: n is number in *each* group"
+    "text": "Calculator: Predict results for any n\n\nFit (non-linear) model (e.g., mgcv::gam)\npower_mod = sims %>% \n  mutate(p05 = as.integer(p.value < 0.05)) %>%\n  gam(p05 ~ s(n, bs = \"cr\"), family = binomial, data = .)\n\nPredict power for any n (within range of simulated values!)\n\ntibble(n = c(120, 256, 404)) %>% \n  mutate(power = predict(power_mod, newdata = .,\n                         type = \"response\"))\n\n# A tibble: 3 × 2\n      n     power\n  <dbl> <dbl[1d]>\n1   120     0.587\n2   256     0.884\n3   404     0.978\n\n\n\nCheck against analytical solution\n\npower.t.test(n = c(120, 256, 404)/2,\n             delta = 0.4, sd = 1, \n             sig.level = 0.05)\n\n\n     Two-sample t test power calculation \n\n              n = 60, 128, 202\n          delta = 0.4\n             sd = 1\n      sig.level = 0.05\n          power = 0.5843645, 0.8902603, 0.9798356\n    alternative = two.sided\n\nNOTE: n is number in *each* group"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#calculator-summary",
@@ -403,7 +403,7 @@
     "href": "qmd/04_2_errors_power.html#this-has-some-implications",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "This has some implications",
-    "text": "This has some implications\n\nFor effect size interpretation:\n\nIf the SD ratio is not equal to 1, the pooled SD is not equal to 1 and the mean difference is not in units of the pooled SD (as in traditional d).\nInstead, it is the difference in SD of the control group units.\nSensible definition for intervention trials with passive control group: Estimate of the population variation without a intervention.\nMaybe less sensible in other designs with more active controls (e.g., typical media effects experimental studies)."
+    "text": "This has some implications\n\nFor effect size interpretation:\n\nIf the SD ratio is not equal to 1, the pooled SD is not equal to 1 and the mean difference is not in units of the pooled SD (as in traditional d).\nInstead, it is the difference in SD of the control group units.\nSensible definition for intervention trials with passive control group: Estimate of the population variation without a intervention.\nMaybe less sensible in other designs with more active controls (e.g., typical media effects experimental studies) or im observational studies (e.g., gender differences in some outcome)."
   },
   {
     "objectID": "qmd/04_2_errors_power.html#this-has-some-implications-1",
@@ -417,7 +417,7 @@
     "href": "qmd/04_2_errors_power.html#first-try-run-simulation-experiment",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "First try: Run simulation experiment",
-    "text": "First try: Run simulation experiment\n\nset.seed(7913)\ni = 10000\ntic()\nsims = map_dfr(1:i, ~ conditions) %>% # each condition 10,000 times\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(p.value = sim_ttest(n = n, M_diff = M_diff, GR = GR, SDR = SDR))\ntoc()\n\n11.681 sec elapsed"
+    "text": "First try: Run simulation experiment\n\nset.seed(7913)\ni = 10000\ntic()\nsims = map_dfr(1:i, ~ conditions) %>% # each condition 10,000 times\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(p.value = sim_ttest(n = n, M_diff = M_diff, GR = GR, SDR = SDR))\ntoc()\n\n11.534 sec elapsed"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#first-try-results",
@@ -445,7 +445,7 @@
     "href": "qmd/04_2_errors_power.html#second-try-bring-back-a-pooled-sd-of-1",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Second try: Bring back a pooled SD of 1",
-    "text": "Second try: Bring back a pooled SD of 1\n\nWe might not be satisfied with the trivial result that more variation decreases power.\nWe might be interested in a more conventional d-style scaling of the effect size.\nWe want a pooled SD of 1 while retaining the SD ratio design."
+    "text": "Second try: Bring back a pooled SD of 1\n\nWe might not be satisfied with the trivial result that more variation decreases power.\nWe might be interested in a more conventional d-style scaling of the effect size.\nWe want a population SD of 1 while retaining the SD ratio design."
   },
   {
     "objectID": "qmd/04_2_errors_power.html#wikipedia-to-the-rescue",
@@ -459,21 +459,21 @@
     "href": "qmd/04_2_errors_power.html#second-try-adapt-the-simulation-function",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Second try: Adapt the simulation function",
-    "text": "Second try: Adapt the simulation function\n\n\n\nWe add a new argument, pooled_sd.\nsd1 is computed based on pooled_sd, GR (via n1 and n2), SDR, and M_diff.\n\n\n\nsim_ttest = function(n = 200, pooled_sd = 1, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = sqrt(\n    ((pooled_sd^2 - ((n1 * n2) / (n1 + n2)^2) * M_diff^2) * (n1 + n2)) / \n      (n1 + n2 * SDR^2)\n    )\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1)\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2)\n  res = t.test(g1, g2)$p.value\n  return(res)\n}\nsim_ttest(n = 300, M_diff = 0.3, GR = 0.5)\n\n[1] 0.01249033"
+    "text": "Second try: Adapt the simulation function\n\n\n\nWe add a new argument, pop_sd.\nsd1 is computed based on pop_sd, GR (via n1 and n2), SDR, and M_diff.\n\n\n\nsim_ttest = function(n = 200, pop_sd = 1, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = sqrt(\n    ((pop_sd^2 - ((n1 * n2) / (n1 + n2)^2) * M_diff^2) * (n1 + n2)) / \n      (n1 + n2 * SDR^2)\n    )\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1)\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2)\n  res = t.test(g1, g2)$p.value\n  return(res)\n}\nsim_ttest(n = 300, M_diff = 0.3, GR = 0.5)\n\n[1] 0.01249033"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#second-try-adapt-the-experimental-conditions",
     "href": "qmd/04_2_errors_power.html#second-try-adapt-the-experimental-conditions",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Second try: Adapt the experimental conditions",
-    "text": "Second try: Adapt the experimental conditions\n\n\n\nTotal sample size n = 300 and effect size M_diff = 0.3 are now fixed.\nIn addition, pooled_sd is fixed at 1, returning to a d-style interpretation of the effect size.\nBetween-simulation factors: GR and SDR\n\n\n\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         SDR = c(0.5, 1, 2),\n                         pooled_sd = 1,\n                         n = 300,\n                         M_diff = 0.3) %>% \n  rowid_to_column(var = \"condition\") %>% \n  mutate(\n    n1 = round(n / (GR + 1)), n2 = round(n1 * GR),\n    sd1 = sqrt(((pooled_sd^2 - ((n1 * n2) / (n1 + n2)^2) * M_diff^2) * (n1 + n2)) / (n1 + n2 * SDR^2)),\n    sd2 = sd1 * SDR\n    ) \nconditions %>% select(1:6)\n\n# A tibble: 9 × 6\n  condition    GR   SDR pooled_sd     n M_diff\n      <int> <dbl> <dbl>     <dbl> <dbl>  <dbl>\n1         1   0.5   0.5         1   300    0.3\n2         2   0.5   1           1   300    0.3\n3         3   0.5   2           1   300    0.3\n4         4   1     0.5         1   300    0.3\n5         5   1     1           1   300    0.3\n6         6   1     2           1   300    0.3\n7         7   2     0.5         1   300    0.3\n8         8   2     1           1   300    0.3\n9         9   2     2           1   300    0.3"
+    "text": "Second try: Adapt the experimental conditions\n\n\n\nTotal sample size n = 300 and effect size M_diff = 0.3 are now fixed.\nIn addition, pop_sd is fixed at 1, returning to a d-style interpretation of the effect size.\nBetween-simulation factors: GR and SDR\n\n\n\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         SDR = c(0.5, 1, 2),\n                         pop_sd = 1,\n                         n = 300,\n                         M_diff = 0.3) %>% \n  rowid_to_column(var = \"condition\") %>% \n  mutate(\n    n1 = round(n / (GR + 1)), n2 = round(n1 * GR),\n    sd1 = sqrt(((pop_sd^2 - ((n1 * n2) / (n1 + n2)^2) * M_diff^2) * (n1 + n2)) / (n1 + n2 * SDR^2)),\n    sd2 = sd1 * SDR\n    ) \nconditions %>% select(1:6)\n\n# A tibble: 9 × 6\n  condition    GR   SDR pop_sd     n M_diff\n      <int> <dbl> <dbl>  <dbl> <dbl>  <dbl>\n1         1   0.5   0.5      1   300    0.3\n2         2   0.5   1        1   300    0.3\n3         3   0.5   2        1   300    0.3\n4         4   1     0.5      1   300    0.3\n5         5   1     1        1   300    0.3\n6         6   1     2        1   300    0.3\n7         7   2     0.5      1   300    0.3\n8         8   2     1        1   300    0.3\n9         9   2     2        1   300    0.3"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#second-try-run-simulation-experiment",
     "href": "qmd/04_2_errors_power.html#second-try-run-simulation-experiment",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Second try: Run simulation experiment",
-    "text": "Second try: Run simulation experiment\n\nset.seed(39)\ni = 10000\ntic()\nsims = map_dfr(1:i, ~ conditions) %>% # each condition 10,000 times\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(p.value = sim_ttest(n = n, M_diff = M_diff, GR = GR, SDR = SDR))\ntoc()\n\n13.393 sec elapsed"
+    "text": "Second try: Run simulation experiment\n\nset.seed(39)\ni = 10000\ntic()\nsims = map_dfr(1:i, ~ conditions) %>% # each condition 10,000 times\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(p.value = sim_ttest(n = n, M_diff = M_diff, GR = GR, SDR = SDR))\ntoc()\n\n11.591 sec elapsed"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#second-try-results",
@@ -585,7 +585,7 @@
     "href": "qmd/01_intro.html#resources",
     "title": "Data Simulation with Monte Carlo Methods",
     "section": "Resources",
-    "text": "Resources\nSlides, scripts, and exercises:\n\nAll materials are at https://bachl.github.io/sim/\n\nR & packages:\nR (Vers. 4.2.1), dplyr (Vers. 1.0.9), extraDistr (Vers. 1.9.1), forcats (Vers. 0.5.1), ggplot2 (Vers. 3.3.6), hrbrthemes (Vers. 0.8.0), knitr (Vers. 1.39), mgcv (Vers. 1.8.40), nlme (Vers. 3.1.157), purrr (Vers. 0.3.4), readr (Vers. 2.1.2), stringr (Vers. 1.4.0), tibble (Vers. 3.1.8), tictoc (Vers. 1.1), tidyr (Vers. 1.2.0), tidyverse (Vers. 1.3.2)"
+    "text": "Resources\nSlides, scripts, and exercises:\n\nAll materials are at https://bachl.github.io/sim/\n\nR & packages:\nR (Vers. 4.2.1), dplyr (Vers. 1.0.9), extraDistr (Vers. 1.9.1), forcats (Vers. 0.5.1), ggplot2 (Vers. 3.4.0), hrbrthemes (Vers. 0.8.6), knitr (Vers. 1.39), mgcv (Vers. 1.8.40), nlme (Vers. 3.1.157), purrr (Vers. 0.3.4), readr (Vers. 2.1.2), stringr (Vers. 1.5.0), tibble (Vers. 3.1.8), tictoc (Vers. 1.1), tidyr (Vers. 1.2.0), tidyverse (Vers. 1.3.2)"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#traktandenliste",
@@ -662,7 +662,7 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-misclassification",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Misclassification",
-    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.017 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.483 0.293 0.138 0.086"
+    "text": "One simulation: Misclassification\nFirst try\n\nMimic empirical classification process at unit level\n\n\ntic()\nsample_obs = sample_true %>%  # n samples\n  map_chr(~ sample(categories,\n                  size = 1, replace = FALSE, \n                  prob = misclass_prop[, .x])) %>%\n    factor(levels = categories)\nfreq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\ntoc()\n\n0.018 sec elapsed\n\nfreq_obs\n\n.\n    A     B     C     D \n0.483 0.293 0.138 0.086"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#one-simulation-misclassification-1",
@@ -914,7 +914,7 @@
     "href": "qmd/04_1_solution.html#simulation-function",
     "title": "Solution Exercise 2a",
     "section": "Simulation function",
-    "text": "Simulation function\n\n# No standard deviation ratio any more because SD fixed at sqrt(lambda)\n# M_diff not necessary at this stage, but useful later\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  Student = t.test(g1, g2, var.equal = TRUE)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, Student, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm()\n\n$Welch\n[1] 0.01227352\n\n$Student\n[1] 0.01227155\n\n$GLM\n[1] 0.02638729"
+    "text": "Simulation function\n\n# No standard deviation ratio any more because SD fixed at sqrt(lambda)\n# M_diff not necessary at this stage, but useful later\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  Student = t.test(g1, g2, var.equal = TRUE)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, Student, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm()\n\n$Welch\n[1] 0.946166\n\n$Student\n[1] 0.9461659\n\n$GLM\n[1] 0.9448532"
   },
   {
     "objectID": "qmd/04_1_solution.html#conditions",
@@ -984,7 +984,7 @@
     "href": "qmd/02_monte_carlo.html#monte-carlo-simulation-1",
     "title": "2) Monte Carlo Simulation?",
     "section": "Monte Carlo Simulation?",
-    "text": "Monte Carlo Simulation?\n\nWikipedia\n\nThere is no consensus on how Monte Carlo should be defined.\n\n\n\nMonte Carlo methods as part of data analysis (e.g., Sampling from a posterior distribution in Bayesian data analysis, cross tables with small cell counts)\nMonte Carlo methods for the solution of general numerical problems (e.g., Monte Carlo integration)\nMonte Carlo methods for quantitative (social) science methods research"
+    "text": "Monte Carlo Simulation?\n\nWikipedia\n\nThere is no consensus on how Monte Carlo should be defined.\n\n\n\nMonte Carlo methods as part of data analysis (e.g., MCMC in Bayesian data analysis, cross tables with small cell counts)\nMonte Carlo methods for the solution of general numerical problems (e.g., Monte Carlo integration)\nMonte Carlo methods for quantitative (social) science methods research"
   },
   {
     "objectID": "qmd/02_monte_carlo.html#monte-carlo-simulation-2",
@@ -1166,7 +1166,7 @@
     "href": "qmd/05_solution.html#conditions",
     "title": "Solution Exercise 3",
     "section": "Conditions",
-    "text": "Conditions\n\n\n\nWe vary the prevalence of the treatment in the population, pop_dist_x, the prevalence of the outcome in the baseline group, pop_baseline, and, most importantly, the accuracy of the measurements.\n\n\n\nconditions = expand_grid(\n  pop_dist_x = c(.1, .3, .5),\n  pop_baseline = c(.1, .3, .5),\n  pop_difference = 0.15,\n  n = 1000,\n  accuracy = seq(from = 0.6, to = 1, by = 0.1)\n) %>% \n  rowid_to_column(var = \"condition\")\nconditions\n\n# A tibble: 45 × 6\n   condition pop_dist_x pop_baseline pop_difference     n accuracy\n       <int>      <dbl>        <dbl>          <dbl> <dbl>    <dbl>\n 1         1        0.1          0.1           0.15  1000      0.6\n 2         2        0.1          0.1           0.15  1000      0.7\n 3         3        0.1          0.1           0.15  1000      0.8\n 4         4        0.1          0.1           0.15  1000      0.9\n 5         5        0.1          0.1           0.15  1000      1  \n 6         6        0.1          0.3           0.15  1000      0.6\n 7         7        0.1          0.3           0.15  1000      0.7\n 8         8        0.1          0.3           0.15  1000      0.8\n 9         9        0.1          0.3           0.15  1000      0.9\n10        10        0.1          0.3           0.15  1000      1  \n# … with 35 more rows\n# ℹ Use `print(n = ...)` to see more rows"
+    "text": "Conditions\n\n\n\nWe vary the prevalence of the treatment in the population, pop_dist_x, the prevalence of the outcome in the baseline group, pop_baseline, and, most importantly, the accuracy of the measurements.\n\n\n\nconditions = expand_grid(\n  pop_dist_x = c(.1, .3, .5),\n  pop_baseline = c(.1, .3, .5),\n  pop_difference = 0.15,\n  n = 1000,\n  accuracy = seq(from = 0.6, to = 1, by = 0.1)\n) %>% \n  rowid_to_column(var = \"condition\")\nconditions\n\n# A tibble: 45 × 6\n   condition pop_dist_x pop_baseline pop_difference     n accuracy\n       <int>      <dbl>        <dbl>          <dbl> <dbl>    <dbl>\n 1         1        0.1          0.1           0.15  1000      0.6\n 2         2        0.1          0.1           0.15  1000      0.7\n 3         3        0.1          0.1           0.15  1000      0.8\n 4         4        0.1          0.1           0.15  1000      0.9\n 5         5        0.1          0.1           0.15  1000      1  \n 6         6        0.1          0.3           0.15  1000      0.6\n 7         7        0.1          0.3           0.15  1000      0.7\n 8         8        0.1          0.3           0.15  1000      0.8\n 9         9        0.1          0.3           0.15  1000      0.9\n10        10        0.1          0.3           0.15  1000      1  \n# … with 35 more rows"
   },
   {
     "objectID": "qmd/05_solution.html#run-simulation-1",
@@ -1208,14 +1208,14 @@
     "href": "qmd/04_2_solution.html#simulation-function",
     "title": "Solution Exercise 2b",
     "section": "Simulation function",
-    "text": "Simulation function\n\n# We use almost the same simulation function, \n# but we omit Student's t-test, because we already showed its\n# problems with unequal group sizes and group SDs\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.6997966\n\n$GLM\n[1] 0.7257625"
+    "text": "Simulation function\n\n# We use almost the same simulation function, \n# but we omit Student's t-test, because we already showed its\n# problems with unequal group sizes and group SDs\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.5334722\n\n$GLM\n[1] 0.5213154"
   },
   {
     "objectID": "qmd/04_2_solution.html#conditions-first-try",
     "href": "qmd/04_2_solution.html#conditions-first-try",
     "title": "Solution Exercise 2b",
     "section": "Conditions: First try",
-    "text": "Conditions: First try\n\n\n# It makes sense to vary group size ratio, lambda, and M_diff\n# The positive relationship between n and power is trivial\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         n = 200,\n                         lambda1 = c(1, 10, 20),\n                         M_diff = c(0.3, 0.5, 0.8)) %>% \n  rowid_to_column(var = \"condition\")\nconditions\n\n\n# A tibble: 27 × 5\n   condition    GR     n lambda1 M_diff\n       <int> <dbl> <dbl>   <dbl>  <dbl>\n 1         1   0.5   200       1    0.3\n 2         2   0.5   200       1    0.5\n 3         3   0.5   200       1    0.8\n 4         4   0.5   200      10    0.3\n 5         5   0.5   200      10    0.5\n 6         6   0.5   200      10    0.8\n 7         7   0.5   200      20    0.3\n 8         8   0.5   200      20    0.5\n 9         9   0.5   200      20    0.8\n10        10   1     200       1    0.3\n# … with 17 more rows\n# ℹ Use `print(n = ...)` to see more rows"
+    "text": "Conditions: First try\n\n\n# It makes sense to vary group size ratio, lambda, and M_diff\n# The positive relationship between n and power is trivial\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         n = 200,\n                         lambda1 = c(1, 10, 20),\n                         M_diff = c(0.3, 0.5, 0.8)) %>% \n  rowid_to_column(var = \"condition\")\nconditions\n\n\n# A tibble: 27 × 5\n   condition    GR     n lambda1 M_diff\n       <int> <dbl> <dbl>   <dbl>  <dbl>\n 1         1   0.5   200       1    0.3\n 2         2   0.5   200       1    0.5\n 3         3   0.5   200       1    0.8\n 4         4   0.5   200      10    0.3\n 5         5   0.5   200      10    0.5\n 6         6   0.5   200      10    0.8\n 7         7   0.5   200      20    0.3\n 8         8   0.5   200      20    0.5\n 9         9   0.5   200      20    0.8\n10        10   1     200       1    0.3\n# … with 17 more rows"
   },
   {
     "objectID": "qmd/04_2_solution.html#run-simulation",
@@ -1250,7 +1250,7 @@
     "href": "qmd/04_2_solution.html#conditions-second-try",
     "title": "Solution Exercise 2b",
     "section": "Conditions: Second try",
-    "text": "Conditions: Second try\n\nIt is not straightforward to vary the effect size as defined by the mean difference divided by the pooled population standard deviation.\nWe opt for a simpler option: Standardization by the standard deviation in the control group, i.e., \\(\\sqrt{\\lambda_1}\\).\n\n\n\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         n = 200,\n                         lambda1 = c(1, 10, 20),\n                         d = c(0.2, 0.4, 0.6)) %>% # standardized mean difference.\n  mutate(M_diff = d * sqrt(lambda1)) %>% # absolute mean difference\n  rowid_to_column(var = \"condition\")\nconditions\n\n\n# A tibble: 27 × 6\n   condition    GR     n lambda1     d M_diff\n       <int> <dbl> <dbl>   <dbl> <dbl>  <dbl>\n 1         1   0.5   200       1   0.2  0.2  \n 2         2   0.5   200       1   0.4  0.4  \n 3         3   0.5   200       1   0.6  0.6  \n 4         4   0.5   200      10   0.2  0.632\n 5         5   0.5   200      10   0.4  1.26 \n 6         6   0.5   200      10   0.6  1.90 \n 7         7   0.5   200      20   0.2  0.894\n 8         8   0.5   200      20   0.4  1.79 \n 9         9   0.5   200      20   0.6  2.68 \n10        10   1     200       1   0.2  0.2  \n# … with 17 more rows\n# ℹ Use `print(n = ...)` to see more rows"
+    "text": "Conditions: Second try\n\nIt is not straightforward to vary the effect size as defined by the mean difference divided by the pooled population standard deviation.\nWe opt for a simpler option: Standardization by the standard deviation in the control group, i.e., \\(\\sqrt{\\lambda_1}\\).\n\n\n\nconditions = expand_grid(GR = c(0.5, 1, 2), \n                         n = 200,\n                         lambda1 = c(1, 10, 20),\n                         d = c(0.2, 0.4, 0.6)) %>% # standardized mean difference.\n  mutate(M_diff = d * sqrt(lambda1)) %>% # absolute mean difference\n  rowid_to_column(var = \"condition\")\nconditions\n\n\n# A tibble: 27 × 6\n   condition    GR     n lambda1     d M_diff\n       <int> <dbl> <dbl>   <dbl> <dbl>  <dbl>\n 1         1   0.5   200       1   0.2  0.2  \n 2         2   0.5   200       1   0.4  0.4  \n 3         3   0.5   200       1   0.6  0.6  \n 4         4   0.5   200      10   0.2  0.632\n 5         5   0.5   200      10   0.4  1.26 \n 6         6   0.5   200      10   0.6  1.90 \n 7         7   0.5   200      20   0.2  0.894\n 8         8   0.5   200      20   0.4  1.79 \n 9         9   0.5   200      20   0.6  2.68 \n10        10   1     200       1   0.2  0.2  \n# … with 17 more rows"
   },
   {
     "objectID": "qmd/04_2_solution.html#run-simulation-1",
@@ -1467,7 +1467,7 @@
     "href": "qmd/04_1_errors_power.html#inspect-simulated-data",
     "title": "4a) Errors and power — Torturing the t-test",
     "section": "Inspect simulated data",
-    "text": "Inspect simulated data\n\n\n# A tibble: 120,000 × 6\n     sim condition    GR   SDR p.value method \n   <int>     <int> <dbl> <dbl>   <dbl> <chr>  \n 1     1         1     1   0.5 0.345   Welch  \n 2     1         1     1   0.5 0.344   Student\n 3     2         2     1   1   0.534   Welch  \n 4     2         2     1   1   0.534   Student\n 5     3         3     1   2   0.647   Welch  \n 6     3         3     1   2   0.647   Student\n 7     4         4     2   0.5 0.00985 Welch  \n 8     4         4     2   0.5 0.00224 Student\n 9     5         5     2   1   0.602   Welch  \n10     5         5     2   1   0.614   Student\n# … with 119,990 more rows\n# ℹ Use `print(n = ...)` to see more rows"
+    "text": "Inspect simulated data\n\n\n# A tibble: 120,000 × 6\n     sim condition    GR   SDR p.value method \n   <int>     <int> <dbl> <dbl>   <dbl> <chr>  \n 1     1         1     1   0.5 0.345   Welch  \n 2     1         1     1   0.5 0.344   Student\n 3     2         2     1   1   0.534   Welch  \n 4     2         2     1   1   0.534   Student\n 5     3         3     1   2   0.647   Welch  \n 6     3         3     1   2   0.647   Student\n 7     4         4     2   0.5 0.00985 Welch  \n 8     4         4     2   0.5 0.00224 Student\n 9     5         5     2   1   0.602   Welch  \n10     5         5     2   1   0.614   Student\n# … with 119,990 more rows"
   },
   {
     "objectID": "qmd/04_1_errors_power.html#results-histogram-of-p-values",

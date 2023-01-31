@@ -512,13 +512,13 @@ Marko Bachl
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] -1.03055321 -0.28432688 -0.06291055  1.22291155  0.95734605 -0.02277307
- [7] -1.19980264  0.96870076  0.67167791 -0.99023315</code></pre>
+<pre><code> [1] -0.2927776  0.9411315 -0.9109352  0.6598433  0.3450257  1.1132317
+ [7]  0.4414990  1.9874262  0.3019148 -0.7785469</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">10</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1]  0.2855208 -1.8441579 -0.5693141 -0.9883291 -0.1294559 -0.3942873
- [7] -0.5022851 -2.5105479  0.9658372 -1.7491421</code></pre>
+<pre><code> [1]  0.29896324  0.89335169  0.11955442 -0.09437532 -1.08622944  0.72933779
+ [7] -0.63319668  0.26832540 -1.20227236  0.87301688</code></pre>
 </div>
 </div>
 </section>
@@ -915,7 +915,7 @@ Marko Bachl
 <section id="proof-by-simulation-12" class="slide level2">
 <h2>Proof by simulation</h2>
 <ul>
-<li>Simulation for a uniform distribution.</li>
+<li>Simulation for a binomial distribution.</li>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>sim_CLT_binom <span class="ot">=</span> <span class="cf">function</span>(n, prob_one) {</span>

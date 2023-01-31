@@ -387,7 +387,7 @@ ggplot() +
 
 ## Proof by simulation
 
--   Simulation for a uniform distribution.
+-   Simulation for a binomial distribution.
 
 ```{r binomial CLT simulation}
 sim_CLT_binom = function(n, prob_one) {

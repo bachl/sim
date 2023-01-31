@@ -1,11 +1,11 @@
-## ----setup---------------------------------------------------------------------------------------------------
+## ----setup--------------------------------------------------------------------------------------------------------------------
 pacman::p_load(knitr, tictoc, tidyverse)
 theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
                                      axis_title_size = 25,
                                      strip_text_size = 20))
 
 
-## ----Manual misclassification matrix-------------------------------------------------------------------------
+## ----Manual misclassification matrix------------------------------------------------------------------------------------------
 misclass_prop = matrix(c(
   .80, .10, .15,
   .15, .80, .15,
@@ -15,7 +15,7 @@ dimnames = list(LETTERS[1:3], LETTERS[1:3]))
 misclass_prop
 
 
-## ----Adapted simulation function-----------------------------------------------------------------------------
+## ----Adapted simulation function----------------------------------------------------------------------------------------------
 sim_misclass = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),
                         n = 1000,
                         misclass_prop = misclass_prop) {
@@ -54,7 +54,7 @@ sim_misclass = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),
 }
 
 
-## ----Condition-----------------------------------------------------------------------------------------------
+## ----Condition----------------------------------------------------------------------------------------------------------------
 conditions = expand_grid(
   pop_dist = list(c(0.55, 0.3, 0.15)),
   n = 1000,
@@ -64,7 +64,7 @@ conditions = expand_grid(
 conditions
 
 
-## ----Run simulation------------------------------------------------------------------------------------------
+## ----Run simulation-----------------------------------------------------------------------------------------------------------
 i = 1000 # less simulations to save some workshop time 
 set.seed(40)
 tic()
@@ -76,7 +76,7 @@ sims = map_dfr(1:i, ~ conditions) %>%
 toc()
 
 
-## ----Result plot---------------------------------------------------------------------------------------------
+## ----Result plot--------------------------------------------------------------------------------------------------------------
 sims %>% 
   ungroup() %>% 
   unnest_wider(res) %>% 
@@ -92,7 +92,7 @@ sims %>%
        y = "Category")
 
 
-## ----One simulation: draw x----------------------------------------------------------------------------------
+## ----One simulation: draw x---------------------------------------------------------------------------------------------------
 set.seed(91)
 n = 1000
 pop_dist_x = 0.5
@@ -102,7 +102,7 @@ sample_x_true = rbinom(n = n,
 prop.table(table(sample_x_true))
 
 
-## ----One simulation: draw outcome----------------------------------------------------------------------------
+## ----One simulation: draw outcome---------------------------------------------------------------------------------------------
 pop_baseline = 0.5
 pop_difference = 0.1
 logit_pop_baseline = log(pop_baseline / (1 - pop_baseline))
@@ -114,7 +114,7 @@ outcomes_true = rbinom(n = n, size = 1,
 prop.table(table(outcomes_true, sample_x_true), margin = 2) %>% round(2)
 
 
-## ----One simulation: misclassification-----------------------------------------------------------------------
+## ----One simulation: misclassification----------------------------------------------------------------------------------------
 # Misclassification probabilities
 accuracy = 0.8
 correct_x = rbinom(n = n, size = 1, 
@@ -128,7 +128,7 @@ outcomes_obs = abs(outcomes_true - correct_outcome)
 mean(sample_x_obs == sample_x_true); mean(outcomes_obs == outcomes_true)
 
 
-## ----One simulation: quantities------------------------------------------------------------------------------
+## ----One simulation: quantities-----------------------------------------------------------------------------------------------
   t_res = t.test(outcomes_obs ~ sample_x_obs)
   (p_obs = t_res$p.value)
   (diff_obs = unname(diff(t_res$estimate)))
@@ -136,7 +136,7 @@ mean(sample_x_obs == sample_x_true); mean(outcomes_obs == outcomes_true)
 
 
 
-## ----New simulation function---------------------------------------------------------------------------------
+## ----New simulation function--------------------------------------------------------------------------------------------------
 sim_misclass_binary = function(pop_dist_x = 0.5,
                                pop_baseline = 0.5,
                                pop_difference = 0.1,
@@ -177,7 +177,7 @@ sim_misclass_binary = function(pop_dist_x = 0.5,
 
 
 
-## ----Conditions----------------------------------------------------------------------------------------------
+## ----Conditions---------------------------------------------------------------------------------------------------------------
 conditions = expand_grid(
   pop_dist_x = c(.1, .3, .5),
   pop_baseline = c(.1, .3, .5),
@@ -189,7 +189,7 @@ conditions = expand_grid(
 conditions
 
 
-## ----Run simulation 2----------------------------------------------------------------------------------------
+## ----Run simulation 2---------------------------------------------------------------------------------------------------------
 i = 1000 # less simulations to save some workshop time 
 set.seed(40)
 tic()
@@ -203,7 +203,7 @@ sims = map_dfr(1:i, ~ conditions) %>%
 toc()
 
 
-## ----Result plot 2-------------------------------------------------------------------------------------------
+## ----Result plot 2------------------------------------------------------------------------------------------------------------
 sims %>% 
   ungroup() %>% 
   unnest_wider(res) %>% 
@@ -219,7 +219,7 @@ sims %>%
        color = "Population\ntreatment\nprevalence")
 
 
-## ----Result plot 3-------------------------------------------------------------------------------------------
+## ----Result plot 3------------------------------------------------------------------------------------------------------------
 sims %>% 
   ungroup() %>% 
   unnest_wider(res) %>% 
