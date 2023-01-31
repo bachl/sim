@@ -277,7 +277,7 @@
     "href": "qmd/04_2_errors_power.html#adapt-the-simulation-function",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Adapt the simulation function",
-    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.08892433\n\n$Student\n[1] 0.08892426"
+    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.03565393\n\n$Student\n[1] 0.03564428"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#adapt-the-experimental-conditions",
@@ -1538,5 +1538,12 @@
     "title": "Workshop Data Simulation with Monte Carlo Methods",
     "section": "Traktandenliste",
     "text": "Traktandenliste\n\nIntroduction & overview\n\nSlides\n\nMonte Carlo Simulation?\n\nSlides\n\nProof by simulation — The Central Limit Theorem (CLT)\n\nSlides\nPure R Script\nSolution Exercise 1 - Compiled\nSolution Exercise 1 - Pure R Script\n\nErrors and power — Torturing the t-test\n\nSlides 1\nPure R Script 1\nSolution Exercise 2a - Compiled\nSolution Exercise 2a - Pure R Script\nSlides 2\nPure R Script 2\nSolution Exercise 2b - Compiled\nSolution Exercise 2b - Pure R Script\n\nMisclassification and bias — Messages mismeasured\n\nSlides\nPure R Script\n\nOutlook: What’s next?\n\nSlides"
+  },
+  {
+    "objectID": "qmd/04_2_errors_power.html#second-try-bring-back-a-population-sd-of-1",
+    "href": "qmd/04_2_errors_power.html#second-try-bring-back-a-population-sd-of-1",
+    "title": "4b) Errors and power — Torturing the t-test",
+    "section": "Second try: Bring back a population SD of 1",
+    "text": "Second try: Bring back a population SD of 1\n\nWe might not be satisfied with the trivial result that more variation decreases power.\nWe might be interested in a more conventional d-style scaling of the effect size.\nWe want a population SD of 1 while retaining the SD ratio design."
   }
 ]

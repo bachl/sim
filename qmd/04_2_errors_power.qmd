@@ -564,7 +564,7 @@ sims %>%
 
 - If group *SD*s are equal, most power with equal group sample sizes.
 
-## Second try: Bring back a pooled *SD* of 1
+## Second try: Bring back a population *SD* of 1
 
 - We might not be satisfied with the trivial result that more variation decreases power.
 
