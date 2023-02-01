@@ -870,7 +870,7 @@ a) Change the first simulation so that the misclassification probabilities to al
 
 b) Investigate the consequences of misclassification error for an analysis of two binary variables which were both measured with misclassification error.
 
-## Exercise 3: Help {.scrollable}
+## Exercise 3a: Help {.scrollable}
 
 ### Expand if you need help.
 
@@ -878,26 +878,110 @@ b) Investigate the consequences of misclassification error for an analysis of tw
 
 ### Scroll down if you need more help on later steps.
 
-Simulation function adapted from Exercise 2a
-```{r Simulation function adapted from Exercise 2a}
+Manually defined misclassification matrix with varying difficulty and systematic confusion
+```{r E3a: Manual misclassification matrix}
 #| eval: false
 #| code-fold: true
-# We use almost the same simulation function, 
-# but we omit Student's t-test, because we already showed its
-# problems with unequal group sizes and group SDs
-sim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {
-  n1 = round(n / (GR + 1))
-  n2 = round(n1 * GR)
-  lambda2 = lambda1 + M_diff
-  g1 = rpois(n = n1, lambda = lambda1)
-  g2 = rpois(n = n2, lambda = lambda2)
-  Welch = t.test(g1, g2)$p.value
-  GLM = glm(outcome ~ group,
-            data = data.frame(outcome = c(g1, g2),
-                              group = c(rep("g1", n1), rep("g2", n2))),
-            family = poisson)
-  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])
-  return(res)
+misclass_prob = matrix(c(
+  .80, .10, .15,
+  .15, .80, .15,
+  .05, .10, .70
+), nrow = 3, byrow = TRUE,
+dimnames = list(LETTERS[1:3], LETTERS[1:3]))
+misclass_prob
+```
+
+Adapted simulation function
+```{r E3a: Adapted simulation function}
+#| eval: false
+#| code-fold: true
+# Misclassification matrix as argument
+sim_misclass = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),
+                        n = 1000,
+                        misclass_prob = misclass_prob) {
+  # Population
+  k = length(pop_dist)
+  categories = LETTERS[1:k]
+  
+  # Sample
+  sample_true = sample(x = categories, 
+                       size = n, 
+                       replace = TRUE, 
+                       prob = pop_dist) %>% 
+    factor(levels = categories) %>% 
+    sort()
+  freq_true = sample_true %>% 
+    table() %>% 
+    prop.table()
+  
+  # Misclassification
+  sample_obs = table(sample_true) %>%  
+    imap(~ sample(categories,
+                  size = .x, replace = TRUE, 
+                  prob = misclass_prob[, .y])) %>%
+    unlist(use.names = FALSE) %>% 
+    factor(levels = categories)
+  freq_obs = sample_obs %>% 
+    table() %>% 
+    prop.table()
+  
+  # Error summary
+  rmse = sqrt(mean((pop_dist - freq_obs)^2))
+  
+  # Output
+  out = lst(freq_true, freq_obs, rmse)
+  out
 }
 ```
 
+Condition
+```{r E3a: Condition}
+#| eval: false
+#| code-fold: true
+# No experiment, just one condition for illustration
+conditions = expand_grid(
+  pop_dist = list(c(0.55, 0.3, 0.15)),
+  n = 1000,
+  misclass_prob = list(misclass_prob)
+) %>% 
+  rowid_to_column(var = "condition")
+conditions
+```
+
+Run simulation
+```{r E3a: Run simulation}
+#| eval: false
+#| code-fold: true
+i = 1000 # less simulations to save some workshop time 
+set.seed(40)
+tic()
+sims = map_dfr(1:i, ~ conditions) %>%
+  rowid_to_column(var = "sim") %>%
+  rowwise() %>%
+  mutate(res = list(sim_misclass(pop_dist = pop_dist, 
+                                 n = n, misclass_prob = misclass_prob)))
+toc()
+```
+
+Result plot
+```{r E3a: Result plot}
+#| eval: false
+#| code-fold: true
+sims %>% 
+  ungroup() %>% 
+  unnest_wider(res) %>% 
+  unnest_longer(freq_obs, indices_to = "category") %>% 
+  group_by(category) %>%
+  summarise(Q = list(quantile(freq_obs, probs = c(0.25, 0.5, 0.75)))) %>%
+  unnest_wider(Q) %>%
+  ggplot(aes(`50%`, fct_rev(category),
+             xmin = `25%`, xmax = `75%`)) +
+  geom_pointrange() +
+  geom_vline(xintercept = unlist(conditions$pop_dist), color = "red", linetype = 2) + 
+  labs(x = str_glue("Median and IQR of the proportions from {i} simulation runs per condition.\nRed lines are shares in the population."),
+       y = "Category")
+```
+
+## Exercise 3b: Help
+
+Check out the steps-by-step explanation in the [rendered solution](qmd/05_solution.html) or the [R code](R/05_solution.R).

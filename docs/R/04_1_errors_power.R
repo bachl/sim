@@ -1,11 +1,11 @@
-## ----setup--------------------------------------------------------------------------------------------------------------------
+## ----setup-------------------------------------------------------------------------------------------
 pacman::p_load(knitr, tictoc, tidyverse)
 theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
                                      axis_title_size = 25,
                                      strip_text_size = 20))
 
 
-## ----One simulation: Parameters-----------------------------------------------------------------------------------------------
+## ----One simulation: Parameters----------------------------------------------------------------------
 set.seed(28)
 n = 150 # fixed total sample size
 GR = 2 # n2/n1
@@ -16,22 +16,22 @@ SDR = 2  # sd2/sd1
 sd2 = sd1 * SDR
 
 
-## ----One simulation: *t*-tests------------------------------------------------------------------------------------------------
+## ----One simulation: *t*-tests-----------------------------------------------------------------------
 g1 = rnorm(n = n1, mean = 0, sd = sd1)
 g2 = rnorm(n = n2, mean = 0, sd = sd2)
 t.test(g1, g2) # Welch (default)
 t.test(g1, g2, var.equal = TRUE) # Student
 
 
-## ----Inspect the output of t.test()-------------------------------------------------------------------------------------------
+## ----Inspect the output of t.test()------------------------------------------------------------------
 t.test(g1, g2) %>% str()
 
 
-## ----Extract p-value from t.test()--------------------------------------------------------------------------------------------
+## ----Extract p-value from t.test()-------------------------------------------------------------------
 t.test(g1, g2)$p.value
 
 
-## ----Wrap it into a function--------------------------------------------------------------------------------------------------
+## ----Wrap it into a function-------------------------------------------------------------------------
 sim_ttest = function(GR = 1, SDR = 1, n = 150) {
   n1 = round(n / (GR + 1))
   n2 = round(n1 * GR)
@@ -46,28 +46,28 @@ sim_ttest = function(GR = 1, SDR = 1, n = 150) {
 }
 
 
-## ----Call the function once---------------------------------------------------------------------------------------------------
+## ----Call the function once--------------------------------------------------------------------------
 sim_ttest(GR = 2, SDR = 0.5) # Implies n1 = 50, n2 = 100, sd1 = 1, sd2 = 0.5
 
 
-## ----Setup of experimental conditions: expand_grid example--------------------------------------------------------------------
+## ----Setup of experimental conditions: expand_grid example-------------------------------------------
 expand_grid(a = 1:2, b = 3:4)
 
 
-## ----Setup of experimental conditions-----------------------------------------------------------------------------------------
+## ----Setup of experimental conditions----------------------------------------------------------------
 conditions = expand_grid(GR = c(1, 2),
                          SDR = c(0.5, 1, 2)) %>% 
   rowid_to_column(var = "condition")
 conditions
 
 
-## ----Setup of experimental conditions 2---------------------------------------------------------------------------------------
+## ----Setup of experimental conditions 2--------------------------------------------------------------
 conditions %>% 
   mutate(implies = str_glue("n1 = {round(150 / (GR + 1))}, n2 = {round(150 - 150 / (GR + 1))}, sd1 = 1, sd2 = {1 * SDR}")) %>% 
   knitr::kable()
 
 
-## ----Run simulation experiment------------------------------------------------------------------------------------------------
+## ----Run simulation experiment-----------------------------------------------------------------------
 set.seed(689)
 i = 10000 # number of sim runs per condition
 tic() # simple way to measure wall time
@@ -79,11 +79,11 @@ sims = map_dfr(1:i, ~ conditions) %>% # each condition i times
 toc() # simple way to measure wall time
 
 
-## ----Inspect simulated data---------------------------------------------------------------------------------------------------
+## ----Inspect simulated data--------------------------------------------------------------------------
 sims
 
 
-## ----Results: Histogram of p-values-------------------------------------------------------------------------------------------
+## ----Results: Histogram of p-values------------------------------------------------------------------
 sims %>% 
   ggplot(aes(p.value)) +
   geom_histogram(binwidth = 0.05, boundary = 0) + 
@@ -91,7 +91,7 @@ sims %>%
   scale_x_continuous(breaks = c(1, 3)/4)
 
 
-## ----Results: Q-Q-plot of p-values--------------------------------------------------------------------------------------------
+## ----Results: Q-Q-plot of p-values-------------------------------------------------------------------
 sims %>% 
   ggplot(aes(sample = p.value, color = method)) +
   geom_qq(distribution = stats::qunif, size = 0.2) + 
@@ -99,7 +99,7 @@ sims %>%
   facet_grid(GR ~ SDR, labeller = label_both)
 
 
-## ----Results: Looking at the relevant tail------------------------------------------------------------------------------------
+## ----Results: Looking at the relevant tail-----------------------------------------------------------
 sims %>% 
   group_by(GR, SDR, method) %>% 
   summarise(P_p001 = mean(p.value <= 0.001),
@@ -108,25 +108,25 @@ sims %>%
   kable(digits = 3)
 
 
-## ----Sample from a Poisson distribution---------------------------------------------------------------------------------------
+## ----Sample from a Poisson distribution--------------------------------------------------------------
 ## rpois(n = n1, lambda = lambda1)
 
 
-## ----Poisson regression-------------------------------------------------------------------------------------------------------
+## ----Poisson regression------------------------------------------------------------------------------
 ## glm(outcome ~ group, data = data, family = poisson)
 
 
-## ----Data format for Poisson regression---------------------------------------------------------------------------------------
+## ----Data format for Poisson regression--------------------------------------------------------------
 ## data.frame(outcome = c(g1, g2),
 ##            group = c(rep("g1", n1), rep("g2", n2)))
 
 
-## ----Extract p-value from fitted Poisson regression object--------------------------------------------------------------------
+## ----Extract p-value from fitted Poisson regression object-------------------------------------------
 ## GLM = glm(outcome ~ group, data = data, family = poisson)
 ## coef(summary(GLM))[2, 4]
 
 
-## ----Complete simulation function---------------------------------------------------------------------------------------------
+## ----Complete simulation function--------------------------------------------------------------------
 ## # No standard deviation ratio any more because SD fixed at sqrt(lambda)
 ## # M_diff not necessary at this stage, but useful later
 ## sim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {
@@ -146,7 +146,7 @@ sims %>%
 ## }
 
 
-## ----Conditions---------------------------------------------------------------------------------------------------------------
+## ----Conditions--------------------------------------------------------------------------------------
 ## # It makes sense to vary group size ratio and lambda
 ## conditions = expand_grid(GR = c(0.5, 1, 2),
 ##                          n = 600,
@@ -155,7 +155,7 @@ sims %>%
 ##   rowid_to_column(var = "condition")
 
 
-## ----Run simulation-----------------------------------------------------------------------------------------------------------
+## ----Run simulation----------------------------------------------------------------------------------
 ## # use smaller i for now because additional glm() needs time
 ## set.seed(35)
 ## i = 1000
@@ -169,7 +169,7 @@ sims %>%
 ## toc()
 
 
-## ----Plots--------------------------------------------------------------------------------------------------------------------
+## ----Plots-------------------------------------------------------------------------------------------
 ## # Histogram of p-values
 ## sims %>%
 ##   ggplot(aes(p.value)) +

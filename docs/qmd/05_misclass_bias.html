@@ -1182,8 +1182,8 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>t_res <span class="ot">=</span> categories[<span class="dv">2</span><span class="sc">:</span>k] <span class="sc">%&gt;%</span> </span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">t.test</span>(outcomes[sample_true <span class="sc">==</span> <span class="st">"A"</span>],</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>               outcomes[sample_true <span class="sc">==</span> .x])) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(<span class="sc">~</span> <span class="fu">t.test</span>(outcomes[sample_obs <span class="sc">==</span> <span class="st">"A"</span>],</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>               outcomes[sample_obs <span class="sc">==</span> .x])) <span class="sc">%&gt;%</span> </span>
 <span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_names</span>(<span class="fu">str_c</span>(<span class="st">"A_"</span>, categories[<span class="dv">2</span><span class="sc">:</span>k]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>&nbsp;</p>
@@ -1197,7 +1197,7 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 </div><div class="column">
 <div class="cell-output cell-output-stdout">
 <pre><code> A_B  A_C  A_D 
-1.41 2.58 2.83 </code></pre>
+1.00 1.54 0.66 </code></pre>
 </div>
 </div>
 </div>
@@ -1211,7 +1211,7 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 </div><div class="column">
 <div class="cell-output cell-output-stdout">
 <pre><code>    A_B     A_C     A_D 
-0.00003 0.00001 0.00039 </code></pre>
+0.00520 0.00081 0.21381 </code></pre>
 </div>
 </div>
 </div>
@@ -1436,34 +1436,119 @@ D 0.06666667 0.06666667 0.06666667 0.80000000</code></pre>
 <li><p>Investigate the consequences of misclassification error for an analysis of two binary variables which were both measured with misclassification error.</p></li>
 </ol>
 </section>
-<section id="exercise-3-help" class="slide level2 scrollable">
-<h2>Exercise 3: Help</h2>
+<section id="exercise-3a-help" class="slide level2 scrollable">
+<h2>Exercise 3a: Help</h2>
 <h3 id="expand-if-you-need-help.">Expand if you need help.</h3>
 <h3 id="dont-expand-if-you-want-to-figure-it-out-by-yourself.">Don’t expand if you want to figure it out by yourself.</h3>
 <h3 id="scroll-down-if-you-need-more-help-on-later-steps.">Scroll down if you need more help on later steps.</h3>
-<p>Simulation function adapted from Exercise 2a</p>
+<p>Manually defined misclassification matrix with varying difficulty and systematic confusion</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We use almost the same simulation function, </span></span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co"># but we omit Student's t-test, because we already showed its</span></span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="co"># problems with unequal group sizes and group SDs</span></span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>sim_ttest_glm <span class="ot">=</span> <span class="cf">function</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">GR =</span> <span class="dv">1</span>, <span class="at">lambda1 =</span> <span class="dv">1</span>, <span class="at">M_diff =</span> <span class="dv">0</span>) {</span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>  n1 <span class="ot">=</span> <span class="fu">round</span>(n <span class="sc">/</span> (GR <span class="sc">+</span> <span class="dv">1</span>))</span>
-<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>  n2 <span class="ot">=</span> <span class="fu">round</span>(n1 <span class="sc">*</span> GR)</span>
-<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>  lambda2 <span class="ot">=</span> lambda1 <span class="sc">+</span> M_diff</span>
-<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>  g1 <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n =</span> n1, <span class="at">lambda =</span> lambda1)</span>
-<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>  g2 <span class="ot">=</span> <span class="fu">rpois</span>(<span class="at">n =</span> n2, <span class="at">lambda =</span> lambda2)</span>
-<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a>  Welch <span class="ot">=</span> <span class="fu">t.test</span>(g1, g2)<span class="sc">$</span>p.value</span>
-<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a>  GLM <span class="ot">=</span> <span class="fu">glm</span>(outcome <span class="sc">~</span> group,</span>
-<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">outcome =</span> <span class="fu">c</span>(g1, g2),</span>
-<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a>                              <span class="at">group =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"g1"</span>, n1), <span class="fu">rep</span>(<span class="st">"g2"</span>, n2))),</span>
-<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">family =</span> poisson)</span>
-<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">=</span> <span class="fu">lst</span>(Welch, <span class="at">GLM =</span> <span class="fu">coef</span>(<span class="fu">summary</span>(GLM))[<span class="dv">2</span>, <span class="dv">4</span>])</span>
-<span id="cb63-16"><a href="#cb63-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(res)</span>
-<span id="cb63-17"><a href="#cb63-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>misclass_prob <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  .<span class="dv">80</span>, .<span class="dv">10</span>, .<span class="dv">15</span>,</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>  .<span class="dv">15</span>, .<span class="dv">80</span>, .<span class="dv">15</span>,</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>  .<span class="dv">05</span>, .<span class="dv">10</span>, .<span class="dv">70</span></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a><span class="at">dimnames =</span> <span class="fu">list</span>(LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]))</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>misclass_prob</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p>Adapted simulation function</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Misclassification matrix as argument</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>sim_misclass <span class="ot">=</span> <span class="cf">function</span>(<span class="at">pop_dist =</span> <span class="fu">c</span>(<span class="fl">0.55</span>, <span class="fl">0.3</span>, <span class="fl">0.1</span>, <span class="fl">0.05</span>),</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>                        <span class="at">misclass_prob =</span> misclass_prob) {</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Population</span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">=</span> <span class="fu">length</span>(pop_dist)</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>  categories <span class="ot">=</span> LETTERS[<span class="dv">1</span><span class="sc">:</span>k]</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Sample</span></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>  sample_true <span class="ot">=</span> <span class="fu">sample</span>(<span class="at">x =</span> categories, </span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>                       <span class="at">size =</span> n, </span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>                       <span class="at">replace =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>                       <span class="at">prob =</span> pop_dist) <span class="sc">%&gt;%</span> </span>
+<span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">factor</span>(<span class="at">levels =</span> categories) <span class="sc">%&gt;%</span> </span>
+<span id="cb64-15"><a href="#cb64-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sort</span>()</span>
+<span id="cb64-16"><a href="#cb64-16" aria-hidden="true" tabindex="-1"></a>  freq_true <span class="ot">=</span> sample_true <span class="sc">%&gt;%</span> </span>
+<span id="cb64-17"><a href="#cb64-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">table</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb64-18"><a href="#cb64-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prop.table</span>()</span>
+<span id="cb64-19"><a href="#cb64-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-20"><a href="#cb64-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Misclassification</span></span>
+<span id="cb64-21"><a href="#cb64-21" aria-hidden="true" tabindex="-1"></a>  sample_obs <span class="ot">=</span> <span class="fu">table</span>(sample_true) <span class="sc">%&gt;%</span>  </span>
+<span id="cb64-22"><a href="#cb64-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">imap</span>(<span class="sc">~</span> <span class="fu">sample</span>(categories,</span>
+<span id="cb64-23"><a href="#cb64-23" aria-hidden="true" tabindex="-1"></a>                  <span class="at">size =</span> .x, <span class="at">replace =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb64-24"><a href="#cb64-24" aria-hidden="true" tabindex="-1"></a>                  <span class="at">prob =</span> misclass_prob[, .y])) <span class="sc">%&gt;%</span></span>
+<span id="cb64-25"><a href="#cb64-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unlist</span>(<span class="at">use.names =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb64-26"><a href="#cb64-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">factor</span>(<span class="at">levels =</span> categories)</span>
+<span id="cb64-27"><a href="#cb64-27" aria-hidden="true" tabindex="-1"></a>  freq_obs <span class="ot">=</span> sample_obs <span class="sc">%&gt;%</span> </span>
+<span id="cb64-28"><a href="#cb64-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">table</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb64-29"><a href="#cb64-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">prop.table</span>()</span>
+<span id="cb64-30"><a href="#cb64-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-31"><a href="#cb64-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Error summary</span></span>
+<span id="cb64-32"><a href="#cb64-32" aria-hidden="true" tabindex="-1"></a>  rmse <span class="ot">=</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((pop_dist <span class="sc">-</span> freq_obs)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb64-33"><a href="#cb64-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb64-34"><a href="#cb64-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Output</span></span>
+<span id="cb64-35"><a href="#cb64-35" aria-hidden="true" tabindex="-1"></a>  out <span class="ot">=</span> <span class="fu">lst</span>(freq_true, freq_obs, rmse)</span>
+<span id="cb64-36"><a href="#cb64-36" aria-hidden="true" tabindex="-1"></a>  out</span>
+<span id="cb64-37"><a href="#cb64-37" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Condition</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># No experiment, just one condition for illustration</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">expand_grid</span>(</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">pop_dist =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="fl">0.55</span>, <span class="fl">0.3</span>, <span class="fl">0.15</span>)),</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">1000</span>,</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">misclass_prob =</span> <span class="fu">list</span>(misclass_prob)</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"condition"</span>)</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>conditions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Run simulation</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">1000</span> <span class="co"># less simulations to save some workshop time </span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">40</span>)</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>sims <span class="ot">=</span> <span class="fu">map_dfr</span>(<span class="dv">1</span><span class="sc">:</span>i, <span class="sc">~</span> conditions) <span class="sc">%&gt;%</span></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"sim"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">res =</span> <span class="fu">list</span>(<span class="fu">sim_misclass</span>(<span class="at">pop_dist =</span> pop_dist, </span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">n =</span> n, <span class="at">misclass_prob =</span> misclass_prob)))</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Result plot</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>sims <span class="sc">%&gt;%</span> </span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(res) <span class="sc">%&gt;%</span> </span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_longer</span>(freq_obs, <span class="at">indices_to =</span> <span class="st">"category"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(category) <span class="sc">%&gt;%</span></span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Q =</span> <span class="fu">list</span>(<span class="fu">quantile</span>(freq_obs, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>)))) <span class="sc">%&gt;%</span></span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_wider</span>(Q) <span class="sc">%&gt;%</span></span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="st">`</span><span class="at">50%</span><span class="st">`</span>, <span class="fu">fct_rev</span>(category),</span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">xmin =</span> <span class="st">`</span><span class="at">25%</span><span class="st">`</span>, <span class="at">xmax =</span> <span class="st">`</span><span class="at">75%</span><span class="st">`</span>)) <span class="sc">+</span></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>() <span class="sc">+</span></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">unlist</span>(conditions<span class="sc">$</span>pop_dist), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="fu">str_glue</span>(<span class="st">"Median and IQR of the proportions from {i} simulation runs per condition.</span><span class="sc">\n</span><span class="st">Red lines are shares in the population."</span>),</span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Category"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="exercise-3b-help" class="slide level2">
+<h2>Exercise 3b: Help</h2>
+<p>Check out the steps-by-step explanation in the <a href="qmd/05_solution.html">rendered solution</a> or the <a href="R/05_solution.R">R code</a>.</p>
 
 <div class="footer footer-default">
 

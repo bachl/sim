@@ -34,7 +34,8 @@ at the University of Zurich & ETH Zurich, Switzerland
 5)  Misclassification and bias --- Messages mismeasured
     - [Slides](qmd/05_misclass_bias.html)
     - [Pure R Script](R/05_misclass_bias.R)
+    - [Solution Exercise 3 - Compiled](qmd/05_solution.html)
+    - [Solution Exercise 3 - Pure R Script](R/05_solution.R)
 
 6)  Outlook: What's next?
     - [Slides](qmd/06_outlook.html)
-

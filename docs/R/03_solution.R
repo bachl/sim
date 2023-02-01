@@ -1,11 +1,11 @@
-## ----setup--------------------------------------------------------------------------------------------------------------------
+## ----setup-------------------------------------------------------------------------------------------
 pacman::p_load(knitr, tictoc, tidyverse)
 theme_set(hrbrthemes::theme_ipsum_rc(base_size = 25,
                                      axis_title_size = 25,
                                      strip_text_size = 20))
 
 
-## ----Poisson distribution plot------------------------------------------------------------------------------------------------
+## ----Poisson distribution plot-----------------------------------------------------------------------
 # Population distribution: Poisson
 set.seed(825) # make results reproducible 
 lambda = 5
@@ -21,7 +21,7 @@ ggplot() +
   geom_vline(xintercept = mu) + labs(x = NULL)
 
 
-## ----Poisson CLT simulation function------------------------------------------------------------------------------------------
+## ----Poisson CLT simulation function-----------------------------------------------------------------
 # new function
 sim_CLT_pois = function(n, lambda) {
   sims = rpois(n = n, lambda = lambda)
@@ -31,12 +31,12 @@ i = 10000
 many_means = map_dbl(1:i, .f = ~ sim_CLT_pois(n = n, lambda = lambda))
 
 
-## ----Poisson mean and standard error------------------------------------------------------------------------------------------
+## ----Poisson mean and standard error-----------------------------------------------------------------
 mu; mean(many_means)
 sigma / sqrt(n); sd(many_means)
 
 
-## ----Poisson Histogram and Q-Q-Plot-------------------------------------------------------------------------------------------
+## ----Poisson Histogram and Q-Q-Plot------------------------------------------------------------------
 d_many_means = tibble(sim = 1:i, mu_hat = many_means)
 d_many_means %>% 
   ggplot(aes(mu_hat)) + geom_histogram() + 
@@ -54,7 +54,7 @@ d_many_means %>%
   geom_abline(slope = 1)
 
 
-## ----Student T distribution plot----------------------------------------------------------------------------------------------
+## ----Student T distribution plot---------------------------------------------------------------------
 set.seed(951) # make results reproducible 
 df = 5 # degrees of freedom
 n = 100
@@ -67,7 +67,7 @@ ggplot() +
   geom_vline(xintercept = mu) + labs(x = NULL)
 
 
-## ----Student T CLT simulation function----------------------------------------------------------------------------------------
+## ----Student T CLT simulation function---------------------------------------------------------------
 # new function
 sim_CLT_t = function(n, df) {
   sims = rt(n = n, df = df)
@@ -77,12 +77,12 @@ i = 10000
 many_means = map_dbl(1:i, .f = ~ sim_CLT_t(n = n, df = df))
 
 
-## ----Student T mean and standard error----------------------------------------------------------------------------------------
+## ----Student T mean and standard error---------------------------------------------------------------
 mu; mean(many_means)
 sigma / sqrt(n); sd(many_means)
 
 
-## ----Student T histogram and Q-Q-plot-----------------------------------------------------------------------------------------
+## ----Student T histogram and Q-Q-plot----------------------------------------------------------------
 d_many_means = tibble(sim = 1:i, mu_hat = many_means)
 d_many_means %>% 
   ggplot(aes(mu_hat)) + geom_histogram() + 

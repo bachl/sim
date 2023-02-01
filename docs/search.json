@@ -60,7 +60,7 @@
     "href": "qmd/03_prove.html#rnorm---draw-random-numbers-from-a-normal-distribution",
     "title": "3) Proof by simulation — The Central Limit Theorem (CLT)",
     "section": "rnorm() - draw random numbers from a normal distribution",
-    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1] -0.2927776  0.9411315 -0.9109352  0.6598433  0.3450257  1.1132317\n [7]  0.4414990  1.9874262  0.3019148 -0.7785469\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1]  0.29896324  0.89335169  0.11955442 -0.09437532 -1.08622944  0.72933779\n [7] -0.63319668  0.26832540 -1.20227236  0.87301688"
+    "text": "rnorm() - draw random numbers from a normal distribution\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1]  0.1285479  0.3013488 -0.2675520 -0.7283270 -0.4823082 -0.4022703\n [7]  1.1053333  2.0805185 -0.1295265  1.1362721\n\nrnorm(n = 10, mean = 0, sd = 1)\n\n [1]  0.3698740 -1.8249175  0.1501437 -0.8489524 -1.0120649  2.1517843\n [7] -0.5111604 -0.3192509 -1.9702453  0.5959162"
   },
   {
     "objectID": "qmd/03_prove.html#always-use-set.seed-to-make-simulation-results-reproducible",
@@ -277,7 +277,7 @@
     "href": "qmd/04_2_errors_power.html#adapt-the-simulation-function",
     "title": "4b) Errors and power — Torturing the t-test",
     "section": "Adapt the simulation function",
-    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.03565393\n\n$Student\n[1] 0.03564428"
+    "text": "Adapt the simulation function\n\n\n\nInclude new argument M_diff\n\nMean of the treatment condition; equals mean difference, as mean of the control is fixed at 0.\nMean difference equals standardized effect size d if SDR, and, consequently, both group standard deviations, are 1.\n\n\n\n\nsim_ttest = function(n = 200, GR = 1, SDR = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  sd1 = 1\n  sd2 = sd1 * SDR # sd2/sd1\n  g1 = rnorm(n = n1, mean = 0, sd = sd1) # control\n  g2 = rnorm(n = n2, mean = M_diff, sd = sd2) # treatment\n  welch = t.test(g1, g2)$p.value\n  student = t.test(g1, g2, var.equal = TRUE)$p.value\n  res = list(\"Welch\" = welch, \"Student\" = student)\n  res\n}\nsim_ttest(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.03260774\n\n$Student\n[1] 0.03260287"
   },
   {
     "objectID": "qmd/04_2_errors_power.html#adapt-the-experimental-conditions",
@@ -441,11 +441,11 @@
     "text": "First try: Summary\n\nLarger SD in the treatment group reduces statistical power, smaller SD in the treatment group increases power.\nOptimal sample size plan: Larger sample size for group with larger SD\nIf group SDs are equal, most power with equal group sample sizes."
   },
   {
-    "objectID": "qmd/04_2_errors_power.html#second-try-bring-back-a-pooled-sd-of-1",
-    "href": "qmd/04_2_errors_power.html#second-try-bring-back-a-pooled-sd-of-1",
+    "objectID": "qmd/04_2_errors_power.html#second-try-bring-back-a-population-sd-of-1",
+    "href": "qmd/04_2_errors_power.html#second-try-bring-back-a-population-sd-of-1",
     "title": "4b) Errors and power — Torturing the t-test",
-    "section": "Second try: Bring back a pooled SD of 1",
-    "text": "Second try: Bring back a pooled SD of 1\n\nWe might not be satisfied with the trivial result that more variation decreases power.\nWe might be interested in a more conventional d-style scaling of the effect size.\nWe want a population SD of 1 while retaining the SD ratio design."
+    "section": "Second try: Bring back a population SD of 1",
+    "text": "Second try: Bring back a population SD of 1\n\nWe might not be satisfied with the trivial result that more variation decreases power.\nWe might be interested in a more conventional d-style scaling of the effect size.\nWe want a population SD of 1 while retaining the SD ratio design."
   },
   {
     "objectID": "qmd/04_2_errors_power.html#wikipedia-to-the-rescue",
@@ -830,7 +830,7 @@
     "href": "qmd/05_misclass_bias.html#one-simulation-measure-quantities-of-interest",
     "title": "5) Misclassification and bias — Messages mismeasured",
     "section": "One simulation: Measure quantities of interest",
-    "text": "One simulation: Measure quantities of interest\n\nTest means of outcome in categories B, C, and D against A (the default)\n\n\nt_res = categories[2:k] %>% \n  map(~ t.test(outcomes[sample_true == \"A\"],\n               outcomes[sample_true == .x])) %>% \n  set_names(str_c(\"A_\", categories[2:k]))\n\n \n\nExtract group mean differences\n\n\n\nt_res %>% \n  map_dbl(~ diff(.x$estimate)) %>% round(2)\n\n\n A_B  A_C  A_D \n1.41 2.58 2.83 \n\n\n\n\nExtract p-values\n\n\n\nt_res %>% \n  map_dbl(~ .x$p.value) %>% round(5)\n\n\n    A_B     A_C     A_D \n0.00003 0.00001 0.00039"
+    "text": "One simulation: Measure quantities of interest\n\nTest means of outcome in categories B, C, and D against A (the default)\n\n\nt_res = categories[2:k] %>% \n  map(~ t.test(outcomes[sample_obs == \"A\"],\n               outcomes[sample_obs == .x])) %>% \n  set_names(str_c(\"A_\", categories[2:k]))\n\n \n\nExtract group mean differences\n\n\n\nt_res %>% \n  map_dbl(~ diff(.x$estimate)) %>% round(2)\n\n\n A_B  A_C  A_D \n1.00 1.54 0.66 \n\n\n\n\nExtract p-values\n\n\n\nt_res %>% \n  map_dbl(~ .x$p.value) %>% round(5)\n\n\n    A_B     A_C     A_D \n0.00520 0.00081 0.21381"
   },
   {
     "objectID": "qmd/05_misclass_bias.html#wrap-it-into-a-function-1",
@@ -889,11 +889,18 @@
     "text": "Group exercise 3\nTry one (or more) of the following adaptions of the Monte Carlo studies on misclassification:\n\nChange the first simulation so that the misclassification probabilities to allow for different patterns accuracies and errors: varying difficulties of the categories, systematic confusion of some categories.\nInvestigate the consequences of misclassification error for an analysis of two binary variables which were both measured with misclassification error."
   },
   {
-    "objectID": "qmd/05_misclass_bias.html#exercise-3-help",
-    "href": "qmd/05_misclass_bias.html#exercise-3-help",
+    "objectID": "qmd/05_misclass_bias.html#exercise-3a-help",
+    "href": "qmd/05_misclass_bias.html#exercise-3a-help",
     "title": "5) Misclassification and bias — Messages mismeasured",
-    "section": "Exercise 3: Help",
-    "text": "Exercise 3: Help\nExpand if you need help.\nDon’t expand if you want to figure it out by yourself.\nScroll down if you need more help on later steps.\nSimulation function adapted from Exercise 2a\n\n\nCode\n# We use almost the same simulation function, \n# but we omit Student's t-test, because we already showed its\n# problems with unequal group sizes and group SDs\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}"
+    "section": "Exercise 3a: Help",
+    "text": "Exercise 3a: Help\nExpand if you need help.\nDon’t expand if you want to figure it out by yourself.\nScroll down if you need more help on later steps.\nManually defined misclassification matrix with varying difficulty and systematic confusion\n\n\nCode\nmisclass_prob = matrix(c(\n  .80, .10, .15,\n  .15, .80, .15,\n  .05, .10, .70\n), nrow = 3, byrow = TRUE,\ndimnames = list(LETTERS[1:3], LETTERS[1:3]))\nmisclass_prob\n\n\nAdapted simulation function\n\n\nCode\n# Misclassification matrix as argument\nsim_misclass = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),\n                        n = 1000,\n                        misclass_prob = misclass_prob) {\n  # Population\n  k = length(pop_dist)\n  categories = LETTERS[1:k]\n  \n  # Sample\n  sample_true = sample(x = categories, \n                       size = n, \n                       replace = TRUE, \n                       prob = pop_dist) %>% \n    factor(levels = categories) %>% \n    sort()\n  freq_true = sample_true %>% \n    table() %>% \n    prop.table()\n  \n  # Misclassification\n  sample_obs = table(sample_true) %>%  \n    imap(~ sample(categories,\n                  size = .x, replace = TRUE, \n                  prob = misclass_prob[, .y])) %>%\n    unlist(use.names = FALSE) %>% \n    factor(levels = categories)\n  freq_obs = sample_obs %>% \n    table() %>% \n    prop.table()\n  \n  # Error summary\n  rmse = sqrt(mean((pop_dist - freq_obs)^2))\n  \n  # Output\n  out = lst(freq_true, freq_obs, rmse)\n  out\n}\n\n\nCondition\n\n\nCode\n# No experiment, just one condition for illustration\nconditions = expand_grid(\n  pop_dist = list(c(0.55, 0.3, 0.15)),\n  n = 1000,\n  misclass_prob = list(misclass_prob)\n) %>% \n  rowid_to_column(var = \"condition\")\nconditions\n\n\nRun simulation\n\n\nCode\ni = 1000 # less simulations to save some workshop time \nset.seed(40)\ntic()\nsims = map_dfr(1:i, ~ conditions) %>%\n  rowid_to_column(var = \"sim\") %>%\n  rowwise() %>%\n  mutate(res = list(sim_misclass(pop_dist = pop_dist, \n                                 n = n, misclass_prob = misclass_prob)))\ntoc()\n\n\nResult plot\n\n\nCode\nsims %>% \n  ungroup() %>% \n  unnest_wider(res) %>% \n  unnest_longer(freq_obs, indices_to = \"category\") %>% \n  group_by(category) %>%\n  summarise(Q = list(quantile(freq_obs, probs = c(0.25, 0.5, 0.75)))) %>%\n  unnest_wider(Q) %>%\n  ggplot(aes(`50%`, fct_rev(category),\n             xmin = `25%`, xmax = `75%`)) +\n  geom_pointrange() +\n  geom_vline(xintercept = unlist(conditions$pop_dist), color = \"red\", linetype = 2) + \n  labs(x = str_glue(\"Median and IQR of the proportions from {i} simulation runs per condition.\\nRed lines are shares in the population.\"),\n       y = \"Category\")"
+  },
+  {
+    "objectID": "qmd/05_misclass_bias.html#exercise-3b-help",
+    "href": "qmd/05_misclass_bias.html#exercise-3b-help",
+    "title": "5) Misclassification and bias — Messages mismeasured",
+    "section": "Exercise 3b: Help",
+    "text": "Exercise 3b: Help\nCheck out the steps-by-step explanation in the rendered solution or the R code."
   },
   {
     "objectID": "qmd/04_1_solution.html#exercise-2-welchs-t-test-for-count-data",
@@ -914,7 +921,7 @@
     "href": "qmd/04_1_solution.html#simulation-function",
     "title": "Solution Exercise 2a",
     "section": "Simulation function",
-    "text": "Simulation function\n\n# No standard deviation ratio any more because SD fixed at sqrt(lambda)\n# M_diff not necessary at this stage, but useful later\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  Student = t.test(g1, g2, var.equal = TRUE)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, Student, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm()\n\n$Welch\n[1] 0.946166\n\n$Student\n[1] 0.9461659\n\n$GLM\n[1] 0.9448532"
+    "text": "Simulation function\n\n# No standard deviation ratio any more because SD fixed at sqrt(lambda)\n# M_diff not necessary at this stage, but useful later\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  Student = t.test(g1, g2, var.equal = TRUE)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, Student, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm()\n\n$Welch\n[1] 0.7795355\n\n$Student\n[1] 0.7795354\n\n$GLM\n[1] 0.781524"
   },
   {
     "objectID": "qmd/04_1_solution.html#conditions",
@@ -1208,7 +1215,7 @@
     "href": "qmd/04_2_solution.html#simulation-function",
     "title": "Solution Exercise 2b",
     "section": "Simulation function",
-    "text": "Simulation function\n\n# We use almost the same simulation function, \n# but we omit Student's t-test, because we already showed its\n# problems with unequal group sizes and group SDs\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.5334722\n\n$GLM\n[1] 0.5213154"
+    "text": "Simulation function\n\n# We use almost the same simulation function, \n# but we omit Student's t-test, because we already showed its\n# problems with unequal group sizes and group SDs\nsim_ttest_glm = function(n = 200, GR = 1, lambda1 = 1, M_diff = 0) {\n  n1 = round(n / (GR + 1))\n  n2 = round(n1 * GR)\n  lambda2 = lambda1 + M_diff\n  g1 = rpois(n = n1, lambda = lambda1)\n  g2 = rpois(n = n2, lambda = lambda2)\n  Welch = t.test(g1, g2)$p.value\n  GLM = glm(outcome ~ group,\n            data = data.frame(outcome = c(g1, g2),\n                              group = c(rep(\"g1\", n1), rep(\"g2\", n2))),\n            family = poisson)\n  res = lst(Welch, GLM = coef(summary(GLM))[2, 4])\n  return(res)\n}\nsim_ttest_glm(n = 100, M_diff = 0.3)\n\n$Welch\n[1] 0.6844947\n\n$GLM\n[1] 0.6573568"
   },
   {
     "objectID": "qmd/04_2_solution.html#conditions-first-try",
@@ -1537,13 +1544,6 @@
     "href": "index.html#traktandenliste",
     "title": "Workshop Data Simulation with Monte Carlo Methods",
     "section": "Traktandenliste",
-    "text": "Traktandenliste\n\nIntroduction & overview\n\nSlides\n\nMonte Carlo Simulation?\n\nSlides\n\nProof by simulation — The Central Limit Theorem (CLT)\n\nSlides\nPure R Script\nSolution Exercise 1 - Compiled\nSolution Exercise 1 - Pure R Script\n\nErrors and power — Torturing the t-test\n\nSlides 1\nPure R Script 1\nSolution Exercise 2a - Compiled\nSolution Exercise 2a - Pure R Script\nSlides 2\nPure R Script 2\nSolution Exercise 2b - Compiled\nSolution Exercise 2b - Pure R Script\n\nMisclassification and bias — Messages mismeasured\n\nSlides\nPure R Script\n\nOutlook: What’s next?\n\nSlides"
-  },
-  {
-    "objectID": "qmd/04_2_errors_power.html#second-try-bring-back-a-population-sd-of-1",
-    "href": "qmd/04_2_errors_power.html#second-try-bring-back-a-population-sd-of-1",
-    "title": "4b) Errors and power — Torturing the t-test",
-    "section": "Second try: Bring back a population SD of 1",
-    "text": "Second try: Bring back a population SD of 1\n\nWe might not be satisfied with the trivial result that more variation decreases power.\nWe might be interested in a more conventional d-style scaling of the effect size.\nWe want a population SD of 1 while retaining the SD ratio design."
+    "text": "Traktandenliste\n\nIntroduction & overview\n\nSlides\n\nMonte Carlo Simulation?\n\nSlides\n\nProof by simulation — The Central Limit Theorem (CLT)\n\nSlides\nPure R Script\nSolution Exercise 1 - Compiled\nSolution Exercise 1 - Pure R Script\n\nErrors and power — Torturing the t-test\n\nSlides 1\nPure R Script 1\nSolution Exercise 2a - Compiled\nSolution Exercise 2a - Pure R Script\nSlides 2\nPure R Script 2\nSolution Exercise 2b - Compiled\nSolution Exercise 2b - Pure R Script\n\nMisclassification and bias — Messages mismeasured\n\nSlides\nPure R Script\nSolution Exercise 3 - Compiled\nSolution Exercise 3 - Pure R Script\n\nOutlook: What’s next?\n\nSlides"
   }
 ]
