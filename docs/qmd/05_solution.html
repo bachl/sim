@@ -431,13 +431,13 @@ Marko Bachl
 </ul>
 </div><div class="column" style="width:40%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>misclass_prop <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>misclass_prob <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  .<span class="dv">80</span>, .<span class="dv">10</span>, .<span class="dv">15</span>,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  .<span class="dv">15</span>, .<span class="dv">80</span>, .<span class="dv">15</span>,</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  .<span class="dv">05</span>, .<span class="dv">10</span>, .<span class="dv">70</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">dimnames =</span> <span class="fu">list</span>(LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], LETTERS[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]))</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>misclass_prop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>misclass_prob</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     A   B    C
 A 0.80 0.1 0.15
@@ -454,7 +454,7 @@ C 0.05 0.1 0.70</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>sim_misclass <span class="ot">=</span> <span class="cf">function</span>(<span class="at">pop_dist =</span> <span class="fu">c</span>(<span class="fl">0.55</span>, <span class="fl">0.3</span>, <span class="fl">0.1</span>, <span class="fl">0.05</span>),</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">n =</span> <span class="dv">1000</span>,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">misclass_prop =</span> misclass_prop) {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">misclass_prob =</span> misclass_prob) {</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Population</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  k <span class="ot">=</span> <span class="fu">length</span>(pop_dist)</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  categories <span class="ot">=</span> LETTERS[<span class="dv">1</span><span class="sc">:</span>k]</span>
@@ -474,7 +474,7 @@ C 0.05 0.1 0.70</code></pre>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  sample_obs <span class="ot">=</span> <span class="fu">table</span>(sample_true) <span class="sc">%&gt;%</span>  </span>
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">imap</span>(<span class="sc">~</span> <span class="fu">sample</span>(categories,</span>
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>                  <span class="at">size =</span> .x, <span class="at">replace =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>                  <span class="at">prob =</span> misclass_prop[, .y])) <span class="sc">%&gt;%</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>                  <span class="at">prob =</span> misclass_prob[, .y])) <span class="sc">%&gt;%</span></span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unlist</span>(<span class="at">use.names =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">factor</span>(<span class="at">levels =</span> categories)</span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  freq_obs <span class="ot">=</span> sample_obs <span class="sc">%&gt;%</span> </span>
@@ -502,13 +502,13 @@ C 0.05 0.1 0.70</code></pre>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>conditions <span class="ot">=</span> <span class="fu">expand_grid</span>(</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">pop_dist =</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="fl">0.55</span>, <span class="fl">0.3</span>, <span class="fl">0.15</span>)),</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">n =</span> <span class="dv">1000</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">misclass_prop =</span> <span class="fu">list</span>(misclass_prop)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">misclass_prob =</span> <span class="fu">list</span>(misclass_prob)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"condition"</span>)</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>conditions</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 4
-  condition pop_dist      n misclass_prop
+  condition pop_dist      n misclass_prob
       &lt;int&gt; &lt;list&gt;    &lt;dbl&gt; &lt;list&gt;       
 1         1 &lt;dbl [3]&gt;  1000 &lt;dbl [3 × 3]&gt;</code></pre>
 </div>
@@ -518,7 +518,7 @@ C 0.05 0.1 0.70</code></pre>
 </section>
 <section id="run-simulation" class="slide level2">
 <h2>Run simulation</h2>
-<div class="cell" data-hash="05_solution_cache/revealjs/Run simulation_0c59799694d901ed12fdab9bedd377c2">
+<div class="cell" data-hash="05_solution_cache/revealjs/Run simulation_8b1af8e34db2de7acecd2a6c6ea896ca">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">=</span> <span class="dv">1000</span> <span class="co"># less simulations to save some workshop time </span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">40</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tic</span>()</span>
@@ -526,10 +526,10 @@ C 0.05 0.1 0.70</code></pre>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowid_to_column</span>(<span class="at">var =</span> <span class="st">"sim"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">res =</span> <span class="fu">list</span>(<span class="fu">sim_misclass</span>(<span class="at">pop_dist =</span> pop_dist, </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">n =</span> n, <span class="at">misclass_prop =</span> misclass_prop)))</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">n =</span> n, <span class="at">misclass_prob =</span> misclass_prob)))</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">toc</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.733 sec elapsed</code></pre>
+<pre><code>0.711 sec elapsed</code></pre>
 </div>
 </div>
 </section>

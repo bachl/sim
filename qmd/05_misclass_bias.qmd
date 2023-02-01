@@ -157,10 +157,10 @@ freq_true
 # Simple: Equal error rates, equal difficulties, one process
 accuracy = 0.8
 equal_error = (1 - accuracy) / (k - 1)
-misclass_prop = matrix(equal_error, nrow = k, ncol = k, 
+misclass_prob = matrix(equal_error, nrow = k, ncol = k, 
                        dimnames = list(categories, categories))
-diag(misclass_prop) = accuracy
-misclass_prop
+diag(misclass_prob) = accuracy
+misclass_prob
 ```
 
 ## One simulation: Misclassification
@@ -174,7 +174,7 @@ tic()
 sample_obs = sample_true %>%  # n samples
   map_chr(~ sample(categories,
                   size = 1, replace = FALSE, 
-                  prob = misclass_prop[, .x])) %>%
+                  prob = misclass_prob[, .x])) %>%
     factor(levels = categories)
 freq_obs = sample_obs %>% 
     table() %>% 
@@ -195,7 +195,7 @@ tic()
 sample_obs = table(sample_true) %>%  # k samples
   imap(~ sample(categories,
                   size = .x, replace = TRUE, 
-                  prob = misclass_prop[, .y])) %>%
+                  prob = misclass_prob[, .y])) %>%
     unlist(use.names = FALSE) %>% 
     factor(levels = categories)
 freq_obs = sample_obs %>% 
@@ -250,14 +250,14 @@ sim_misclass = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),
   
   # Misclassification
   equal_error = (1 - accuracy) / (k - 1)
-  misclass_prop = matrix(equal_error, nrow = k, ncol = k,
+  misclass_prob = matrix(equal_error, nrow = k, ncol = k,
                          dimnames = list(categories, categories))
-  diag(misclass_prop) = accuracy
+  diag(misclass_prob) = accuracy
 
   sample_obs = table(sample_true) %>%  
     imap(~ sample(categories,
                   size = .x, replace = TRUE, 
-                  prob = misclass_prop[, .y])) %>%
+                  prob = misclass_prob[, .y])) %>%
     unlist(use.names = FALSE) %>% 
     factor(levels = categories)
   freq_obs = sample_obs %>% 
@@ -608,10 +608,10 @@ table(sample_true, outcomes)
 # Simple: Equal error rates, equal difficulties, one process
 accuracy = 0.8
 equal_error = (1 - accuracy) / (k - 1)
-misclass_prop = matrix(equal_error, nrow = k, ncol = k, 
+misclass_prob = matrix(equal_error, nrow = k, ncol = k, 
                        dimnames = list(categories, categories))
-diag(misclass_prop) = accuracy
-misclass_prop
+diag(misclass_prob) = accuracy
+misclass_prob
 ```
 
 ## One simulation: Misclassification
@@ -623,7 +623,7 @@ tic()
 sample_obs = table(sample_true) %>%  # k samples
   imap(~ sample(categories,
                   size = .x, replace = TRUE, 
-                  prob = misclass_prop[, .y])) %>%
+                  prob = misclass_prob[, .y])) %>%
     unlist(use.names = FALSE) %>% 
     factor(levels = categories)
 freq_obs = sample_obs %>% 
@@ -690,15 +690,15 @@ sim_misclass_test = function(pop_dist = c(0.55, 0.3, 0.1, 0.05),
 
   # Misclassification probabilities
   equal_error = (1 - accuracy) / (k - 1)
-  misclass_prop = matrix(equal_error, nrow = k, ncol = k, 
+  misclass_prob = matrix(equal_error, nrow = k, ncol = k, 
                          dimnames = list(categories, categories))
-  diag(misclass_prop) = accuracy
+  diag(misclass_prob) = accuracy
   
   # Misclassification  
   sample_obs = table(sample_true) %>%  
     imap(~ sample(categories,
                   size = .x, replace = TRUE, 
-                  prob = misclass_prop[, .y])) %>%
+                  prob = misclass_prob[, .y])) %>%
     unlist(use.names = FALSE) %>% 
     factor(levels = categories)
   freq_obs = sample_obs %>% 
