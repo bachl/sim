@@ -639,8 +639,8 @@ freq_obs
 
 ```{r One simulation: Measure quantities of interest 1}
 t_res = categories[2:k] %>% 
-  map(~ t.test(outcomes[sample_true == "A"],
-               outcomes[sample_true == .x])) %>% 
+  map(~ t.test(outcomes[sample_obs == "A"],
+               outcomes[sample_obs == .x])) %>% 
   set_names(str_c("A_", categories[2:k]))
 ```
 
